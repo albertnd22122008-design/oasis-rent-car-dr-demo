@@ -1,0 +1,19 @@
+{
+  "name": "OASIS Rent A Car — República Dominicana",
+  "short_name": "OASIS Rent A Car",
+  "description": "Alquiler de vehículos premium en República Dominicana. Reserva, asistencia 24/7 y pago en línea.",
+  "start_url": "index.html",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#0F0F0F",
+  "theme_color": "#FF5A00",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "img/logo.png",
+      "sizes": "2128x1008",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

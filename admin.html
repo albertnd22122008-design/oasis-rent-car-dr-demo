@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0F0F0F">
+<title>Panel Admin — OASIS Rent A Car</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="img/logo.png" type="image/png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+<link rel="stylesheet" href="css/animations.css">
+</head>
+<body class="admin-page">
+
+<div class="admin-wrap">
+  <div class="admin-top">
+    <div><p class="eyebrow">OASIS RENT A CAR</p><h1>Panel de administración</h1></div>
+    <a class="btn btn-ghost" href="index.html">← VER LA WEB</a>
+  </div>
+
+  <aside id="panel" class="admin-panel open">
+    <div class="panel-head">
+      <div><p class="eyebrow">MODO EDICIÓN</p><h3 class="panel-title">Cambia todo desde aquí</h3></div>
+      <a class="menu-btn" href="index.html" aria-label="Volver a la web">←</a>
+    </div>
+
+    <div class="panel-tabs" id="panelTabs">
+      <button class="on" data-tab="marca">Marca</button>
+      <button data-tab="textos">Textos</button>
+      <button data-tab="estilo">Estilo</button>
+      <button data-tab="fotos">Fotos</button>
+      <button data-tab="carros">Carros</button>
+      <button data-tab="contacto">Contacto</button>
+      <button data-tab="secciones">Secciones</button>
+    </div>
+
+    <div class="panel-body">
+      <div class="tabpane on" data-pane="marca">
+        <div class="fgrp"><label>Subir logo (PNG/JPG/SVG)</label><input class="input" type="file" id="logoFile" accept="image/*"><img class="thumb" id="logoPreview" src="img/logo.png" alt="Logo"></div>
+        <div class="fgrp"><label>Logo original</label><button class="btn btn-ghost btn-sm" id="removeLogo">Usar logo OASIS original</button></div>
+        <div class="fgrp"><label>Link de PayPal (actualiza todos los botones)</label><input class="input" id="paypalLink"></div>
+      </div>
+
+      <div class="tabpane" data-pane="textos">
+        <div id="textFields"></div>
+      </div>
+
+      <div class="tabpane" data-pane="estilo">
+        <div class="fgrp"><label>Color primario</label><input type="color" id="cPrimary"></div>
+        <div class="fgrp"><label>Color secundario</label><input type="color" id="cSecondary"></div>
+        <div class="fgrp"><label>Color de fondo</label><input type="color" id="cBg"></div>
+        <div class="fgrp"><label>Color del texto</label><input type="color" id="cText"></div>
+        <div class="fgrp"><label>Fuente de títulos</label><select id="fDisplay"></select></div>
+        <div class="fgrp"><label>Fuente del cuerpo</label><select id="fBody"></select></div>
+      </div>
+
+      <div class="tabpane" data-pane="fotos">
+        <div class="fgrp"><label>Foto del Hero</label><input class="input" type="file" id="heroFile" accept="image/*"><img class="thumb" id="heroPreview" src="img/hero.jpg" alt="Hero"></div>
+        <div class="fgrp"><label>Foto del dueño (Mister Oasis)</label><input class="input" type="file" id="ownerFile" accept="image/*"><img class="thumb" id="ownerPreview" src="img/owner.jpg" alt="Dueño"></div>
+        <div class="fgrp"><label>Foto de un carro (elegir ID)</label><select id="carPick"></select></div>
+        <div class="fgrp"><input class="input" type="file" id="carFile" accept="image/*"><img class="thumb" id="carPreview" alt="Carro"></div>
+      </div>
+
+      <div class="tabpane" data-pane="carros">
+        <div class="fgrp"><label>Editar precio (elegir ID)</label><select id="pricePick"></select></div>
+        <div class="fgrp"><label>Nuevo precio US$/día</label><input class="input" type="number" id="priceVal" min="1"></div>
+        <button class="btn btn-orange" id="savePrice">ACTUALIZAR PRECIO</button>
+        <hr class="panel-hr">
+        <h4 class="blue">Ficha técnica del vehículo</h4>
+        <div class="fgrp"><label>Elegir carro (ID)</label><select id="specPick"></select></div>
+        <div class="fgrp"><label>Transmisión</label><select id="specTrans">
+          <option>Automático</option><option>Automático • AWD</option><option>Automático • 4x4</option><option>Manual</option><option>Manual / Auto • 4x4</option>
+        </select></div>
+        <div class="fgrp"><label>Aire acondicionado</label><select id="specAc"><option>Sí</option><option>No</option></select></div>
+        <div class="fgrp"><label>Pasajeros</label><select id="specSeats"><option>2</option><option>4</option><option>5</option><option>7</option><option>8</option></select></div>
+        <div class="fgrp"><label>Maletas</label><select id="specBags"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        <button class="btn btn-orange" id="saveSpec">GUARDAR FICHA TÉCNICA</button>
+        <hr class="panel-hr">
+        <h4 class="blue">Agregar carro nuevo</h4>
+        <div class="fgrp"><label>Nombre</label><input class="input" id="newName" placeholder="Ej. Toyota Corolla 2024"></div>
+        <div class="fgrp"><label>Precio US$/día</label><input class="input" id="newPrice" type="number" value="100"></div>
+        <div class="fgrp"><label>Categoría</label><select id="newCat"><option>SUV</option><option>Lujo</option><option>Económico</option><option>Jeep</option><option>Toyota</option><option>Hyundai</option><option>Kia</option><option>Changan</option><option>BMW</option><option>Mercedes</option></select></div>
+        <div class="fgrp"><label>Descripción</label><input class="input" id="newDesc" placeholder="Automático, A/C, 5 pasajeros"></div>
+        <button class="btn btn-orange" id="addCar">AGREGAR CARRO</button>
+      </div>
+
+      <div class="tabpane" data-pane="contacto">
+        <div class="fgrp"><label>Dirección</label><textarea class="input" id="eAddress" rows="3"></textarea></div>
+        <div class="fgrp"><label>Teléfono 1</label><input class="input" id="eTel1"></div>
+        <div class="fgrp"><label>Teléfono USA</label><input class="input" id="eTel2"></div>
+        <div class="fgrp"><label>WhatsApp 1</label><input class="input" id="eWa1"></div>
+        <div class="fgrp"><label>WhatsApp 2 / Asistencia 24h</label><input class="input" id="eWa2"></div>
+        <div class="fgrp"><label>Correo</label><input class="input" id="eEmail"></div>
+        <div class="fgrp"><label>Horario</label><input class="input" id="eHours"></div>
+        <div class="fgrp"><label>Nota de horario</label><textarea class="input" id="eHoursNote" rows="2"></textarea></div>
+      </div>
+
+      <div class="tabpane" data-pane="secciones"><div id="sectionToggles"></div></div>
+    </div>
+
+    <div class="panel-foot">
+      <button class="btn btn-orange" id="saveBtn">GUARDAR CAMBIOS</button>
+      <button class="btn btn-ghost" id="previewBtn">VER LA WEB (VISTA PREVIA)</button>
+      <button class="btn btn-ghost reset-btn" id="resetBtn">RESTABLECER DISEÑO ORIGINAL</button>
+      <p class="auto-hint">Los cambios se guardan automáticamente en este navegador.</p>
+    </div>
+  </aside>
+
+  <p class="admin-hint">Todo lo que cambies se guarda en este navegador y se aplica en la web principal.</p>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/paypal.js"></script>
+<script src="js/catalog.js"></script>
+<script src="js/whatsapp.js"></script>
+<script src="js/editor.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0F0F0F">
+<title>Vehículo — OASIS Rent A Car</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="img/logo.png" type="image/png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+<link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="shell">
+    <div class="nav-inner">
+      <a href="index.html" aria-label="Oasis Rent A Car"><span class="logo"><img src="img/logo.png" alt="OASIS Rent a Car"></span></a>
+      <nav class="nav-links"><a href="index.html#vehiculos">VEHÍCULOS</a><a href="index.html#pago">PAGO EN LÍNEA</a><a href="index.html#contacto">CONTACTO 24/7</a></nav>
+      <div class="nav-actions"><a class="btn btn-orange btn-sm" href="index.html#vehiculos">VER CATÁLOGO</a></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="shell detail-head">
+    <a class="detail-back" href="index.html#vehiculos">← VOLVER AL CATÁLOGO</a>
+    <p class="eyebrow" id="detailTag">VEHÍCULO OASIS</p>
+    <h1 class="detail-title" id="detailTitle">Cargando vehículo…</h1>
+    <div class="detail-price" id="detailPrice">US $— <small>/ día</small></div>
+  </section>
+
+  <section class="shell" style="padding-bottom:clamp(4rem,8vw,7rem)">
+    <div class="detail-gallery" id="detailGallery"></div>
+
+    <div class="detail-specs" id="detailSpecs" style="margin-top:2rem"></div>
+
+    <div class="detail-actions">
+      <a class="btn btn-orange" id="detailReserve" href="#" target="_blank" rel="noopener">RESERVAR POR WHATSAPP →</a>
+      <button class="btn btn-ghost" id="detailSave" type="button">GUARDAR EN MIS VEHÍCULOS</button>
+      <a class="btn btn-blue" id="detailPaypal" data-paypal href="#" target="_blank" rel="noopener"><img src="img/paypal.svg" alt="PayPal" class="paypal-logo"> PAGAR EN LÍNEA CON PAYPAL →</a>
+      <a class="btn btn-ghost" href="index.html#vehiculos">VER OTROS VEHÍCULOS</a>
+    </div>
+
+    <div style="margin-top:4rem">
+      <h2 class="detail-section-title">También te puede interesar</h2>
+      <div class="related-grid" id="relatedGrid"></div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="shell footer-inner"><p class="footer-copy">© 2017 - 2026 • Oasis Investment Group, SRL. RNC: 131-37894-3. República Dominicana.</p></div></footer>
+<a class="wa-float" href="https://wa.me/18096930840" aria-label="WhatsApp">💬</a>
+<div class="toast" id="toast"></div>
+
+<script src="js/paypal.js"></script>
+<script src="js/catalog.js"></script>
+<script src="js/whatsapp.js"></script>
+<script src="js/editor.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/vehiculo.js"></script>
+</body>
+</html>

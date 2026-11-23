@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0F0F0F">
+<meta name="description" content="Oasis Rent A Car DR — Alquiler de vehículos premium en República Dominicana. Entrega en aeropuertos y hoteles, asistencia 24/7 y pago en línea con PayPal.">
+<title>OASIS Rent A Car — República Dominicana</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="img/logo.png" type="image/png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="OASIS Rent A Car">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="img/logo.png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+<link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+<!-- ==================== NAVBAR ==================== -->
+<header class="nav" id="nav">
+  <div class="shell">
+    <div class="nav-inner">
+      <a href="#inicio" aria-label="Oasis Rent A Car">
+        <span class="logo" id="logoBox"><img src="img/logo.png" alt="OASIS Rent a Car"></span>
+      </a>
+      <nav class="nav-links">
+        <a href="#inicio">INICIO</a>
+        <a href="#requisitos">REQUISITOS</a>
+        <a href="#vehiculos">VEHÍCULOS</a>
+        <a href="#pago">PAGO EN LÍNEA</a>
+        <a href="#contacto">SERVICIO AL CLIENTE 24/7</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="menu-btn" id="installBtn" aria-label="Descargar / agregar al inicio" title="Descargar / agregar al inicio"><img src="img/download.svg" alt="Descargar"></button>
+        <a class="btn btn-ghost btn-sm" id="userBtn" href="login.html" aria-label="Mi usuario">👤 <span class="user-label">CREA TU USUARIO</span></a>
+        <a href="#vehiculos" class="btn btn-orange btn-sm">RESERVAR AHORA</a>
+        <button class="menu-btn" id="menuBtn" aria-label="Menú">☰</button>
+      </div>
+    </div>
+    <nav class="mobile-menu" id="mobileMenu">
+      <a href="#inicio">INICIO</a><a href="#requisitos">REQUISITOS</a><a href="#vehiculos">VEHÍCULOS</a>
+      <a href="#pago">PAGO EN LÍNEA</a><a href="#contacto">SERVICIO AL CLIENTE 24/7</a>
+      <a href="login.html">👤 CREA TU USUARIO / INGRESAR</a>
+      <a href="mis-vehiculos.html">MIS VEHÍCULOS RESERVADOS</a>
+      <a href="#" id="installBtnMobile"><img src="img/download.svg" alt=""> DESCARGAR / AGREGAR AL INICIO</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<!-- ==================== HERO + BUSCADOR ==================== -->
+<section class="hero" id="inicio" data-section="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-blur"></div>
+  <div class="hero-grad"></div>
+  <div class="blob blob-a"></div>
+  <div class="blob blob-b"></div>
+  <div class="shell hero-grid">
+    <div>
+      <p class="eyebrow fade-up" data-edit="heroEyebrow">Santo Domingo · República Dominicana</p>
+      <h1 id="heroTitle" class="fade-up" data-edit="heroTitle">¡No importa el destino, nosotros te lo llevamos!</h1>
+      <p class="lede fade-up" data-edit="heroDesc">Entrega en todos los aeropuertos y hoteles del país. Flota premium, asistencia 24/7 y pago seguro en línea.</p>
+      <div class="hero-cta fade-up">
+        <a href="#vehiculos" class="btn btn-orange">VER VEHÍCULOS →</a>
+        <a href="mis-vehiculos.html" class="btn btn-blue">MIS VEHÍCULOS RESERVADOS →</a>
+        <a href="#contacto" class="btn btn-ghost">SERVICIO 24/7</a>
+      </div>
+    </div>
+    <form class="search fade-up" id="searchForm">
+      <h3>Encuentra tu vehículo</h3>
+      <p class="lede search-lead">Reserva en minutos, nosotros nos encargamos del resto.</p>
+      <div class="search-grid">
+        <div class="field"><label>Recogida</label><select id="pickup">
+          <option>Aeropuerto Internacional del Cibao</option><option>Aeropuerto Las Américas</option>
+          <option>Santo Domingo</option><option>Haina</option><option>Entrega a domicilio</option>
+        </select></div>
+        <div class="field"><label>Fecha de recogida</label><input type="date" id="f1"></div>
+        <div class="field"><label>Regreso</label><select id="dropoff">
+          <option>Aeropuerto Internacional del Cibao</option><option>Aeropuerto Las Américas</option>
+          <option>Santo Domingo</option><option>Haina</option><option>Entrega a domicilio</option>
+        </select></div>
+        <div class="field"><label>Fecha de regreso</label><input type="date" id="f2"></div>
+      </div>
+      <button class="btn btn-orange" type="submit">ENCUENTRA UN VEHÍCULO →</button>
+      <p class="search-note">Fechas mínimas de renta: 72 horas (3 días)</p>
+    </form>
+  </div>
+</section>
+
+<!-- ==================== MARQUEE ==================== -->
+<div class="marquee" data-section="marquee">
+  <div class="marquee-track" id="marqueeTrack"></div>
+</div>
+
+<!-- ==================== CATÁLOGO ==================== -->
+<section class="section" id="vehiculos" data-section="vehiculos">
+  <div class="shell">
+    <div class="center" data-reveal>
+      <p class="eyebrow" data-edit="catalogEyebrow">FLOTA PREMIUM · ENTREGA EN AEROPUERTO</p>
+      <h2 class="section-title" data-edit="catalogTitle">CATÁLOGO DE VEHÍCULOS</h2>
+    </div>
+    <div class="toolbar">
+      <div class="chips" id="filters"></div>
+      <div class="tools-right">
+        <input id="searchInput" placeholder="Buscar vehículo..." aria-label="Buscar vehículo">
+        <select id="sortSelect" aria-label="Ordenar"><option value="">Ordenar: ninguno</option><option value="asc">MENOR PRECIO</option><option value="desc">MAYOR PRECIO</option></select>
+      </div>
+    </div>
+    <div class="grid-cars" id="carGrid"></div>
+    <div class="pager"><span id="pageInfo">Página 1 de 1</span><button class="btn btn-orange btn-sm" id="loadMore">CARGAR MÁS</button></div>
+  </div>
+</section>
+
+<!-- ==================== WHATSAPP ==================== -->
+<section class="section section-whatsapp" data-section="whatsapp">
+  <div class="shell grid-2" data-reveal>
+    <div>
+      <p class="eyebrow" data-edit="waEyebrow">ASISTENCIA INMEDIATA</p>
+      <h2 class="section-title" data-edit="waTitle">Comunícate con nosotros<br><span class="orange">vía WhatsApp</span></h2>
+      <p class="lede" data-edit="waText">Asistencia vía WhatsApp +1 (809) 693-0840. Estamos disponibles las 24 horas, los 365 días del año.</p>
+      <a class="btn btn-orange wa-link" data-wa="general" href="https://wa.me/18096930840" target="_blank" rel="noopener">ABRIR WHATSAPP →</a>
+    </div>
+    <div class="panel">
+      <h3 class="blue">Atención personalizada</h3>
+      <p class="lede">Reservas, cambios de fecha, entregas especiales o asistencia en ruta. Un mismo número para todo.</p>
+      <p class="big-number" data-bind="waNumber">+1 (809) 693-0840</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== PAYPAL ==================== -->
+<section class="section" id="pago" data-section="paypal">
+  <div class="shell">
+    <div class="center" data-reveal>
+      <p class="eyebrow">PAGO EN LÍNEA</p>
+      <h2 class="section-title" data-edit="paypalTitle">¿Por qué usar PayPal como forma de pago Online?</h2>
+      <p class="lede center-lead" data-edit="paypalSub">Paga tu reservación en línea, rápido y seguro con PayPal.</p>
+    </div>
+    <div class="grid-3 paypal-cards" id="paypalCards"></div>
+    <div class="center center-mt">
+      <a class="btn btn-orange" data-paypal target="_blank" rel="noopener"><img src="img/paypal.svg" alt="PayPal" class="paypal-logo"> PAGAR EN LÍNEA CON PAYPAL →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== COMPROMISO + CONÓCENOS ==================== -->
+<section class="section section-light" data-section="conocenos">
+  <div class="shell grid-2" data-reveal>
+    <div>
+      <p class="eyebrow dark-eyebrow">NUESTRO COMPROMISO</p>
+      <h2 class="section-title blue" data-edit="commitTitle">Más que una empresa líder</h2>
+      <p class="lede dark-text" data-edit="commitText">Más que una empresa líder en alquiler de vehículos, somos una familia comprometida en brindar un servicio de calidad Premium, seguridad y puntualidad, con el objetivo de que usted tenga la mejor experiencia a la hora de rentar auto.</p>
+    </div>
+    <div>
+      <p class="eyebrow dark-eyebrow">ANTE TODO, CONÓCENOS</p>
+      <h2 class="section-title blue smaller">La familia Oasis</h2>
+      <p class="dark-text" data-edit="aboutP1">Oasis Rent A Car, más que una empresa de alquiler de vehículos, somos una familia comprometida en brindar un servicio de calidad Premium, seguridad y puntualidad, con el objetivo de alcanzar la satisfacción que anhela nuestros clientes. Los integrantes de esta familia de Oasis Rent A Car, nos colocan como líder en el mercado, gracias a su preparación e intelecto al momento de brindar el servicio.</p>
+      <p class="dark-text spaced" data-edit="aboutP2">Oasis Rent A Car nacemos de una necesidad que existía en el mercado de brindar un servicio de alta gama y gama regular en alquiler de vehículos, que fuera de accesibilidad al público en general que visita República Dominicana por diversos motivos, vacaciones, reuniones de trabajo entre otros.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== TERMINOS LEGALES ==================== -->
+<section class="section" data-section="legal">
+  <div class="shell grid-2" data-reveal>
+    <div>
+      <p class="eyebrow">TÉRMINOS LEGALES</p>
+      <h2 class="section-title" data-edit="legalTitle">Oasis Investment Group, SRL</h2>
+      <p class="lede" data-edit="legalText">Apegándonos en la ley que rigen las mipymes, somos una entidad corporativa, constituida con el nombre comercial de Oasis Investment Group, SRL, bajo el Registro Nacional de Contribuyentes (RNC) 131-37894-3.</p>
+    </div>
+    <div class="panel center"><div class="stamp">RNC<br><span>131-37894-3</span></div><p class="lede stamp-note">© 2017 - 2026 · República Dominicana</p></div>
+  </div>
+</section>
+
+<!-- ==================== QUE NECESITAS ==================== -->
+<section class="section section-dark" id="requisitos" data-section="requisitos">
+  <div class="shell">
+    <div class="center" data-reveal>
+      <p class="eyebrow">ANTES DE RENTAR</p>
+      <h2 class="section-title" data-edit="needTitle">¿QUE NECESITAS PARA RENTAR UN VEHÍCULO?</h2>
+    </div>
+    <div class="grid-2 need-grid" data-reveal>
+      <div class="panel" id="needList"></div>
+      <div class="panel">
+        <p class="eyebrow">REQUERIMIENTOS</p>
+        <p class="lede" data-edit="reqShort">Antes de reservar uno de nuestros vehículos le recomendamos tener al día los documentos como; Pasaporte y/o documento de identidad, Tarjeta de Crédito con disponibilidad, Licencia de Conducir.</p>
+        <button class="btn btn-orange req-btn" id="openReq">VER REQUISITOS →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== NOTA SOBRE EL SERVICIO ==================== -->
+<section class="section" data-section="nota">
+  <div class="shell">
+    <div class="center" data-reveal><p class="eyebrow">ESTAMOS CONTIGO</p><h2 class="section-title" data-edit="noteTitle">Nota sobre el servicio</h2></div>
+    <div class="grid-3 service-notes" id="serviceNotes"></div>
+    <div class="center center-mt"><a href="tel:18096930840" class="btn btn-blue">LLAMAR ASISTENCIA →</a></div>
+  </div>
+</section>
+
+<!-- ==================== MISTER OASIS ==================== -->
+<section class="section section-mister" data-section="mister">
+  <div class="shell grid-2" data-reveal>
+    <div>
+      <p class="eyebrow">LA CARA DE LA MARCA</p>
+      <h2 class="section-title" data-edit="misterName">MISTER OASIS</h2>
+      <p class="mister-quote" data-edit="misterQuote">"SALUDITO, SALUDITO"</p>
+      <p class="lede" data-edit="misterStory">Jorge Pérez Félix viene de una familia humilde, donde el trabajo y la honestidad fueron siempre el norte. Comenzó vendiendo y reparando computadoras y en 2006 se convirtió en consignatario. Nueve años después nació Oasis Rent A Car. Su trayectoria incluye concursos y ayudas solidarias, colaboraciones con Killadamente, Alexandra MVP, Carlos Montesquieu, Santiago Matías "Alofoke", Químico Ultra Mega, Kiko el Crazy y Cherry Scom. Casado desde hace más de 16 años y padre de 3 hijos, para él la familia es lo primordial.</p>
+      <div class="mister-links">
+        <a class="btn btn-orange" href="https://www.instagram.com/oasisrentacardr?utm_source=ig_web_button_share_sheet&fqnt=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener">INSTAGRAM @Oasisrentacardr</a>
+        <a class="btn btn-ghost" href="https://instagram.com/misteroasisoficial" target="_blank" rel="noopener">@MisterOasisoficial</a>
+        <button class="btn btn-ghost" data-video="mister">YOUTUBE ▶</button>
+      </div>
+    </div>
+    <div class="panel">
+      <p class="eyebrow">HISTORIA</p>
+      <img id="ownerPhoto" src="img/owner.jpg" alt="Jorge Pérez Félix, dueño de Oasis Rent A Car" class="owner-photo">
+      <h3 class="history-title">De la computadora al volante</h3>
+      <p class="lede">Una historia de trabajo, familia y servicio que hoy se refleja en cada entrega de Oasis.</p>
+      <div class="stamp history-stamp">OASIS<br><span>desde 2006</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== VIDEOS ==================== -->
+<section class="section" data-section="videos">
+  <div class="shell">
+    <div class="center" data-reveal><p class="eyebrow">DETRÁS DE CÁMARA</p><h2 class="section-title" data-edit="videosTitle">Las ocurrencias dentro de Oasis</h2></div>
+    <div class="grid-3 video-grid" id="videoGrid"></div>
+  </div>
+</section>
+
+<!-- ==================== CONTACTO ==================== -->
+<section class="section section-contact" id="contacto" data-section="contacto">
+  <div class="shell">
+    <div class="center" data-reveal><p class="eyebrow">SERVICIO AL CLIENTE 24/7 EN LÍNEA</p><h2 class="section-title" data-edit="contactTitle">Hablemos, estamos 24/7</h2></div>
+    <div class="grid-2 contact-grid">
+      <div data-reveal>
+        <div class="panel">
+          <p class="eyebrow">DIRECCIÓN</p>
+          <p data-bind="address">Ruta 66, #4, Salida del Aeropuerto Internacional de las Américas. Las Caletas, (Código postal 11606) Santo Domingo Este, República Dominicana.</p>
+          <div class="btn-row">
+            <a class="btn btn-orange btn-sm" href="https://www.google.com/maps/search/?api=1&query=Ruta+66+%234+Las+Caletas+Santo+Domingo+Este" target="_blank" rel="noopener">VER EN MAPA</a>
+            <a class="btn btn-ghost btn-sm" href="https://www.google.com/maps/dir/?api=1&destination=Ruta+66+%234+Las+Caletas+Santo+Domingo+Este" target="_blank" rel="noopener">CÓMO LLEGAR</a>
+          </div>
+        </div>
+        <div class="panel panel-mt">
+          <p class="eyebrow">TELÉFONOS Y CORREO</p>
+          <div class="contact-line">Servicio al Cliente: <b data-bind="tel1">(809) 549-1531</b></div>
+          <div class="contact-line">Servicio al Cliente USA: <b data-bind="tel2">+1 (646) 647-8727</b></div>
+          <div class="contact-line">WhatsApp: <b data-bind="wa1">(809) 549-1531</b></div>
+          <div class="contact-line">Asistencia 24h: <b data-bind="wa2">+1 (809) 693-0840</b></div>
+          <div class="contact-line">Correo: <b data-bind="email">info@oasisrentcar.com</b></div>
+          <div class="btn-row">
+            <a class="btn btn-orange btn-sm" data-call href="tel:18095491531">LLAMAR AHORA</a>
+            <a class="btn btn-ghost btn-sm" data-wa="contacto1" href="https://wa.me/18095491531">WHATSAPP 1</a>
+            <a class="btn btn-ghost btn-sm" data-wa="contacto2" href="https://wa.me/18096930840">WHATSAPP 2</a>
+            <a class="btn btn-ghost btn-sm" data-mail href="mailto:info@oasisrentcar.com">ENVIAR CORREO</a>
+          </div>
+        </div>
+        <div class="panel panel-mt">
+          <p class="eyebrow">HORARIO</p>
+          <p data-bind="hours">Lunes A Viernes: 8:00am A 7:00pm / Sábados: 8:30am A 5:00pm</p>
+          <p class="lede hours-note" data-bind="hoursNote">No importa la hora ni el día, hacemos entregas las 24 horas, los 365 días del año.</p>
+          <a class="btn btn-blue btn-sm wa-link" data-wa="fuera" href="https://wa.me/18096930840">RESERVAR FUERA DE HORARIO</a>
+        </div>
+      </div>
+      <div data-reveal>
+        <form class="panel" id="contactForm">
+          <p class="lede" data-edit="formIntro">De igual modo, puede contactarnos a través del siguiente formulario. Por favor, rellene todos los campos correctamente para darle una mejor respuesta.</p>
+          <div class="field form-field"><label>Nombre</label><input id="cName" required></div>
+          <div class="field form-field"><label>Correo</label><input id="cEmail" type="email" required></div>
+          <div class="field form-field"><label>Asunto</label><select id="cSubject"><option>Reservar vehículo</option><option>Pago en línea</option><option>Requisitos</option><option>Entrega en aeropuerto</option><option>Otro</option></select></div>
+          <div class="field form-field"><label>Mensaje</label><textarea id="cMsg" rows="4" class="input" required></textarea></div>
+          <button class="btn btn-orange form-submit" type="submit">ENVIAR MENSAJE →</button>
+          <p id="formOk" class="form-ok">¡Mensaje enviado! Te respondemos en menos de 15 minutos.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ==================== FOOTER ==================== -->
+<footer data-section="footer">
+  <div class="shell footer-inner">
+    <div class="grid-2 footer-grid">
+      <div><span class="logo"><img src="img/logo.png" alt="OASIS Rent a Car"></span><p class="lede footer-lede">Entrega en todos los aeropuertos y hoteles del país. Servicio al Cliente 24/7.</p></div>
+      <div class="footer-right"><p class="footer-copy" data-bind="footerText">© 2017 - 2026 • Oasis Investment Group, SRL. RNC: 131-37894-3. Todos los derechos reservados | República Dominicana.</p><button class="btn btn-ghost btn-sm" id="toTop">VOLVER ARRIBA ↑</button></div>
+    </div>
+  </div>
+</footer>
+
+<a class="wa-float" data-wa="flotante" href="https://wa.me/18096930840" aria-label="WhatsApp">💬</a>
+<div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast"></div>
+
+
+<script src="js/paypal.js"></script>
+<script src="js/catalog.js"></script>
+<script src="js/whatsapp.js"></script>
+<script src="js/editor.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/install.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

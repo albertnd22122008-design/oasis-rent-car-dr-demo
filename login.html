@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0F0F0F">
+<title>Ingresar — OASIS Rent A Car</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="img/logo.png" type="image/png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css">
+<link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+<header class="nav"><div class="shell"><div class="nav-inner">
+  <a href="index.html"><span class="logo"><img src="img/logo.png" alt="OASIS Rent a Car"></span></a>
+  <div class="nav-actions"><a class="btn btn-ghost btn-sm" href="index.html">← VOLVER A LA WEB</a></div>
+</div></div></header>
+
+<main class="auth-wrap">
+  <div class="panel auth-card">
+    <p class="eyebrow">ÁREA DE CLIENTES</p>
+    <h1 id="authTitle">Ingresar</h1>
+    <p class="lede" id="authSub">Entra con tu cédula para ver tus vehículos reservados.</p>
+
+    <div class="auth-tabs">
+      <button class="on" id="tabLogin">Ingresar</button>
+      <button id="tabRegister">Crear usuario</button>
+    </div>
+
+    <form id="loginForm">
+      <div class="auth-field field"><label>Cédula / ID</label><input class="input" id="lCedula" required placeholder="000-0000000-0"></div>
+      <div class="auth-field field"><label>Contraseña</label><input class="input" id="lPass" type="password" required></div>
+      <button class="btn btn-orange" style="width:100%" type="submit">ENTRAR →</button>
+    </form>
+
+    <form id="registerForm" style="display:none">
+      <div class="auth-field field"><label>Nombre completo</label><input class="input" id="rNombre" required></div>
+      <div class="auth-field field"><label>Cédula / Pasaporte</label><input class="input" id="rCedula" required></div>
+      <div class="auth-field field"><label>Teléfono / WhatsApp</label><input class="input" id="rTel" required></div>
+      <div class="auth-field field"><label>Correo</label><input class="input" id="rEmail" type="email"></div>
+      <div class="auth-field field"><label>Contraseña</label><input class="input" id="rPass" type="password" required minlength="4"></div>
+      <button class="btn btn-orange" style="width:100%" type="submit">CREAR USUARIO →</button>
+    </form>
+
+    <p class="auth-error" id="authError"></p>
+    <div class="auth-demo">
+      <strong>Accesos de demostración</strong><br>
+      Master 1: cédula 001-0000000-1 · clave master123<br>
+      Master 2: cédula 002-0000000-2 · clave master123<br>
+      Atendedor: cédula 003-0000000-3 · clave atencion123
+    </div>
+  </div>
+</main>
+<div class="toast" id="toast"></div>
+<script src="js/auth.js"></script>
+<script src="js/login.js"></script>
+</body>
+</html>
