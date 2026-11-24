@@ -14,7 +14,7 @@
     paypal:'',                 // vacío = usa PAYPAL_LINK de paypal.js
     colors:{ primary:'#ff8c00', secondary:'#1a4fa0', background:'#111111', text:'#FFFFFF' },
     fonts:{ display:"ui-serif,Georgia,serif", body:"system-ui,-apple-system,'Segoe UI',Roboto,sans-serif" },
-    texts:{}, photos:{}, prices:{}, specs:{}, added:[],
+    texts:{}, photos:{}, prices:{}, specs:{}, galleries:{}, added:[],
     contact:{
       address:'Ruta 66, #4, Salida del Aeropuerto Internacional de las Américas. Las Caletas, (Código postal 11606) Santo Domingo Este, República Dominicana.',
       tel1:'(809) 549-1531', tel2:'+1 (646) 647-8727', wa1:'(809) 549-1531',
@@ -51,7 +51,7 @@
         ...structuredClone(DEFAULT_STATE), ...raw,
         colors:{...DEFAULT_STATE.colors,...raw.colors},
         fonts:{...DEFAULT_STATE.fonts,...raw.fonts},
-        texts:{...raw.texts}, photos:{...raw.photos}, prices:{...raw.prices}, specs:{...raw.specs},
+        texts:{...raw.texts}, photos:{...raw.photos}, prices:{...raw.prices}, specs:{...raw.specs}, galleries:{...raw.galleries},
         added:[...(raw.added||[])],
         contact:{...DEFAULT_STATE.contact,...raw.contact},
         sections:{...DEFAULT_STATE.sections,...raw.sections}
@@ -90,13 +90,21 @@
     getPhoto:(id)=> S.photos[id] || null,
     getSpec:(id)=> S.specs[id] || null,
     setSpec:(id,value)=>{ S.specs[id]={...(S.specs[id]||{}),...value}; persist(); },
+    readImage,
+    getGallery:(id)=> S.galleries[id] || [],
+    setGallery:(id,list)=>{ S.galleries[id]=list.slice(0,10); persist(); },
     allCars(){
       const base = typeof CATALOG!=='undefined' ? CATALOG.map(c=>({...c})) : [];
-      return [...base, ...S.added.map(c=>({...c}))].map(c=>({
-        ...c,
-        precio: S.prices[c.id]!==undefined ? S.prices[c.id] : c.precio,
-        foto: S.photos[c.id] || c.foto
-      }));
+      return [...base, ...S.added.map(c=>({...c}))].map(c=>{
+        const gal=S.galleries[c.id]||[];
+        const portada=gal.find(x=>x.portada);
+        return {
+          ...c,
+          precio: S.prices[c.id]!==undefined ? S.prices[c.id] : c.precio,
+          foto: (portada&&portada.src) || S.photos[c.id] || c.foto,
+          fotos: gal.map(x=>x.src)
+        };
+      });
     },
     apply(){
       const r=document.documentElement.style;

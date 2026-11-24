@@ -82,6 +82,12 @@
         <div class="fgrp"><label>Foto del dueño (Mister Oasis)</label><input class="input" type="file" id="ownerFile" accept="image/*"><img class="thumb" id="ownerPreview" src="img/owner.webp" alt="Dueño"></div>
         <div class="fgrp"><label>Foto de un carro (elegir ID)</label><select id="carPick"></select></div>
         <div class="fgrp"><input class="input" type="file" id="carFile" accept="image/*"><img class="thumb" id="carPreview" alt="Carro"></div>
+        <hr class="panel-hr">
+        <h4 class="blue">Fotos en lote (hasta 10 por carro)</h4>
+        <div class="fgrp"><label>ID del carro</label><select id="batchCar"></select></div>
+        <div class="fgrp"><input class="input" type="file" id="batchFiles" accept="image/*" multiple></div>
+        <p class="small-hint" id="batchCount">0 de 10 fotos · Marca las portadas (máx. 3 se muestran al abrir el carro)</p>
+        <div id="batchList" class="batch-list"></div>
       </div>
 
       <div class="tabpane" data-pane="carros">
@@ -91,6 +97,12 @@
         <hr class="panel-hr">
         <h4 class="blue">Ficha técnica del vehículo</h4>
         <div class="fgrp"><label>Elegir carro (ID)</label><select id="specPick"></select></div>
+        <div class="fgrp"><label>Tu ID personalizado (o genera uno)</label>
+          <div style="display:flex;gap:.5rem">
+            <input class="input" id="specId" type="number" min="1" placeholder="Ej. 101">
+            <button class="btn btn-ghost btn-sm" id="genId" type="button">GENERAR ID</button>
+          </div>
+        </div>
         <div class="fgrp"><label>Transmisión</label><select id="specTrans">
           <option>Automático</option><option>Automático • AWD</option><option>Automático • 4x4</option><option>Manual</option><option>Manual / Auto • 4x4</option>
         </select></div>
@@ -98,6 +110,7 @@
         <div class="fgrp"><label>Pasajeros</label><select id="specSeats"><option>2</option><option>4</option><option>5</option><option>7</option><option>8</option></select></div>
         <div class="fgrp"><label>Maletas</label><select id="specBags"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
         <button class="btn btn-orange" id="saveSpec">GUARDAR FICHA TÉCNICA</button>
+        <button class="btn btn-ghost" id="createWithId" type="button" style="margin-top:.5rem">CREAR CARRO CON ESTE ID</button>
         <hr class="panel-hr">
         <h4 class="blue">Agregar carro nuevo</h4>
         <div class="fgrp"><label>Nombre</label><input class="input" id="newName" placeholder="Ej. Toyota Corolla 2024"></div>

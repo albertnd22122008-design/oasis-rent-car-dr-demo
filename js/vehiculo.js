@@ -56,7 +56,7 @@
     document.getElementById('detailTitle').textContent=car.nombre;
     document.getElementById('detailPrice').innerHTML=`US $${car.precio} <small>/ día</small>`;
 
-    const gallery=[car.foto,...photos.filter(p=>p!==car.foto).slice(0,3)];
+    const gallery=(car.fotos&&car.fotos.length)?car.fotos.slice(0,3):[car.foto,...photos.filter(p=>p!==car.foto).slice(0,3)];
     document.getElementById('detailGallery').innerHTML=
       `<div class="main"><img src="${imgSrc(car.foto)}" alt="${car.nombre}" id="mainPhoto" onerror="OasisImg.fail(this)"></div>`+
       gallery.slice(1).map(p=>`<div class="side" data-photo="${p}"><img src="${imgSrc(p)}" alt="${car.nombre}" loading="lazy" decoding="async" onerror="OasisImg.fail(this)"></div>`).join('');
