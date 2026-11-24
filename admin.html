@@ -5,163 +5,88 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#111111">
 <title>Panel de administración | Oasis Rent A Car</title>
-<meta name="description" content="Renta tu vehículo en República Dominicana. Entrega en todos los aeropuertos y hoteles. Flota premium, asistencia 24/7 y pago seguro con PayPal.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://www.oasisrentcar.com/">
-<meta property="og:title" content="Panel de administración | Oasis Rent A Car">
-<meta property="og:description" content="Renta desde US $55 / día. Entrega en aeropuertos y hoteles. Reserva por WhatsApp en 1 clic.">
-<meta property="og:image" content="https://www.oasisrentcar.com/img/og-oasis.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:site_name" content="Oasis Rent A Car">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Oasis Rent A Car - Santo Domingo">
-<meta name="twitter:description" content="¡No importa el destino, nosotros te lo llevamos!">
-<meta name="twitter:image" content="https://www.oasisrentcar.com/img/og-oasis.jpg">
-<link rel="icon" href="img/logo-oficial.png" type="image/png">
-<!-- Google Analytics 4: pega aquí tu ID (G-XXXXXXXXXX) -->
-<!-- Meta Pixel: pega aquí tu ID -->
-<script>if(location.protocol==='http:'&&['localhost','127.0.0.1'].indexOf(location.hostname)===-1){location.replace('https:'+location.host+location.pathname+location.search);}</script>
+<meta name="description" content="Panel de administración de Oasis Rent A Car. Gestiona el stock de vehículos, precios y ajustes.">
 <link rel="preload" as="image" href="img/logo.svg">
+<link rel="icon" href="img/logo-oficial.png" type="image/png">
 <link rel="stylesheet" href="css/style.min.css">
 <link rel="stylesheet" href="css/responsive.min.css">
 <link rel="stylesheet" href="css/animations.min.css">
-<!-- ANALÍTICA — pega aquí tus IDs reales (no inventados)
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-TU_ID"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-TU_ID');</script>
-<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','TU_PIXEL_ID');fbq('track','PageView');</script>
-<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=TU_PIXEL_ID&ev=PageView&noscript=1" alt=""></noscript>
--->
 </head>
 <body class="admin-page">
 
-<div class="admin-wrap">
-  <div class="admin-top">
-    <div><p class="eyebrow">OASIS RENT A CAR</p><h1>Panel de administración</h1></div>
-    <a class="btn btn-ghost" href="index.html">← VER LA WEB</a>
-  </div>
+<div class="adm">
+  <header class="adm-top">
+    <a href="index.html"><span class="logo"><img src="img/logo.svg" alt="OASIS Rent a Car"></span></a>
+    <div><p class="eyebrow">ADMINISTRACIÓN</p><h1>Panel Oasis</h1></div>
+    <a class="btn btn-ghost btn-sm" href="index.html">VER LA WEB →</a>
+  </header>
 
-  <aside id="panel" class="admin-panel open">
-    <div class="panel-head">
-      <div><p class="eyebrow">MODO EDICIÓN</p><h3 class="panel-title">Cambia todo desde aquí</h3></div>
-      <a class="menu-btn" href="index.html" aria-label="Volver a la web">←</a>
+  <nav class="adm-tabs" id="admTabs" aria-label="Secciones del panel">
+    <button class="on" data-go="inicio">INICIO</button>
+    <button data-go="stock">VEHÍCULOS / STOCK</button>
+    <button data-go="add">+ AGREGAR VEHÍCULO</button>
+  </nav>
+
+  <!-- 1. INICIO -->
+  <section class="adm-pane on" id="pane-inicio">
+    <div class="adm-stats" id="admStats"></div>
+    <div class="adm-card">
+      <div class="adm-card-head"><h2>Próximas reservas</h2><span class="adm-pill">3 próximas</span></div>
+      <div id="admReservas"></div>
+      <button class="btn btn-orange" data-go="stock" style="margin-top:1.2rem">VER STOCK →</button>
     </div>
-
-    <div class="panel-tabs" id="panelTabs">
-      <button class="on" data-tab="marca">Marca</button>
-      <button data-tab="textos">Textos</button>
-      <button data-tab="estilo">Estilo</button>
-      <button data-tab="fotos">Fotos</button>
-      <button data-tab="carros">Carros</button>
-      <button data-tab="contacto">Contacto</button>
-      <button data-tab="secciones">Secciones</button>
+    <div class="adm-card">
+      <div class="adm-card-head"><h2>Ajustes</h2></div>
+      <div class="fgrp"><label>WhatsApp</label><input class="input" id="admWa" placeholder="+1 (809) 693-0840"></div>
+      <div class="fgrp"><label>Link de PayPal</label><input class="input" id="admPaypal" placeholder="https://www.paypal.com/..."></div>
+      <button class="btn btn-orange" id="admSave" style="margin-top:1rem">GUARDAR AJUSTES</button>
     </div>
+  </section>
 
-    <div class="panel-body">
-      <div class="tabpane on" data-pane="marca">
-        <div class="fgrp"><label>Subir logo (PNG/JPG/SVG)</label><input class="input" type="file" id="logoFile" accept="image/*"><img class="thumb" id="logoPreview" src="img/logo.svg" alt="Logo"></div>
-        <div class="fgrp"><label>Logo original</label><button class="btn btn-ghost btn-sm" id="removeLogo">Usar logo OASIS original</button></div>
-        <div class="fgrp"><label>Link de PayPal (actualiza todos los botones)</label><input class="input" id="paypalLink"></div>
+  <!-- 2. VEHÍCULOS / STOCK -->
+  <section class="adm-pane" id="pane-stock">
+    <div class="adm-card">
+      <div class="adm-card-head"><h2>Vehículos / Stock</h2><span class="adm-pill" id="admCount">0 vehículos</span></div>
+      <input class="input" id="admSearch" placeholder="Buscar por nombre...">
+      <div class="adm-chips" id="admFilters">
+        <button class="chip on" data-filter="Todos">Todos</button>
+        <button class="chip" data-filter="Disponible">Disponibles</button>
+        <button class="chip" data-filter="Alquilado">Alquilados</button>
+        <button class="chip" data-filter="Mantenimiento">Mantenimiento</button>
       </div>
+      <div class="adm-list" id="admList"></div>
+    </div>
+  </section>
 
-      <div class="tabpane" data-pane="textos">
-        <div id="textFields"></div>
-      </div>
-
-      <div class="tabpane" data-pane="estilo">
-        <div class="fgrp"><label>Color primario</label><input type="color" id="cPrimary"></div>
-        <div class="fgrp"><label>Color secundario</label><input type="color" id="cSecondary"></div>
-        <div class="fgrp"><label>Color de fondo</label><input type="color" id="cBg"></div>
-        <div class="fgrp"><label>Color del texto</label><input type="color" id="cText"></div>
-        <div class="fgrp"><label>Fuente de títulos</label><select id="fDisplay"></select></div>
-        <div class="fgrp"><label>Fuente del cuerpo</label><select id="fBody"></select></div>
-      </div>
-
-      <div class="tabpane" data-pane="fotos">
-        <div class="fgrp"><label>Foto del Hero</label><input class="input" type="file" id="heroFile" accept="image/*"><img class="thumb" id="heroPreview" src="img/hero.webp" alt="Hero"></div>
-        <div class="fgrp"><label>Foto de MÍSTER OASIS (sección del equipo)</label><input class="input" type="file" id="misterFile" accept="image/*"><img class="thumb" id="misterPreview" src="img/mister-oasis.jpg" alt="Míster Oasis" onerror="this.src='img/sin-foto.webp'"></div>
-        <div class="fgrp"><label>Foto de un carro (elegir ID)</label><select id="carPick"></select></div>
-        <div class="fgrp"><input class="input" type="file" id="carFile" accept="image/*"><img class="thumb" id="carPreview" alt="Carro"></div>
-        <hr class="panel-hr">
-        <h4 class="blue">Fotos en lote (hasta 10 por carro)</h4>
-        <div class="fgrp"><label>ID del carro</label><select id="batchCar"></select></div>
-        <div class="fgrp"><input class="input" type="file" id="batchFiles" accept="image/*" multiple></div>
-        <p class="small-hint" id="batchCount">0 de 10 fotos · Marca las portadas (máx. 3 se muestran al abrir el carro)</p>
-        <div id="batchList" class="batch-list"></div>
-      </div>
-
-      <div class="tabpane" data-pane="carros">
-        <div class="fgrp"><label>Editar precio (elegir ID)</label><select id="pricePick"></select></div>
-        <div class="fgrp"><label>Nuevo precio US$/día</label><input class="input" type="number" id="priceVal" min="1"></div>
-        <button class="btn btn-orange" id="savePrice">ACTUALIZAR PRECIO</button>
-        <hr class="panel-hr">
-        <h4 class="blue">Subir foto del carro</h4>
-        <div class="fgrp"><label>Carro (ID)</label><select id="carPhotoPick"></select></div>
-        <div class="fgrp"><input class="input" type="file" id="carPhotoFile" accept="image/*"><img class="thumb" id="carPhotoPreview" alt="Foto del carro" onerror="this.src='img/sin-foto.webp'"></div>
-        <button class="btn btn-orange" id="saveCarPhoto" type="button">GUARDAR FOTO DEL CARRO</button>
-        <hr class="panel-hr">
-        <h4 class="blue">Ficha técnica del vehículo</h4>
-        <div class="fgrp"><label>Elegir carro (ID)</label><select id="specPick"></select></div>
-        <div class="fgrp"><label>Tu ID personalizado (o genera uno)</label>
-          <div style="display:flex;gap:.5rem">
-            <input class="input" id="specId" type="number" min="1" placeholder="Ej. 101">
-            <button class="btn btn-ghost btn-sm" id="genId" type="button">GENERAR ID</button>
+  <!-- 3. AGREGAR VEHÍCULO -->
+  <section class="adm-pane" id="pane-add">
+    <div class="adm-card">
+      <div class="adm-card-head"><h2>+ Agregar vehículo</h2></div>
+      <form id="admAddForm">
+        <div class="fgrp"><label>1. Nombre del vehículo</label><input class="input" id="vNombre" required placeholder="Ej. Toyota Corolla 2024"></div>
+        <div class="fgrp"><label>2. Precio US$/día</label><input class="input" id="vPrecio" type="number" min="1" value="100" required></div>
+        <div class="fgrp"><label>3. Categoría</label><select class="input" id="vCat"><option>SUV</option><option>Lujo</option><option>Económico</option><option>Jeep</option><option>Familiar</option></select></div>
+        <div class="fgrp"><label>4. Foto</label>
+          <div class="adm-photo-opts">
+            <input class="input" type="file" id="vFile" accept="image/*">
+            <button class="btn btn-ghost btn-sm" type="button" id="vGalleryBtn">Elegir de galería</button>
           </div>
+          <select class="input" id="vGallery" style="display:none;margin-top:.5rem"></select>
+          <img class="thumb" id="vPreview" src="img/sin-foto.webp" alt="Vista previa del vehículo">
         </div>
-        <div class="fgrp"><label>Transmisión</label><select id="specTrans">
-          <option>Automático</option><option>Automático • AWD</option><option>Automático • 4x4</option><option>Manual</option><option>Manual / Auto • 4x4</option>
-        </select></div>
-        <div class="fgrp"><label>Aire acondicionado</label><select id="specAc"><option>Sí</option><option>No</option></select></div>
-        <div class="fgrp"><label>Pasajeros</label><select id="specSeats"><option>2</option><option>4</option><option>5</option><option>7</option><option>8</option></select></div>
-        <div class="fgrp"><label>Maletas</label><select id="specBags"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
-        <button class="btn btn-orange" id="saveSpec">GUARDAR FICHA TÉCNICA</button>
-        <button class="btn btn-ghost" id="createWithId" type="button" style="margin-top:.5rem">CREAR CARRO CON ESTE ID</button>
-        <hr class="panel-hr">
-        <h4 class="blue">Agregar carro nuevo</h4>
-        <div class="fgrp"><label>Nombre</label><input class="input" id="newName" placeholder="Ej. Toyota Corolla 2024"></div>
-        <div class="fgrp"><label>Precio US$/día</label><input class="input" id="newPrice" type="number" value="100"></div>
-        <div class="fgrp"><label>Categoría</label><select id="newCat"><option>SUV</option><option>Lujo</option><option>Económico</option><option>Jeep</option><option>Toyota</option><option>Hyundai</option><option>Kia</option><option>Changan</option><option>BMW</option><option>Mercedes</option></select></div>
-        <div class="fgrp"><label>Transmisión</label><select id="newTrans"><option>Automático</option><option>Automático • AWD</option><option>Automático • 4x4</option><option>Manual</option><option>Manual / Auto • 4x4</option></select></div>
-        <div class="fgrp"><label>Pasajeros</label><select id="newSeats"><option>2</option><option>4</option><option>5</option><option>7</option><option>8</option></select></div>
-        <div class="fgrp"><label>Maletas</label><select id="newBags"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
-        <div class="fgrp"><label>Aire acondicionado</label><select id="newAc"><option>Sí</option><option>No</option></select></div>
-        <button class="btn btn-orange" id="addCar">AGREGAR CARRO</button>
-      </div>
-
-      <div class="tabpane" data-pane="contacto">
-        <div class="fgrp"><label>Dirección</label><textarea class="input" id="eAddress" rows="3"></textarea></div>
-        <div class="fgrp"><label>Teléfono 1</label><input class="input" id="eTel1"></div>
-        <div class="fgrp"><label>Teléfono USA</label><input class="input" id="eTel2"></div>
-        <div class="fgrp"><label>WhatsApp 1</label><input class="input" id="eWa1"></div>
-        <div class="fgrp"><label>WhatsApp 2 / Asistencia 24h</label><input class="input" id="eWa2"></div>
-        <div class="fgrp"><label>Correo</label><input class="input" id="eEmail"></div>
-        <div class="fgrp"><label>Horario</label><input class="input" id="eHours"></div>
-        <div class="fgrp"><label>Nota de horario</label><textarea class="input" id="eHoursNote" rows="2"></textarea></div>
-      </div>
-
-      <div class="tabpane" data-pane="secciones"><div id="sectionToggles"></div></div>
+        <div class="fgrp"><label>5. Estado</label><select class="input" id="vEstado"><option>Disponible</option><option>Alquilado</option><option>Mantenimiento</option></select></div>
+        <div class="fgrp"><label>6. Stock</label><input class="input" id="vStock" type="number" min="0" value="1"></div>
+        <button class="btn btn-orange adm-big" type="submit">AGREGAR VEHÍCULO →</button>
+      </form>
     </div>
-
-    <div class="panel-foot">
-      <button class="btn btn-orange" id="saveBtn">GUARDAR CAMBIOS</button>
-      <button class="btn btn-ghost" id="previewBtn">VER LA WEB (VISTA PREVIA)</button>
-      <button class="btn btn-ghost reset-btn" id="resetBtn">RESTABLECER DISEÑO ORIGINAL</button>
-      <p class="auto-hint">Los cambios se guardan automáticamente en este navegador.</p>
-    </div>
-  </aside>
-
-  <p class="admin-hint">Todo lo que cambies se guarda en este navegador y se aplica en la web principal.</p>
+  </section>
 </div>
 
 <div class="toast" id="toast"></div>
 
-<script src="js/paypal.min.js"></script>
 <script src="js/catalog.min.js"></script>
-<script src="js/whatsapp.min.js"></script>
+<script src="js/paypal.min.js"></script>
 <script src="js/editor.min.js"></script>
-<script src="js/auth.min.js"></script>
-<script src="js/admin.min.js"></script>
-<script src="js/lite.min.js"></script>
-<a class="wa-float" href="https://wa.me/18096930840" aria-label="WhatsApp Asistencia 24h"><img src="img/whatsapp.svg" alt="WhatsApp Oasis Rent A Car"></a>
+<script src="js/admin-panel.min.js"></script>
 </body>
 </html>

@@ -92,6 +92,9 @@
   .detail-back{min-height:44px;display:inline-flex;align-items:center}
   .panel-tabs{flex-wrap:wrap;overflow:visible}
   .panel-tabs button{min-height:38px}
+  .adm-tabs button{font-size:.62rem;min-height:52px;padding:.3rem}
+  .adm-item{grid-template-columns:70px 1fr}
+  .adm-item img{width:70px;height:62px}
 }
 
 /* --- Pantallas táctiles: sin cursor personalizado --- */

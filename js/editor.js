@@ -16,6 +16,7 @@
     colors:{ primary:'#ff8c00', secondary:'#1a4fa0', background:'#111111', text:'#FFFFFF' },
     fonts:{ display:"ui-serif,Georgia,serif", body:"system-ui,-apple-system,'Segoe UI',Roboto,sans-serif" },
     texts:{}, photos:{}, prices:{}, specs:{}, galleries:{}, added:[],
+    statuses:{}, stocks:{}, deleted:[], whatsapp:'+1 (809) 693-0840',
     contact:{
       address:'Ruta 66, #4, Salida del Aeropuerto Internacional de las Américas. Las Caletas, (Código postal 11606) Santo Domingo Este, República Dominicana.',
       tel1:'(809) 549-1531', tel2:'+1 (646) 647-8727', wa1:'(809) 549-1531',
@@ -53,6 +54,7 @@
         colors:{...DEFAULT_STATE.colors,...raw.colors},
         fonts:{...DEFAULT_STATE.fonts,...raw.fonts},
         texts:{...raw.texts}, photos:{...raw.photos}, prices:{...raw.prices}, specs:{...raw.specs}, galleries:{...raw.galleries},
+        statuses:{...raw.statuses}, stocks:{...raw.stocks}, deleted:[...(raw.deleted||[])],
         added:[...(raw.added||[])],
         contact:{...DEFAULT_STATE.contact,...raw.contact},
         sections:{...DEFAULT_STATE.sections,...raw.sections}
@@ -96,17 +98,38 @@
     setGallery:(id,list)=>{ S.galleries[id]=list.slice(0,10); persist(); },
     allCars(){
       const base = typeof CATALOG!=='undefined' ? CATALOG.map(c=>({...c})) : [];
-      return [...base, ...S.added.map(c=>({...c}))].map(c=>{
-        const gal=S.galleries[c.id]||[];
-        const portada=gal.find(x=>x.portada);
-        return {
-          ...c,
-          precio: S.prices[c.id]!==undefined ? S.prices[c.id] : c.precio,
-          foto: (portada&&portada.src) || S.photos[c.id] || c.foto,
-          fotos: gal.map(x=>x.src)
-        };
-      });
+      return [...S.added.map(c=>({...c})), ...base]
+        .filter(c=>!S.deleted.includes(c.id))
+        .map(c=>{
+          const gal=S.galleries[c.id]||[];
+          const portada=gal.find(x=>x.portada);
+          return {
+            ...c,
+            precio: S.prices[c.id]!==undefined ? S.prices[c.id] : c.precio,
+            foto: (portada&&portada.src) || S.photos[c.id] || c.foto,
+            fotos: gal.map(x=>x.src),
+            status: S.statuses[c.id] || c.status || 'Disponible',
+            stock: S.stocks[c.id]!==undefined ? S.stocks[c.id] : (c.stock!==undefined?c.stock:1)
+          };
+        });
     },
+    setStatus(id,status){ S.statuses[id]=status; persist(); },
+    setStock(id,n){ S.stocks[id]=Math.max(0,Number(n)||0); persist(); },
+    setPrice(id,p){ S.prices[id]=Number(p); persist(); },
+    setWhatsapp(v){ S.whatsapp=v; persist(); },
+    addVehicle(v){
+      const id=Math.max(0,...Editor.allCars().map(c=>c.id),...S.added.map(c=>c.id))+1;
+      const car={id,nombre:v.nombre,precio:Number(v.precio)||100,categoria:v.categoria||'SUV',foto:v.foto||'img/carros/carro-01.webp',descripcion:v.descripcion||'',status:v.status||'Disponible',stock:Number(v.stock)||1};
+      S.added.unshift(car);
+      S.statuses[id]=car.status; S.stocks[id]=car.stock;
+      persist(); return car;
+    },
+    deleteVehicle(id){
+      if(!S.added.some(c=>c.id===id)) S.deleted.push(id);
+      else S.added=S.added.filter(c=>c.id!==id);
+      persist();
+    },
+    save(){ localStorage.setItem(STORE_KEY,JSON.stringify(S)); toast('Cambios guardados'); },
     apply(){
       const r=document.documentElement.style;
       r.setProperty('--primary',S.colors.primary);
@@ -128,6 +151,15 @@
       if(owner) owner.src=S.ownerImage||'img/owner.webp';
       document.querySelectorAll('img.mister-photo').forEach(el=>el.src=S.misterImage||'img/mister-oasis.jpg');
 
+      const waDigits=(S.whatsapp||'').replace(/\D/g,'')||'18096930840';
+      document.querySelectorAll('[data-wa],a.wa-float').forEach(a=>a.href='https://wa.me/'+waDigits);
+      document.querySelectorAll('[data-wa-number]').forEach(el=>el.textContent=S.whatsapp);
+      document.querySelectorAll('[data-car-status]').forEach(el=>{
+        el.textContent=S.statuses[el.dataset.carStatus]||'Disponible';
+      });
+      document.querySelectorAll('[data-car-stock]').forEach(el=>{
+        el.textContent=S.stocks[el.dataset.carStock]!==undefined?S.stocks[el.dataset.carStock]:'1';
+      });
       document.querySelectorAll('[data-paypal]').forEach(a=>a.href=Editor.getPaypalLink());
       document.querySelectorAll('[data-mail]').forEach(a=>a.href='mailto:'+S.contact.email);
       Object.entries(S.contact).forEach(([k,v])=>{

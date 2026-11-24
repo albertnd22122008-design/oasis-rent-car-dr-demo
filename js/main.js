@@ -121,6 +121,7 @@
       <div class="body">
         <h4><a href="vehiculo.html?id=${c.id}&f1=${f1}&f2=${f2}&pickup=${encodeURIComponent(lugar)}" style="color:inherit">${c.nombre}</a></h4>
         <div class="price">US $${c.precio} <small>/ día</small></div>
+        <div class="card-state"><span data-car-status="${c.id}">${c.status||'Disponible'}</span> · Stock <b data-car-stock="${c.id}">${c.stock!==undefined?c.stock:1}</b></div>
         <div class="acts">
           <a class="btn btn-ghost btn-sm" href="vehiculo.html?id=${c.id}&f1=${f1}&f2=${f2}&pickup=${encodeURIComponent(lugar)}">VER DETALLES</a>
           <a class="btn btn-orange btn-sm" href="${wa}" target="_blank" rel="noopener">RESERVAR</a>
@@ -292,5 +293,10 @@
     renderMarquee(); renderPaypalCards(); renderNeeds(); renderNotes(); renderVideos();
     if(window.OasisEditor) window.OasisEditor.init();
     renderFilters(); renderCars(); initEvents();
+
+    /* Si el panel admin cambia datos en otra pestaña, se refleja al instante */
+    window.addEventListener('storage',e=>{
+      if(e.key==='oasis-rent-a-car-v1') location.reload();
+    });
   });
 })();
