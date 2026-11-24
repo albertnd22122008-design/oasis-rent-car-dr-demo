@@ -95,6 +95,9 @@
   .adm-tabs button{font-size:.62rem;min-height:52px;padding:.3rem}
   .adm-item{grid-template-columns:70px 1fr}
   .adm-item img{width:70px;height:62px}
+  .lang-wrap{top:auto;bottom:calc(1.2rem + env(safe-area-inset-bottom,0px));left:1rem}
+  .theme-btn{top:auto;bottom:calc(1.2rem + env(safe-area-inset-bottom,0px));right:1rem}
+  .lang-panel{bottom:calc(4rem + env(safe-area-inset-bottom,0px));top:auto;max-height:50vh}
 }
 
 /* --- Pantallas táctiles: sin cursor personalizado --- */

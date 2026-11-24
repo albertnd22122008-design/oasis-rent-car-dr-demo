@@ -349,7 +349,7 @@ html.light{
   --surface:#ffffff; --surface-strong:#f6f7f9;
   --success:#a85000; --danger:#b91c1c;
 }
-html.light body{background:#ffffff;color:#111111}
+html.light body{background:#ffffff url("../img/fondo-elegante.webp") center top / cover no-repeat fixed;color:#111111}
 html.light .nav-inner{background:rgba(255,255,255,.94);border-color:#e4e7ec;box-shadow:0 10px 34px rgba(17,17,17,.07)}
 html.light .nav-links a,html.light .lede,html.light .muted,html.light .text-ink-soft{color:#4b5563}
 html.light .eyebrow{color:#a85000}
@@ -363,9 +363,10 @@ html.light .card .price,html.light .adm-badge .meta b,html.light .adm-stat b,htm
 html.light .field input,html.light .field select,html.light .input,html.light .adm-price input,
 html.light .form-field input,html.light .lang-search{background:#ffffff;color:#111111;border-color:#d1d5db}
 html.light .field input::placeholder,html.light .input::placeholder{color:#9ca3af}
-html.light .section-whatsapp{background:linear-gradient(90deg,#eef8f2,#ffffff);border-color:#d6e9de}
-html.light .section-mister{background:linear-gradient(120deg,#eef2fb,#ffffff 60%)}
-html.light footer{background:#f6f7f9;border-top:1px solid #e4e7ec;color:#111111}
+html.light .section-whatsapp{background:linear-gradient(90deg,rgba(238,248,242,.86),rgba(255,255,255,.74));border-color:#d6e9de}
+html.light .section-light{background:transparent}
+html.light .section-mister{background:linear-gradient(120deg,rgba(238,242,251,.86),rgba(255,255,255,.74) 60%)}
+html.light footer{background:rgba(246,247,249,.9);border-top:1px solid #e4e7ec;color:#111111}
 html.light .footer-copy,html.light .footer-lede,html.light .footer-legal a,html.light .footer-legal span{color:#4b5563}
 html.light .cookies-overlay{background:rgba(255,255,255,.96)}
 html.light .cookies-text,html.light .cookies-title{color:#111111}
@@ -374,7 +375,13 @@ html.light .btn-ghost{background:#ffffff;color:#111111;border-color:#d1d5db}
 html.light .btn-ghost:hover{border-color:#a85000;color:#a85000}
 html.light .lang-btn,html.light .lite-toggle{background:#ffffff;color:#a85000;border-color:#d1d5db}
 html.light .menu-btn{color:#111111;border-color:#d1d5db;background:#ffffff}
+html.light #installBtn img,html.light #installBtnMobile img{filter:brightness(0) saturate(100%)}
 html.light .nav-actions .btn-ghost{color:#111111}
+html.light option,html.light .tools-right select,html.light .tools-right input{color:#111111;background:#ffffff;border-color:#d1d5db}
+html.light .tools-right input::placeholder{color:#9ca3af}
+html.light .big-number,html.light .feature .ic,html.light .mister-quote{color:#a85000}
+html.light .adm-badge.Disponible,html.light .adm-badge.Alquilado{color:#a85000;border-color:#a85000}
+html.light .itvs-list span{color:#a85000;border-color:#a85000}
 html.light .lang-list button{color:#4b5563}
 html.light .adm-tabs button{background:#ffffff;color:#4b5563;border-color:#d1d5db}
 html.light .adm-tabs button.on{background:var(--naranja-oasis);color:#ffffff;border-color:var(--naranja-oasis)}
