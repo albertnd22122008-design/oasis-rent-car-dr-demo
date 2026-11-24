@@ -59,6 +59,9 @@
    SOLO MÓVIL — arreglos de pantalla pequeña (PC intacto)
    ============================================================ */
 @media (max-width:768px){
+  /* El botón de modo ligero NO se muestra en móvil */
+  .lite-toggle{display:none!important}
+
   /* 1. Modo ligero: NO ocultar contenido, solo quitar blur/animaciones */
   body.lite .fade-up,
   body.lite [data-reveal],
