@@ -83,6 +83,15 @@
   .search-grid{grid-template-columns:1fr!important;gap:.7rem!important;width:100%}
   .search-grid .field{width:100%;min-width:0}
   .search input,.search select{width:100%;max-width:100%}
+
+  /* Objetivos táctiles cómodos */
+  .chip{min-height:40px;padding:.55rem .9rem}
+  .auth-tabs button{min-height:44px}
+  .nav-links a{padding:.4rem 0}
+  .footer-legal a,.footer-legal span{padding:.35rem 0}
+  .detail-back{min-height:44px;display:inline-flex;align-items:center}
+  .panel-tabs{flex-wrap:wrap;overflow:visible}
+  .panel-tabs button{min-height:38px}
 }
 
 /* --- Pantallas táctiles: sin cursor personalizado --- */
