@@ -79,7 +79,7 @@
 
       <div class="tabpane" data-pane="fotos">
         <div class="fgrp"><label>Foto del Hero</label><input class="input" type="file" id="heroFile" accept="image/*"><img class="thumb" id="heroPreview" src="img/hero.webp" alt="Hero"></div>
-        <div class="fgrp"><label>Foto del dueño (Mister Oasis)</label><input class="input" type="file" id="ownerFile" accept="image/*"><img class="thumb" id="ownerPreview" src="img/owner.webp" alt="Dueño"></div>
+        <div class="fgrp"><label>Foto de MÍSTER OASIS (sección del equipo)</label><input class="input" type="file" id="misterFile" accept="image/*"><img class="thumb" id="misterPreview" src="img/mister-oasis.jpg" alt="Míster Oasis" onerror="this.src='img/sin-foto.webp'"></div>
         <div class="fgrp"><label>Foto de un carro (elegir ID)</label><select id="carPick"></select></div>
         <div class="fgrp"><input class="input" type="file" id="carFile" accept="image/*"><img class="thumb" id="carPreview" alt="Carro"></div>
         <hr class="panel-hr">
@@ -94,6 +94,11 @@
         <div class="fgrp"><label>Editar precio (elegir ID)</label><select id="pricePick"></select></div>
         <div class="fgrp"><label>Nuevo precio US$/día</label><input class="input" type="number" id="priceVal" min="1"></div>
         <button class="btn btn-orange" id="savePrice">ACTUALIZAR PRECIO</button>
+        <hr class="panel-hr">
+        <h4 class="blue">Subir foto del carro</h4>
+        <div class="fgrp"><label>Carro (ID)</label><select id="carPhotoPick"></select></div>
+        <div class="fgrp"><input class="input" type="file" id="carPhotoFile" accept="image/*"><img class="thumb" id="carPhotoPreview" alt="Foto del carro" onerror="this.src='img/sin-foto.webp'"></div>
+        <button class="btn btn-orange" id="saveCarPhoto" type="button">GUARDAR FOTO DEL CARRO</button>
         <hr class="panel-hr">
         <h4 class="blue">Ficha técnica del vehículo</h4>
         <div class="fgrp"><label>Elegir carro (ID)</label><select id="specPick"></select></div>
@@ -116,7 +121,10 @@
         <div class="fgrp"><label>Nombre</label><input class="input" id="newName" placeholder="Ej. Toyota Corolla 2024"></div>
         <div class="fgrp"><label>Precio US$/día</label><input class="input" id="newPrice" type="number" value="100"></div>
         <div class="fgrp"><label>Categoría</label><select id="newCat"><option>SUV</option><option>Lujo</option><option>Económico</option><option>Jeep</option><option>Toyota</option><option>Hyundai</option><option>Kia</option><option>Changan</option><option>BMW</option><option>Mercedes</option></select></div>
-        <div class="fgrp"><label>Descripción</label><input class="input" id="newDesc" placeholder="Automático, A/C, 5 pasajeros"></div>
+        <div class="fgrp"><label>Transmisión</label><select id="newTrans"><option>Automático</option><option>Automático • AWD</option><option>Automático • 4x4</option><option>Manual</option><option>Manual / Auto • 4x4</option></select></div>
+        <div class="fgrp"><label>Pasajeros</label><select id="newSeats"><option>2</option><option>4</option><option>5</option><option>7</option><option>8</option></select></div>
+        <div class="fgrp"><label>Maletas</label><select id="newBags"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+        <div class="fgrp"><label>Aire acondicionado</label><select id="newAc"><option>Sí</option><option>No</option></select></div>
         <button class="btn btn-orange" id="addCar">AGREGAR CARRO</button>
       </div>
 

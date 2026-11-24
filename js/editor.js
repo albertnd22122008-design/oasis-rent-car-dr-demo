@@ -11,6 +11,7 @@
     logo:'',
     heroImage:'img/hero.webp',
     ownerImage:'img/owner.webp',
+    misterImage:'img/mister-oasis.jpg',
     paypal:'',                 // vacío = usa PAYPAL_LINK de paypal.js
     colors:{ primary:'#ff8c00', secondary:'#1a4fa0', background:'#111111', text:'#FFFFFF' },
     fonts:{ display:"ui-serif,Georgia,serif", body:"system-ui,-apple-system,'Segoe UI',Roboto,sans-serif" },
@@ -125,6 +126,7 @@
       if(hero) hero.style.backgroundImage=`url("${S.heroImage}")`;
       const owner=document.getElementById('ownerPhoto');
       if(owner) owner.src=S.ownerImage||'img/owner.webp';
+      document.querySelectorAll('img.mister-photo').forEach(el=>el.src=S.misterImage||'img/mister-oasis.jpg');
 
       document.querySelectorAll('[data-paypal]').forEach(a=>a.href=Editor.getPaypalLink());
       document.querySelectorAll('[data-mail]').forEach(a=>a.href='mailto:'+S.contact.email);
@@ -225,6 +227,7 @@
     bindPhoto('logoFile','logoPreview',d=>{ S.logo=d; });
     bindPhoto('heroFile','heroPreview',d=>{ S.heroImage=d; });
     bindPhoto('ownerFile','ownerPreview',d=>{ S.ownerImage=d; });
+    bindPhoto('misterFile','misterPreview',d=>{ S.misterImage=d; });
     bindPhoto('carFile','carPreview',d=>{
       const id=Number(document.getElementById('carPick').value); S.photos[id]=d;
     });
@@ -269,14 +272,31 @@
       const name=document.getElementById('newName').value.trim();
       if(!name){ toast('Escribe el nombre del carro'); return; }
       const id=Math.max(...Editor.allCars().map(c=>c.id))+1;
+      const val=x=>document.getElementById(x)?.value||'';
+      const trans=val('newTrans')||'Automático', seats=val('newSeats')||'5', bags=val('newBags')||'3', ac=val('newAc')||'Sí';
       S.added.push({
         id, nombre:name + ' ' + (new Date().getFullYear()),
-        precio:Number(document.getElementById('newPrice').value)||100,
-        categoria:document.getElementById('newCat').value,
-        foto:`img/carros/carro-${String((id%73)+1).padStart(2,'0')}.jpg`
+        precio:Number(val('newPrice'))||100,
+        categoria:val('newCat')||'SUV',
+        foto:`img/carros/carro-${String((id%73)+1).padStart(2,'0')}.webp`,
+        descripcion:`${trans} • ${seats} pasajeros • ${bags} maletas • A/C ${ac}`
       });
+      S.specs[id]={transmision:trans,pasajeros:seats,maletas:bags,ac};
       document.getElementById('newName').value='';
-      persist(); fillCarSelects(); notifyChange(); toast('Carro agregado');
+      persist(); fillCarSelects(); notifyChange(); toast('Carro agregado con ficha técnica');
+    });
+
+    /* Subir foto de un carro desde la pestaña Carros */
+    const cpf=document.getElementById('carPhotoFile');
+    cpf?.addEventListener('change',()=>{
+      const file=cpf.files[0]; if(!file) return;
+      readImage(file,d=>{
+        const id=Number(document.getElementById('carPhotoPick').value);
+        S.photos[id]=d;
+        const prev=document.getElementById('carPhotoPreview'); if(prev) prev.src=d;
+        persist(); notifyChange(); toast('Foto guardada para el carro #'+id);
+      });
+      cpf.value='';
     });
 
     renderToggles();
@@ -285,9 +305,14 @@
   function fillCarSelects(){
     const cars=Editor.allCars();
     const opts=cars.map(c=>`<option value="${c.id}">#${c.id} — ${c.nombre}</option>`).join('');
-    const cp=document.getElementById('carPick'), pk=document.getElementById('pricePick');
+    const cp=document.getElementById('carPick'), pk=document.getElementById('pricePick'), cph=document.getElementById('carPhotoPick');
     if(cp){ cp.innerHTML=opts; const p=document.getElementById('carPreview'); if(p)p.src=cars[0].foto; }
     if(pk){ pk.innerHTML=opts; const v=document.getElementById('priceVal'); if(v)v.value=cars[0].precio; }
+    if(cph){ cph.innerHTML=opts; const p=document.getElementById('carPhotoPreview'); if(p)p.src=cars[0].foto; }
+    cph&&(cph.onchange=e=>{
+      const c=Editor.allCars().find(x=>x.id===Number(e.target.value));
+      const p=document.getElementById('carPhotoPreview'); if(p&&c)p.src=c.foto;
+    });
     cp&&(cp.onchange=e=>{
       const c=Editor.allCars().find(x=>x.id===Number(e.target.value));
       const p=document.getElementById('carPreview'); if(p&&c)p.src=c.foto;
