@@ -20,7 +20,8 @@
   /** Imagen con WebP + respaldo JPG, carga diferida y skeleton. */
   function picture(src, alt){
     const webp=imgSrc(src), jpg=src.replace('.webp','.jpg');
-    return `<picture><source srcset="${webp}" type="image/webp"><img src="${jpg}" alt="${alt}" loading="lazy" decoding="async" onload="this.classList.add('loaded')"></picture>`;
+    return `<picture><source srcset="${webp}" type="image/webp"><img src="${jpg}" alt="${alt}" loading="lazy" decoding="async"
+      onload="OasisImg.ok(this)" onerror="OasisImg.fail(this)"></picture>`;
   }
 
   function brandOf(nombre){
@@ -59,7 +60,10 @@
       ['MULTIMONEDAS','PayPal acepta más de 24 monedas']
     ];
     const el=document.getElementById('paypalCards');
-    if(el) el.innerHTML=items.map(([t,d])=>`<div class="feature"><div class="ic">✓</div><h4>${t}</h4><p>${d}</p></div>`).join('');
+    if(el && !el.dataset.ready){
+      el.dataset.ready='1';
+      el.innerHTML=items.map(([t,d])=>`<div class="feature"><div class="ic">✓</div><h4>${t}</h4><p>${d}</p></div>`).join('');
+    }
   }
 
   function renderNeeds(){
@@ -133,6 +137,7 @@
     if(sort==='desc') list.sort((a,b)=>b.precio-a.precio);
     const grid=document.getElementById('carGrid');
     if(grid) grid.innerHTML=list.slice(0,shown).map(cardHTML).join('')||'<p class="lede">No se encontraron vehículos.</p>';
+    grid?.querySelectorAll('img').forEach(i=>window.OasisImg?.watch(i));
     const info=document.getElementById('pageInfo');
     if(info) info.textContent=`Página 1 de ${Math.max(1,Math.ceil(list.length/12))} · ${list.length} vehículos`;
     const more=document.getElementById('loadMore');
@@ -182,6 +187,7 @@
 
     document.getElementById('searchForm')?.addEventListener('submit',e=>{
       e.preventDefault();
+      if(!document.getElementById('acceptTerms')?.checked){ alert('Debes aceptar los Términos y Condiciones para continuar.'); return; }
       if(!f1.value||!f2.value){ alert('Elige ambas fechas'); return; }
       if(f2.value<=f1.value){ alert('La fecha de regreso debe ser después de la recogida'); return; }
       filter='TODOS'; shown=6; renderFilters(); renderCars();
@@ -218,6 +224,7 @@
 
     document.getElementById('contactForm')?.addEventListener('submit',e=>{
       e.preventDefault();
+      if(document.getElementById('cCaptcha').value.trim()!=='7'){ alert('Respuesta incorrecta. Escribe 7 para confirmar que eres una persona.'); return; }
       const n=document.getElementById('cName').value;
       const em=document.getElementById('cEmail').value;
       const su=document.getElementById('cSubject').value;
@@ -276,6 +283,12 @@
 
   /* ---------- Init ---------- */
   document.addEventListener('DOMContentLoaded',()=>{
+    const blocked = window.OasisCookies && !window.OasisCookies.accepted();
+    if(blocked){
+      const grid=document.getElementById('carGrid');
+      if(grid) grid.innerHTML='';
+      return;
+    }
     renderMarquee(); renderPaypalCards(); renderNeeds(); renderNotes(); renderVideos();
     if(window.OasisEditor) window.OasisEditor.init();
     renderFilters(); renderCars(); initEvents();

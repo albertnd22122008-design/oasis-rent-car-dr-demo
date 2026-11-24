@@ -43,15 +43,23 @@
       return;
     }
 
-    document.title=`${car.nombre} — OASIS Rent A Car`;
+    document.title=`${car.nombre} - US $${car.precio} / día - Oasis Rent A Car`;
+    const setMeta=(prop,val,attr='property')=>{
+      let el=document.querySelector(`meta[${attr}="${prop}"]`);
+      if(!el){ el=document.createElement('meta'); el.setAttribute(attr,prop); document.head.appendChild(el); }
+      el.content=val;
+    };
+    setMeta('og:title',`${car.nombre} - US $${car.precio} / día - Oasis Rent A Car`);
+    setMeta('og:description',`Reserva este ${car.nombre} en Oasis. Entrega en aeropuerto.`);
+    setMeta('og:image',new URL(car.foto,location.href).href);
     document.getElementById('detailTag').textContent=`${brandOf(car.nombre)} · ${car.categoria} · ID #${car.id}`;
     document.getElementById('detailTitle').textContent=car.nombre;
     document.getElementById('detailPrice').innerHTML=`US $${car.precio} <small>/ día</small>`;
 
     const gallery=[car.foto,...photos.filter(p=>p!==car.foto).slice(0,3)];
     document.getElementById('detailGallery').innerHTML=
-      `<div class="main"><img src="${imgSrc(car.foto)}" alt="${car.nombre}" id="mainPhoto"></div>`+
-      gallery.slice(1).map(p=>`<div class="side" data-photo="${p}"><img src="${imgSrc(p)}" alt="${car.nombre}" loading="lazy" decoding="async"></div>`).join('');
+      `<div class="main"><img src="${imgSrc(car.foto)}" alt="${car.nombre}" id="mainPhoto" onerror="OasisImg.fail(this)"></div>`+
+      gallery.slice(1).map(p=>`<div class="side" data-photo="${p}"><img src="${imgSrc(p)}" alt="${car.nombre}" loading="lazy" decoding="async" onerror="OasisImg.fail(this)"></div>`).join('');
     document.querySelectorAll('[data-photo]').forEach(el=>el.onclick=()=>{
       document.getElementById('mainPhoto').src=imgSrc(el.dataset.photo);
     });
@@ -60,7 +68,8 @@
     const sp=(E && E.getSpec(car.id)) || {};
     document.getElementById('detailSpecs').innerHTML=[
       ['AÑO',year],['ASIENTOS',sp.pasajeros||'5'],['MALETAS',sp.maletas||'3'],
-      ['TRANSMISIÓN',sp.transmision||'Automático'],['A/C',sp.ac||'Sí'],['CATEGORÍA',car.categoria]
+      ['TRANSMISIÓN',sp.transmision||'Automático'],['A/C',sp.ac||'Sí'],['CATEGORÍA',car.categoria],
+      ['ITVS','Al día ✅'],['REVISIÓN','Al día']
     ].map(([k,v])=>`<div><span style="font-size:.7rem;color:var(--muted);letter-spacing:.1em">${k}</span><b>${v}</b></div>`).join('');
 
     document.getElementById('detailReserve').href=waReserve(car.nombre,car.precio,'2026-12-18','2026-12-21','Aeropuerto Las Américas');
@@ -71,7 +80,14 @@
     const lugar=q.get('pickup')||'Aeropuerto Las Américas';
     document.getElementById('detailReserve').href=waReserve(car.nombre,car.precio,f1,f2,lugar);
 
+    const termsOK=()=>{
+      const c=document.getElementById('acceptTermsDetail');
+      if(c && !c.checked){ alert('Debes aceptar los Términos y Condiciones para reservar.'); return false; }
+      return true;
+    };
+    document.getElementById('detailReserve').addEventListener('click',e=>{ if(!termsOK()) e.preventDefault(); });
     document.getElementById('detailSave').onclick=()=>{
+      if(!termsOK()) return;
       const A=window.OasisAuth;
       if(!A || !A.isLogged()){ location.href='login.html?next='+encodeURIComponent(location.pathname+location.search); return; }
       A.createReserva({
@@ -84,7 +100,7 @@
 
     document.getElementById('relatedGrid').innerHTML=cars.filter(c=>c.id!==car.id).slice(0,4).map(c=>`
       <a class="card" href="vehiculo.html?id=${c.id}" style="display:block">
-        <div class="ph"><img src="${imgSrc(c.foto)}" alt="${c.nombre}" loading="lazy" decoding="async"><span class="id">#${c.id}</span></div>
+        <div class="ph"><img src="${imgSrc(c.foto)}" alt="${c.nombre}" loading="lazy" decoding="async" onerror="OasisImg.fail(this)"><span class="id">#${c.id}</span></div>
         <div class="body"><h4>${c.nombre}</h4><div class="price">US $${c.precio} <small>/ día</small></div></div>
       </a>`).join('');
   });

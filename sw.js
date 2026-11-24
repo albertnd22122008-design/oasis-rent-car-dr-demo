@@ -7,7 +7,7 @@ const FILES=[
   './js/main.min.js','./js/catalog.min.js','./js/editor.min.js','./js/paypal.min.js',
   './js/whatsapp.min.js','./js/auth.min.js','./js/admin.min.js','./js/vehiculo.min.js',
   './js/login.min.js','./js/mis-vehiculos.min.js','./js/atencion.min.js','./js/reserva.min.js','./js/install.min.js','./js/lite.min.js',
-  './img/logo.png','./img/hero.webp'
+  './img/logo.svg','./img/hero.webp'
 ];
 self.addEventListener('install',e=>{ e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting())); });
 self.addEventListener('activate',e=>{ e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE).map(x=>caches.delete(x)))).then(()=>self.clients.claim())); });

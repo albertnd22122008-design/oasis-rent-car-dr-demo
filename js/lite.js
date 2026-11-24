@@ -15,6 +15,19 @@
     });
   }
 
+  /* Imagen de respaldo local si una foto falla o tarda demasiado */
+  window.OasisImg = {
+    ok(img){ img.classList.add('loaded'); },
+    fail(img){
+      img.onerror=null;
+      if(!img.src.endsWith('sin-foto.webp')) img.src='img/sin-foto.webp';
+      img.classList.add('loaded','fallback');
+    },
+    watch(img){
+      setTimeout(()=>{ window.OasisImg.ok(img); }, 2000);
+    }
+  };
+
   window.OasisLite = {
     isOn: ()=>on,
     img(path){

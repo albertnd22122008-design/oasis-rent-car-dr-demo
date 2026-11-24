@@ -12,7 +12,7 @@
     heroImage:'img/hero.webp',
     ownerImage:'img/owner.webp',
     paypal:'',                 // vacío = usa PAYPAL_LINK de paypal.js
-    colors:{ primary:'#FF5A00', secondary:'#1E4FFF', background:'#0F0F0F', text:'#FFFFFF' },
+    colors:{ primary:'#ff8c00', secondary:'#1a4fa0', background:'#111111', text:'#FFFFFF' },
     fonts:{ display:"ui-serif,Georgia,serif", body:"system-ui,-apple-system,'Segoe UI',Roboto,sans-serif" },
     texts:{}, photos:{}, prices:{}, specs:{}, added:[],
     contact:{
@@ -21,7 +21,7 @@
       wa2:'+1 (809) 693-0840', email:'info@oasisrentcar.com',
       hours:'Lunes A Viernes: 8:00am A 7:00pm / Sábados: 8:30am A 5:00pm',
       hoursNote:'No importa la hora ni el día, hacemos entregas las 24 horas, los 365 días del año.',
-      footerText:'© 2017 - 2026 • Oasis Investment Group, SRL. RNC: 131-37894-3. Todos los derechos reservados | República Dominicana.'
+      footerText:'© 2017 - 2026 Oasis Investment Group, SRL. RNC: 131-37894-3. Todos los derechos reservados | República Dominicana.'
     },
     sections:{
       hero:true, marquee:true, vehiculos:true, whatsapp:true, paypal:true, conocenos:true,
@@ -111,7 +111,7 @@
       if(logoBox){
         logoBox.innerHTML = S.logo
           ? `<img src="${S.logo}" alt="OASIS Rent a Car">`
-          : `<img src="img/logo.png" alt="OASIS Rent a Car">`;
+          : `<img src="img/logo.svg" alt="OASIS Rent a Car">`;
       }
       const hero=document.getElementById('heroBg');
       if(hero) hero.style.backgroundImage=`url("${S.heroImage}")`;
@@ -221,7 +221,7 @@
       const id=Number(document.getElementById('carPick').value); S.photos[id]=d;
     });
     document.getElementById('removeLogo')?.addEventListener('click',()=>{
-      S.logo=''; const p=document.getElementById('logoPreview'); if(p)p.src='img/logo.png';
+      S.logo=''; const p=document.getElementById('logoPreview'); if(p)p.src='img/logo.svg';
       Editor.apply(); persist();
     });
 

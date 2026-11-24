@@ -35,6 +35,19 @@
 @media (max-width:900px){
   .user-label{display:none}
 }
+@media (max-width:640px){
+  .logo img{width:110px;min-width:110px}
+  .nav-actions .btn-orange{display:none}
+  .search{margin-bottom:90px}
+  .lite-toggle{top:calc(100px + env(safe-area-inset-top,0px));bottom:auto;right:.8rem;font-size:.62rem;padding:.45rem .7rem}
+  .field input,.field select,.input,textarea{font-size:16px}
+  .wa-float{bottom:calc(1.2rem + env(safe-area-inset-bottom,0px))}
+  #editBtn{bottom:calc(1.2rem + env(safe-area-inset-bottom,0px))}
+  .hero{min-height:100vh;min-height:100svh}
+}
+@media (min-width:641px) and (max-width:1024px){
+  .logo img{width:130px;min-width:130px}
+}
 @media (max-width:760px){
   .admin-panel .tabpane{grid-template-columns:1fr}
   .admin-top h1{font-size:1.4rem}

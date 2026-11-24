@@ -125,6 +125,38 @@ Botón **⤓** en el navbar (o "DESCARGAR / AGREGAR AL INICIO" en el menú móvi
 En `admin.html` → **Carros** → "Ficha técnica del vehículo" puedes cambiar y crear
 transmisión, A/C, pasajeros y maletas de cada ID. Se refleja en `vehiculo.html`.
 
+## Páginas legales y SEO
+- `terminos.html` — Términos y Condiciones
+- `privacidad.html` — Política de Privacidad
+- `cookies.html` — Política de Cookies (el banner se puede reabrir ahí)
+- `404.html` — Página no encontrada
+- `sitemap.xml` y `robots.txt` — todas las páginas y los 73 vehículos
+- `img/og-oasis.jpg` — imagen 1200×630 para compartir en WhatsApp
+- Datos estructurados Schema.org `CarRental` en `index.html`
+- Open Graph por vehículo (se actualiza solo al abrir `vehiculo.html?id=…`)
+
+## Checklist cumplito
+1. ✅ Aviso legal / RNC / dirección
+2. ✅ Política de privacidad
+3. ✅ Banner de cookies bloqueante + configuración
+4. ✅ Redirección automática a HTTPS
+5. ✅ Títulos únicos (nunca "Inicio")
+6. ✅ Schema.org LocalBusiness + CarRental
+7. ✅ Sitemap.xml + robots.txt
+8. ✅ Enlace "Ver en Google Maps" / Google
+9. ✅ Favicon del logo oficial
+10. ✅ Alt en todas las imágenes
+11. ✅ Fotos WebP comprimidas + logo SVG
+12. ✅ Solo 6 carros al abrir + lazy loading
+13. ✅ Contraste blanco/oscuro y negro/amarillo
+14. ✅ Responsive 360px, logo grande, buscador debajo del hero
+15. ✅ Página 404 personalizada
+16. ✅ Sin enlaces rotidos
+17. ✅ Captcha antispam en el formulario
+18. ✅ WhatsApp flotante con pulso en todas las páginas
+19. ✅ Espacios listos para GA4 y Meta Pixel (IDs pendientes)
+20. ✅ CTA principal única: RESERVAR AHORA
+
 ## Datos reales incluidos
 
 - Oasis Rent A Car / Oasis Investment Group, SRL — RNC 131-37894-3
