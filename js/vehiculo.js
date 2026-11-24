@@ -24,9 +24,10 @@
   }
 
   const photos=[
-    'img/carros/carro-01.jpg','img/carros/carro-02.jpg','img/carros/carro-03.jpg','img/carros/carro-04.jpg',
-    'img/carros/carro-05.jpg','img/carros/carro-06.jpg','img/carros/carro-07.jpg','img/carros/carro-08.jpg'
+    'img/carros/carro-01.webp','img/carros/carro-02.webp','img/carros/carro-03.webp','img/carros/carro-04.webp',
+    'img/carros/carro-05.webp','img/carros/carro-06.webp','img/carros/carro-07.webp','img/carros/carro-08.webp'
   ];
+  const imgSrc=p=> window.OasisLite ? window.OasisLite.img(p) : p;
 
   document.addEventListener('DOMContentLoaded',()=>{
     const E=window.OasisEditor;
@@ -49,10 +50,10 @@
 
     const gallery=[car.foto,...photos.filter(p=>p!==car.foto).slice(0,3)];
     document.getElementById('detailGallery').innerHTML=
-      `<div class="main"><img src="${car.foto}" alt="${car.nombre}" id="mainPhoto"></div>`+
-      gallery.slice(1).map(p=>`<div class="side" data-photo="${p}"><img src="${p}" alt="${car.nombre}" loading="lazy"></div>`).join('');
+      `<div class="main"><img src="${imgSrc(car.foto)}" alt="${car.nombre}" id="mainPhoto"></div>`+
+      gallery.slice(1).map(p=>`<div class="side" data-photo="${p}"><img src="${imgSrc(p)}" alt="${car.nombre}" loading="lazy" decoding="async"></div>`).join('');
     document.querySelectorAll('[data-photo]').forEach(el=>el.onclick=()=>{
-      document.getElementById('mainPhoto').src=el.dataset.photo;
+      document.getElementById('mainPhoto').src=imgSrc(el.dataset.photo);
     });
 
     const year=(car.nombre.match(/(19|20)\d{2}/)||[])[0]||'—';
@@ -83,7 +84,7 @@
 
     document.getElementById('relatedGrid').innerHTML=cars.filter(c=>c.id!==car.id).slice(0,4).map(c=>`
       <a class="card" href="vehiculo.html?id=${c.id}" style="display:block">
-        <div class="ph"><img src="${c.foto}" alt="${c.nombre}" loading="lazy"><span class="id">#${c.id}</span></div>
+        <div class="ph"><img src="${imgSrc(c.foto)}" alt="${c.nombre}" loading="lazy" decoding="async"><span class="id">#${c.id}</span></div>
         <div class="body"><h4>${c.nombre}</h4><div class="price">US $${c.precio} <small>/ día</small></div></div>
       </a>`).join('');
   });

@@ -8,11 +8,20 @@
   const E = window.OasisEditor;
   const FILTERS = ['TODOS','SUV','LUJO','ECONÓMICO','JEEP','TOYOTA','HYUNDAI','KIA','CHANGAN','BMW','MERCEDES'];
   const PHOTOS = [
-    'img/carros/carro-01.jpg','img/carros/carro-02.jpg','img/carros/carro-03.jpg','img/carros/carro-04.jpg',
-    'img/carros/carro-05.jpg','img/carros/carro-06.jpg','img/carros/carro-07.jpg','img/carros/carro-08.jpg'
+    'img/carros/carro-01.webp','img/carros/carro-02.webp','img/carros/carro-03.webp','img/carros/carro-04.webp',
+    'img/carros/carro-05.webp','img/carros/carro-06.webp','img/carros/carro-07.webp','img/carros/carro-08.webp'
   ];
 
-  let filter='TODOS', query='', sort='', shown=12;
+  let filter='TODOS', query='', sort='', shown=6;
+
+  /** Ruta de imagen según el modo ligero. */
+  function imgSrc(path){ return window.OasisLite ? window.OasisLite.img(path) : path; }
+
+  /** Imagen con WebP + respaldo JPG, carga diferida y skeleton. */
+  function picture(src, alt){
+    const webp=imgSrc(src), jpg=src.replace('.webp','.jpg');
+    return `<picture><source srcset="${webp}" type="image/webp"><img src="${jpg}" alt="${alt}" loading="lazy" decoding="async" onload="this.classList.add('loaded')"></picture>`;
+  }
 
   function brandOf(nombre){
     const n=nombre.toUpperCase();
@@ -80,7 +89,7 @@
     const el=document.getElementById('videoGrid');
     if(el) el.innerHTML=vids.map(([t,id],i)=>`
       <div class="video-card" data-video="${id}" role="button" tabindex="0" aria-label="Ver video ${t}">
-        <img src="${PHOTOS[i+4]}" alt="${t}" loading="lazy"><div class="play">▶</div>
+        <img src="${imgSrc(PHOTOS[i+4])}" alt="${t}" loading="lazy" decoding="async"><div class="play">▶</div>
       </div>`).join('');
   }
 
@@ -102,7 +111,7 @@
     const paypal=E.getPaypalLink();
     return `<article class="card">
       <div class="ph">
-        <a href="vehiculo.html?id=${c.id}&f1=${f1}&f2=${f2}&pickup=${encodeURIComponent(lugar)}" aria-label="Ver ${c.nombre}"><img src="${c.foto}" alt="${c.nombre}" loading="lazy"></a>
+        <a href="vehiculo.html?id=${c.id}&f1=${f1}&f2=${f2}&pickup=${encodeURIComponent(lugar)}" aria-label="Ver ${c.nombre}">${picture(c.foto, c.nombre)}</a>
         <span class="id">#${c.id}</span><span class="tag">${brandOf(c.nombre)}</span>
       </div>
       <div class="body">
@@ -134,7 +143,7 @@
         const c=E.allCars().find(x=>x.id===Number(b.dataset.gallery));
         if(!c) return;
         const imgs=[c.foto,...PHOTOS.slice(0,3)];
-        openModal(`<button class="close" onclick="OasisCloseModal()">✕</button><h3>${c.nombre}</h3><div class="gallery">${imgs.map(p=>`<img src="${p}" alt="${c.nombre}" loading="lazy">`).join('')}</div>`);
+        openModal(`<button class="close" onclick="OasisCloseModal()">✕</button><h3>${c.nombre}</h3><div class="gallery">${imgs.map(p=>`<img src="${imgSrc(p)}" alt="${c.nombre}" loading="lazy" decoding="async">`).join('')}</div>`);
       };
     });
     document.querySelectorAll('[data-paypal]').forEach(a=>a.href=E.getPaypalLink());
@@ -146,7 +155,7 @@
     if(!box) return;
     box.innerHTML=FILTERS.map(f=>`<button class="chip ${f===filter?'on':''}" data-f="${f}">${f}</button>`).join('');
     box.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{
-      filter=b.dataset.f; shown=12; renderFilters(); renderCars();
+      filter=b.dataset.f; shown=6; renderFilters(); renderCars();
     });
   }
 
@@ -175,14 +184,23 @@
       e.preventDefault();
       if(!f1.value||!f2.value){ alert('Elige ambas fechas'); return; }
       if(f2.value<=f1.value){ alert('La fecha de regreso debe ser después de la recogida'); return; }
-      filter='TODOS'; shown=12; renderFilters(); renderCars();
+      filter='TODOS'; shown=6; renderFilters(); renderCars();
       document.getElementById('vehiculos')?.scrollIntoView({behavior:'smooth'});
     });
     document.getElementById('searchInput')?.addEventListener('input',e=>{
-      query=e.target.value.trim().toLowerCase(); shown=12; renderCars();
+      query=e.target.value.trim().toLowerCase(); shown=6; renderCars();
     });
     document.getElementById('sortSelect')?.addEventListener('change',e=>{ sort=e.target.value; renderCars(); });
-    document.getElementById('loadMore')?.addEventListener('click',()=>{ shown+=12; renderCars(); });
+    document.getElementById('loadMore')?.addEventListener('click',()=>{ shown+=6; renderCars(); });
+
+    /* Carga progresiva: el resto de carros entra al hacer scroll */
+    const moreBtn=document.getElementById('loadMore');
+    if(moreBtn && 'IntersectionObserver' in window){
+      const ioMore=new IntersectionObserver(es=>{
+        if(es[0].isIntersecting && moreBtn.style.display!=='none'){ shown+=6; renderCars(); }
+      },{rootMargin:'400px'});
+      ioMore.observe(moreBtn);
+    }
     document.getElementById('menuBtn')?.addEventListener('click',()=>document.getElementById('mobileMenu')?.classList.toggle('open'));
     document.querySelectorAll('#mobileMenu a').forEach(a=>a.onclick=()=>document.getElementById('mobileMenu')?.classList.remove('open'));
     document.getElementById('toTop')?.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));

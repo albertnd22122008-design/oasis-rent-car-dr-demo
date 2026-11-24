@@ -1,13 +1,13 @@
 /* Service Worker mínimo: cache de la app para uso sin conexión */
-const CACHE='oasis-v1';
+const CACHE='oasis-v2';
 const FILES=[
   './','./index.html','./admin.html','./vehiculo.html','./login.html',
   './mis-vehiculos.html','./atencion.html','./reserva.html',
-  './css/style.css','./css/responsive.css','./css/animations.css',
-  './js/main.js','./js/catalog.js','./js/editor.js','./js/paypal.js',
-  './js/whatsapp.js','./js/auth.js','./js/admin.js','./js/vehiculo.js',
-  './js/login.js','./js/mis-vehiculos.js','./js/atencion.js','./js/reserva.js','./js/install.js',
-  './img/logo.png','./img/hero.jpg'
+  './css/style.min.css','./css/responsive.min.css','./css/animations.min.css',
+  './js/main.min.js','./js/catalog.min.js','./js/editor.min.js','./js/paypal.min.js',
+  './js/whatsapp.min.js','./js/auth.min.js','./js/admin.min.js','./js/vehiculo.min.js',
+  './js/login.min.js','./js/mis-vehiculos.min.js','./js/atencion.min.js','./js/reserva.min.js','./js/install.min.js','./js/lite.min.js',
+  './img/logo.png','./img/hero.webp'
 ];
 self.addEventListener('install',e=>{ e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting())); });
 self.addEventListener('activate',e=>{ e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE).map(x=>caches.delete(x)))).then(()=>self.clients.claim())); });

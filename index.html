@@ -6,18 +6,17 @@
 <meta name="theme-color" content="#0F0F0F">
 <meta name="description" content="Oasis Rent A Car DR — Alquiler de vehículos premium en República Dominicana. Entrega en aeropuertos y hoteles, asistencia 24/7 y pago en línea con PayPal.">
 <title>OASIS Rent A Car — República Dominicana</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="img/logo.png">
+<link rel="preload" as="image" href="img/hero.webp" fetchpriority="high">
 <link rel="icon" href="img/logo.png" type="image/png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="OASIS Rent A Car">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="apple-touch-icon" href="img/logo.png">
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/responsive.css">
-<link rel="stylesheet" href="css/animations.css">
+<link rel="stylesheet" href="css/style.min.css">
+<link rel="stylesheet" href="css/responsive.min.css">
+<link rel="stylesheet" href="css/animations.min.css">
 </head>
 <body>
 
@@ -220,7 +219,7 @@
     </div>
     <div class="panel">
       <p class="eyebrow">HISTORIA</p>
-      <img id="ownerPhoto" src="img/owner.jpg" alt="Jorge Pérez Félix, dueño de Oasis Rent A Car" class="owner-photo">
+      <img id="ownerPhoto" src="img/owner.webp" alt="Jorge Pérez Félix, dueño de Oasis Rent A Car" class="owner-photo">
       <h3 class="history-title">De la computadora al volante</h3>
       <p class="lede">Una historia de trabajo, familia y servicio que hoy se refleja en cada entrega de Oasis.</p>
       <div class="stamp history-stamp">OASIS<br><span>desde 2006</span></div>
@@ -302,12 +301,13 @@
 <div class="toast" id="toast"></div>
 
 
-<script src="js/paypal.js"></script>
-<script src="js/catalog.js"></script>
-<script src="js/whatsapp.js"></script>
-<script src="js/editor.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/install.js"></script>
-<script src="js/main.js"></script>
+<script src="js/paypal.min.js"></script>
+<script src="js/catalog.min.js"></script>
+<script src="js/whatsapp.min.js"></script>
+<script src="js/editor.min.js"></script>
+<script src="js/auth.min.js"></script>
+<script src="js/install.min.js"></script>
+<script src="js/main.min.js"></script>
+<script src="js/lite.min.js"></script>
 </body>
 </html>

@@ -9,11 +9,11 @@
 
   const DEFAULT_STATE = {
     logo:'',
-    heroImage:'img/hero.jpg',
-    ownerImage:'img/owner.jpg',
+    heroImage:'img/hero.webp',
+    ownerImage:'img/owner.webp',
     paypal:'',                 // vacío = usa PAYPAL_LINK de paypal.js
     colors:{ primary:'#FF5A00', secondary:'#1E4FFF', background:'#0F0F0F', text:'#FFFFFF' },
-    fonts:{ display:"'Outfit',sans-serif", body:"'Inter',sans-serif" },
+    fonts:{ display:"ui-serif,Georgia,serif", body:"system-ui,-apple-system,'Segoe UI',Roboto,sans-serif" },
     texts:{}, photos:{}, prices:{}, specs:{}, added:[],
     contact:{
       address:'Ruta 66, #4, Salida del Aeropuerto Internacional de las Américas. Las Caletas, (Código postal 11606) Santo Domingo Este, República Dominicana.',
@@ -30,8 +30,8 @@
   };
 
   const FONTS = [
-    ['Outfit',"'Outfit',sans-serif"], ['Inter',"'Inter',sans-serif"], ['Baloo 2',"'Baloo 2',cursive"],
-    ['DM Sans',"'DM Sans',sans-serif"], ['Space Grotesk',"'Space Grotesk',sans-serif"], ['Georgia',"Georgia,serif"]
+    ['Serif',"ui-serif,Georgia,serif"], ['Sans',"system-ui,-apple-system,sans-serif"],
+    ['Arial',"Arial,sans-serif"], ['Verdana',"Verdana,sans-serif"], ['Trebuchet',"'Trebuchet MS',sans-serif"], ['Courier',"'Courier New',monospace"]
   ];
   const SECTIONS = [
     ['hero','Hero'],['marquee','Marquee'],['vehiculos','Flota'],['whatsapp','WhatsApp'],
@@ -116,7 +116,7 @@
       const hero=document.getElementById('heroBg');
       if(hero) hero.style.backgroundImage=`url("${S.heroImage}")`;
       const owner=document.getElementById('ownerPhoto');
-      if(owner) owner.src=S.ownerImage||'img/owner.jpg';
+      if(owner) owner.src=S.ownerImage||'img/owner.webp';
 
       document.querySelectorAll('[data-paypal]').forEach(a=>a.href=Editor.getPaypalLink());
       document.querySelectorAll('[data-mail]').forEach(a=>a.href='mailto:'+S.contact.email);
