@@ -55,6 +55,33 @@
   .detail-gallery .main{grid-row:auto}
 }
 
+/* ============================================================
+   SOLO MÓVIL — arreglos de pantalla pequeña (PC intacto)
+   ============================================================ */
+@media (max-width:768px){
+  /* 1. Modo ligero: NO ocultar contenido, solo quitar blur/animaciones */
+  body.lite .fade-up,
+  body.lite [data-reveal],
+  body.lite .hero h1 .w span{opacity:1!important;transform:none!important}
+  body.lite .hero-bg{background-image:url("../img/hero.webp")!important}
+  body.lite .hero-grad{background:linear-gradient(90deg,var(--fondo-oscuro) 0%,rgba(17,17,17,.86) 38%,rgba(17,17,17,.35) 100%),linear-gradient(0deg,var(--fondo-oscuro) 0%,transparent 45%)!important}
+  body.lite .card .ph img{opacity:1!important}
+
+  /* 2. Título grande solo en PC */
+  .hero h1{font-size:30px!important;line-height:1.1!important}
+
+  /* 3. WhatsApp no tapa el buscador */
+  .wa-float{width:52px;height:52px;bottom:90px;right:16px}
+  .wa-float img{width:52px;height:52px}
+  .search{padding-bottom:100px}
+
+  /* 4. Buscador en columna, sin cortes ni scroll horizontal */
+  .search{max-width:100%;overflow:visible}
+  .search-grid{grid-template-columns:1fr!important;gap:.7rem!important;width:100%}
+  .search-grid .field{width:100%;min-width:0}
+  .search input,.search select{width:100%;max-width:100%}
+}
+
 /* --- Pantallas táctiles: sin cursor personalizado --- */
 @media (pointer:coarse){
   .cursor-dot,.cursor-ring{display:none!important}
