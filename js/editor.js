@@ -16,7 +16,7 @@
     colors:{ primary:'#ff8c00', secondary:'#1a4fa0', background:'#111111', text:'#FFFFFF' },
     fonts:{ display:"ui-serif,Georgia,serif", body:"system-ui,-apple-system,'Segoe UI',Roboto,sans-serif" },
     texts:{}, photos:{}, prices:{}, specs:{}, galleries:{}, added:[],
-    statuses:{}, stocks:{}, deleted:[], whatsapp:'+1 (809) 693-0840',
+    statuses:{}, stocks:{}, deleted:[], whatsapp:'+1 (809) 693-0840', theme:'light',
     contact:{
       address:'Ruta 66, #4, Salida del Aeropuerto Internacional de las Américas. Las Caletas, (Código postal 11606) Santo Domingo Este, República Dominicana.',
       tel1:'(809) 549-1531', tel2:'+1 (646) 647-8727', wa1:'(809) 549-1531',
@@ -117,6 +117,7 @@
     setStock(id,n){ S.stocks[id]=Math.max(0,Number(n)||0); persist(); },
     setPrice(id,p){ S.prices[id]=Number(p); persist(); },
     setWhatsapp(v){ S.whatsapp=v; persist(); },
+    setTheme(t){ S.theme=t==='dark'?'dark':'light'; persist(); Editor.apply(); },
     addVehicle(v){
       const id=Math.max(0,...Editor.allCars().map(c=>c.id),...S.added.map(c=>c.id))+1;
       const car={id,nombre:v.nombre,precio:Number(v.precio)||100,categoria:v.categoria||'SUV',foto:v.foto||'img/carros/carro-01.webp',descripcion:v.descripcion||'',status:v.status||'Disponible',stock:Number(v.stock)||1};
@@ -132,10 +133,12 @@
     save(){ localStorage.setItem(STORE_KEY,JSON.stringify(S)); toast('Cambios guardados'); },
     apply(){
       const r=document.documentElement.style;
+      const light=S.theme!=='dark';
+      document.documentElement.classList.toggle('light',light);
       r.setProperty('--primary',S.colors.primary);
-      r.setProperty('--secondary',S.colors.secondary);
-      r.setProperty('--bg',S.colors.background);
-      r.setProperty('--text',S.colors.text);
+      r.setProperty('--secondary',light?'#1A4FA0':S.colors.secondary);
+      r.setProperty('--bg',light?'#FFFFFF':S.colors.background);
+      r.setProperty('--text',light?'#111111':S.colors.text);
       r.setProperty('--font-display',S.fonts.display);
       r.setProperty('--font-body',S.fonts.body);
 
