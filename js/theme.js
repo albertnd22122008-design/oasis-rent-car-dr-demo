@@ -11,6 +11,11 @@
     btn.type='button';
     btn.className='theme-btn';
     btn.setAttribute('aria-label','Cambiar tema claro/oscuro');
+    function swapIcons(){
+      document.querySelectorAll('img[src$="download.svg"],img[src$="download-dark.svg"]').forEach(img=>{
+        img.src=dark?'img/download.svg':'img/download-dark.svg';
+      });
+    }
     function label(){
       btn.innerHTML=dark
         ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v2m0 14v2M3 12h2m14 0h2M5.6 5.6l1.4 1.4m10 10l1.4 1.4m0-12.8l-1.4 1.4m-10 10l-1.4 1.4"/><circle cx="12" cy="12" r="4"/></svg> CLARO'
@@ -20,9 +25,11 @@
     btn.onclick=()=>{
       dark=!dark;
       E.setTheme(dark?'dark':'light');
+      swapIcons();
       label();
     };
     document.body.appendChild(btn);
+    swapIcons();
   }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',build);
   else build();

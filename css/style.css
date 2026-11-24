@@ -379,6 +379,10 @@ html.light #installBtn img,html.light #installBtnMobile img{filter:brightness(0)
 html.light .nav-actions .btn-ghost{color:#111111}
 html.light option,html.light .tools-right select,html.light .tools-right input{color:#111111;background:#ffffff;border-color:#d1d5db}
 html.light .tools-right input::placeholder{color:#9ca3af}
+html.light .marquee span{color:#111111}
+html.light .lang-code{color:#111111}
+html.light .search-lead{color:#111111!important}
+html.light .search p{color:#111111!important}
 html.light .big-number,html.light .feature .ic,html.light .mister-quote{color:#a85000}
 html.light .adm-badge.Disponible,html.light .adm-badge.Alquilado{color:#a85000;border-color:#a85000}
 html.light .itvs-list span{color:#a85000;border-color:#a85000}
