@@ -80,6 +80,32 @@
       </div>
       <div class="adm-list" id="admList"></div>
     </div>
+    <div class="adm-card">
+      <div class="adm-card-head"><h2>Fotos por vehículo</h2><span class="adm-pill" id="batchCount">0 de 10 fotos</span></div>
+      <p class="lede">Elige un vehículo, sube hasta 10 fotos a la vez y marca cuál es la portada. En la página del carro se podrán recorrer con flechas.</p>
+      <div class="fgrp"><label>Vehículo</label><select class="input" id="batchCar"></select></div>
+      <div class="fgrp"><label>Subir fotos (varias a la vez)</label><input class="input" type="file" id="batchFiles" accept="image/*" multiple></div>
+      <div class="adm-fotos" id="batchList"></div>
+    </div>
+    <div class="adm-card">
+      <div class="adm-card-head"><h2>Detalles del vehículo</h2></div>
+      <p class="lede">Marca, modelo, año, combustible y radio. Cada cambio pide la contraseña master.</p>
+      <div class="fgrp"><label>Vehículo</label><select class="input" id="detCar"></select></div>
+      <div class="fgrp"><label>Marca</label><select class="input" id="detMarca"></select></div>
+      <div class="fgrp"><label>Modelo</label><input class="input" id="detModelo" placeholder="Ej. Grand Cherokee Limited X"></div>
+      <div class="fgrp"><label>Año</label><input class="input" id="detAnio" type="number" min="1990" max="2030"></div>
+      <div class="fgrp"><label>Combustible</label><select class="input" id="detCombustible"></select></div>
+      <div class="fgrp"><label>Radio y conectividad</label>
+        <div class="adm-checks" id="detExtras">
+          <label><input type="checkbox" value="Radio AM/FM"> Radio AM/FM</label>
+          <label><input type="checkbox" value="Bluetooth"> Bluetooth</label>
+          <label><input type="checkbox" value="USB"> USB</label>
+          <label><input type="checkbox" value="MP3"> MP3</label>
+          <label><input type="checkbox" value="WIFI"> WIFI</label>
+        </div>
+      </div>
+      <button class="btn btn-orange" id="detSave" type="button">GUARDAR DETALLES</button>
+    </div>
   </section>
 
   <!-- 3. AGREGAR VEHÍCULO -->
@@ -90,16 +116,31 @@
         <div class="fgrp"><label>1. Nombre del vehículo</label><input class="input" id="vNombre" required placeholder="Ej. Toyota Corolla 2024"></div>
         <div class="fgrp"><label>2. Precio US$/día</label><input class="input" id="vPrecio" type="number" min="1" value="100" required></div>
         <div class="fgrp"><label>3. Categoría</label><select class="input" id="vCat"></select></div>
-        <div class="fgrp"><label>4. Foto</label>
+        <div class="fgrp"><label>4. Fotos (puedes subir varias)</label>
           <div class="adm-photo-opts">
-            <input class="input" type="file" id="vFile" accept="image/*">
+            <input class="input" type="file" id="vFile" accept="image/*" multiple>
             <button class="btn btn-ghost btn-sm" type="button" id="vGalleryBtn">Elegir de galería</button>
           </div>
           <select class="input" id="vGallery" style="display:none;margin-top:.5rem"></select>
+          <p class="lede" style="font-size:.75rem;margin:.6rem 0">Sube hasta 10 fotos. Marca una como <b>portada</b>: será la foto principal del vehículo.</p>
+          <div class="adm-fotos" id="vPhotos"></div>
           <img class="thumb" id="vPreview" src="img/sin-foto.webp" alt="Vista previa del vehículo">
         </div>
         <div class="fgrp"><label>5. Estado</label><select class="input" id="vEstado"><option>Disponible</option><option>Alquilado</option><option>Mantenimiento</option></select></div>
         <div class="fgrp"><label>6. Stock</label><input class="input" id="vStock" type="number" min="0" value="1"></div>
+        <div class="fgrp"><label>7. Marca</label><select class="input" id="vMarca"></select></div>
+        <div class="fgrp"><label>8. Modelo</label><input class="input" id="vModelo" placeholder="Ej. Grand Cherokee Limited X"></div>
+        <div class="fgrp"><label>9. Año</label><input class="input" id="vAnio" type="number" min="1990" max="2030" value="2024"></div>
+        <div class="fgrp"><label>10. Combustible</label><select class="input" id="vCombustible"></select></div>
+        <div class="fgrp"><label>11. Radio y conectividad</label>
+          <div class="adm-checks" id="vExtras">
+            <label><input type="checkbox" value="Radio AM/FM" checked> Radio AM/FM</label>
+            <label><input type="checkbox" value="Bluetooth" checked> Bluetooth</label>
+            <label><input type="checkbox" value="USB" checked> USB</label>
+            <label><input type="checkbox" value="MP3" checked> MP3</label>
+            <label><input type="checkbox" value="WIFI" checked> WIFI</label>
+          </div>
+        </div>
         <button class="btn btn-orange adm-big" type="submit">AGREGAR VEHÍCULO →</button>
       </form>
     </div>

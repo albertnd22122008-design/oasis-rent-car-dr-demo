@@ -5,7 +5,7 @@
 (function(){
   'use strict';
 
-  let filtro='Todos', busqueda='', fotoElegida='img/sin-foto.webp', booted=false;
+  let filtro='Todos', busqueda='', fotoElegida='img/sin-foto.webp', fotosNuevas=[], booted=false;
   const E = ()=>window.OasisEditor;
   const M = ()=>window.OasisMaster;
 
@@ -305,6 +305,9 @@
 
   /* ---------------- IMÁGENES ---------------- */
   const HERO_DEFAULT='img/hero.webp', MISTER_DEFAULT='img/mister-oasis.jpg';
+  const MARCAS=['JEEP','TOYOTA','HYUNDAI','KIA','CHANGAN','BMW','MERCEDES','AUDI','LEXUS','PORSCHE','CHEVROLET','HONDA','FORD','RANGE ROVER','OTRO'];
+  const COMBUSTIBLES=['Gasolina','Diésel','Híbrido','Híbrido enchufable','Eléctrico','Gas natural'];
+  const EXTRAS=['Radio AM/FM','Bluetooth','USB','MP3','WIFI'];
   let heroPending=null, misterPending=null;
 
   function renderImages(){
@@ -409,7 +412,7 @@
       if(!(await M().ask('Escribe tu contraseña master para borrar todo definitivamente.'))) return;
       E().wipeAll();
       M().log('Borrado total','Se eliminó todo el contenido de la web.');
-      stats(); renderStock(); renderCats(); renderVideos(); fillContent(); renderImages(); renderLog();
+      stats(); renderStock(); renderCats(); renderVideos(); fillContent(); renderImages(); fillBatchCars(); renderDetails(); renderLog();
       toast('Web borrada. Solo queda el logo.');
     };
 
@@ -436,7 +439,10 @@
     const sel=document.getElementById('vGallery'); if(!sel) return;
     const cars=E().allCars();
     sel.innerHTML=cars.slice(0,20).map(c=>`<option value="${esc(c.foto)}">${esc(c.nombre)}</option>`).join('');
-    sel.onchange=()=>{ fotoElegida=sel.value; document.getElementById('vPreview').src=fotoElegida; };
+    sel.onchange=()=>{
+      fotosNuevas=[]; renderNuevasFotos();
+      fotoElegida=sel.value; document.getElementById('vPreview').src=fotoElegida;
+    };
     const btn=document.getElementById('vGalleryBtn');
     if(btn) btn.onclick=()=>{
       const show=sel.style.display==='none';
@@ -445,33 +451,161 @@
     };
   }
 
+  function fotosHtml(list,prefix){
+    return list.map((p,i)=>`
+      <div class="adm-foto${p.portada?' cover':''}">
+        <img src="${p.src}" alt="Foto ${i+1}">
+        <label><input type="radio" name="${prefix}Portada" value="${i}" data-portada="${i}" ${p.portada?'checked':''}> Portada</label>
+        <button type="button" class="btn btn-ghost btn-sm" data-delfoto="${i}">Quitar</button>
+      </div>`).join('');
+  }
+  function bindFotoList(boxId,prefix,getList,onChange){
+    const box=document.getElementById(boxId); if(!box) return;
+    box.innerHTML=fotosHtml(getList(),prefix)||'<p class="lede">Sin fotos subidas todavía.</p>';
+    box.querySelectorAll('[data-portada]').forEach(r=>r.onchange=()=>{
+      const arr=getList(), i=Number(r.value);
+      arr.forEach((p,j)=>p.portada=j===i);
+      onChange(arr,'Elegir portada','Portada elegida','Se marcó la foto '+(i+1));
+    });
+    box.querySelectorAll('[data-delfoto]').forEach(b=>b.onclick=()=>{
+      const arr=getList(), i=Number(b.dataset.delfoto);
+      arr.splice(i,1);
+      if(arr.length && !arr.some(p=>p.portada)) arr[0].portada=true;
+      onChange(arr,'Quitar foto','Foto eliminada','Se quitó la foto '+(i+1));
+    });
+  }
+  function renderNuevasFotos(){
+    bindFotoList('vPhotos','v',()=>fotosNuevas,(arr,reason,action,detail)=>{
+      fotosNuevas=arr; renderNuevasFotos();
+      const p=fotosNuevas.find(x=>x.portada)||fotosNuevas[0];
+      if(p) document.getElementById('vPreview').src=p.src;
+      toast(action);
+    });
+    if(fotosNuevas.length){
+      const p=fotosNuevas.find(x=>x.portada)||fotosNuevas[0];
+      document.getElementById('vPreview').src=p.src;
+    }
+  }
+
+  function fillBatchCars(){
+    const sel=document.getElementById('batchCar'); if(!sel) return;
+    sel.innerHTML=E().allCars().slice(0,150).map(c=>`<option value="${c.id}">#${c.id} · ${esc(c.nombre)}</option>`).join('');
+    renderBatch();
+  }
+  function renderBatch(){
+    const sel=document.getElementById('batchCar'), box=document.getElementById('batchList');
+    if(!sel||!box) return;
+    const id=Number(sel.value);
+    const list=E().getGallery(id).map(p=>({...p}));
+    bindFotoList('batchList','b',()=>list,(arr,reason,action,detail)=>{
+      askDo(reason+' del vehículo #'+id,action,detail+' del vehículo #'+id,()=>E().setGallery(id,arr)).then(ok=>{ if(ok) renderBatch(); });
+    });
+    const count=document.getElementById('batchCount');
+    if(count) count.textContent=list.length+' de 10 fotos';
+  }
+
+  /* ---------------- DETALLES ---------------- */
+  function optionList(list,selected){
+    return list.map(v=>`<option value="${esc(v)}"${v===selected?' selected':''}>${esc(v)}</option>`).join('');
+  }
+  function fillDetailSelects(){
+    ['vMarca','detMarca'].forEach(id=>{
+      const el=document.getElementById(id); if(el) el.innerHTML=optionList(MARCAS,id==='vMarca'?'JEEP':'JEEP');
+    });
+    ['vCombustible','detCombustible'].forEach(id=>{
+      const el=document.getElementById(id); if(el) el.innerHTML=optionList(COMBUSTIBLES,'Gasolina');
+    });
+  }
+  function detailValues(prefix){
+    const val=id=>document.getElementById(prefix+id)?.value||'';
+    return {
+      marca:val('Marca'), modelo:val('Modelo').trim(), anio:val('Anio'),
+      combustible:val('Combustible'),
+      extras:[...document.querySelectorAll('#'+prefix+'Extras input:checked')].map(x=>x.value)
+    };
+  }
+  function fillDetailsForm(){
+    const sel=document.getElementById('detCar'); if(!sel) return;
+    const sp=E().getSpec(Number(sel.value))||{};
+    const set=(id,v)=>{ const el=document.getElementById(id); if(el) el.value=v||''; };
+    set('detMarca',sp.marca||'JEEP');
+    set('detModelo',sp.modelo||'');
+    set('detAnio',sp.anio||'');
+    set('detCombustible',sp.combustible||'Gasolina');
+    document.querySelectorAll('#detExtras input').forEach(x=>x.checked=(sp.extras||[]).includes(x.value));
+  }
+  function renderDetails(){
+    const sel=document.getElementById('detCar'); if(!sel) return;
+    sel.innerHTML=E().allCars().slice(0,150).map(c=>`<option value="${c.id}">#${c.id} · ${esc(c.nombre)}</option>`).join('');
+    fillDetailsForm();
+  }
+  function bindDetails(){
+    fillDetailSelects(); renderDetails();
+    document.getElementById('detCar')?.addEventListener('change',fillDetailsForm);
+    document.getElementById('detSave')?.addEventListener('click',async()=>{
+      const sel=document.getElementById('detCar'); if(!sel) return;
+      const id=Number(sel.value); if(!id) return;
+      const d=detailValues('det'), old=E().getSpec(id)||{};
+      const ok=await askDo('Cambiar los detalles del vehículo #'+id,'Detalles actualizados',`${d.marca} ${d.modelo} ${d.anio} · ${d.combustible}`,()=>E().setSpec(id,{...old,...d}));
+      if(ok) toast('Detalles guardados');
+    });
+  }
+
   function bindAddForm(){
     const form=document.getElementById('admAddForm'); if(!form) return;
     const file=document.getElementById('vFile');
-    if(file) file.onchange=e=>{
-      const f=e.target.files[0]; if(!f)return;
-      E().readImage(f,d=>{fotoElegida=d;document.getElementById('vPreview').src=d;});
+    if(file) file.onchange=async e=>{
+      const files=[...e.target.files].slice(0,10-fotosNuevas.length);
+      if(!files.length){ toast('Máximo 10 fotos por vehículo'); e.target.value=''; return; }
+      for(const f of files){
+        const d=await new Promise(res=>E().readImage(f,res));
+        fotosNuevas.push({src:d,portada:fotosNuevas.length===0});
+      }
       e.target.value='';
+      renderNuevasFotos();
+      toast(files.length+' foto(s) agregada(s)');
+    };
+    const batchFiles=document.getElementById('batchFiles');
+    if(batchFiles) batchFiles.onchange=async e=>{
+      const id=Number(document.getElementById('batchCar').value);
+      const list=E().getGallery(id).map(p=>({...p}));
+      const files=[...e.target.files].slice(0,10-list.length);
+      if(!files.length){ toast('Máximo 10 fotos por vehículo'); e.target.value=''; return; }
+      const ok=await askDo('Subir fotos al vehículo #'+id,'Fotos subidas',files.length+' foto(s) en el vehículo #'+id,()=>{
+        return Promise.all(files.map(f=>new Promise(res=>E().readImage(f,res)))).then(datas=>{
+          datas.forEach((src,i)=>list.push({src,portada:list.length===0&&i===0}));
+          E().setGallery(id,list);
+        });
+      });
+      e.target.value='';
+      if(ok){ renderBatch(); toast('Fotos guardadas'); }
     };
     form.onsubmit=async e=>{
       e.preventDefault();
+      const portada=fotosNuevas.find(p=>p.portada)||fotosNuevas[0];
+      const d=detailValues('v');
       const v={
         nombre:document.getElementById('vNombre').value.trim(),
         precio:document.getElementById('vPrecio').value,
         categoria:document.getElementById('vCat').value,
-        foto:fotoElegida,
+        foto:portada?portada.src:fotoElegida,
         estado:document.getElementById('vEstado').value,
         stock:document.getElementById('vStock').value
       };
       if(!v.nombre){toast('Escribe el nombre');return;}
-      const ok=await askDo('Agregar el vehículo '+v.nombre,'Vehículo agregado',`${v.nombre} · US $${v.precio}/día · ${v.categoria}`,()=>{
-        E().addVehicle(v); E().save();
+      const fotos=fotosNuevas.map(p=>({...p}));
+      const ok=await askDo('Agregar el vehículo '+v.nombre,'Vehículo agregado',`${v.nombre} · ${fotos.length} foto(s) · US $${v.precio}/día`,()=>{
+        const car=E().addVehicle(v);
+        if(fotos.length) E().setGallery(car.id,fotos);
+        E().setSpec(car.id,{transmision:'Automático',ac:'Sí',pasajeros:'5',maletas:'3',...d});
+        E().save();
       });
       if(!ok) return;
       form.reset();
+      fotosNuevas=[]; renderNuevasFotos();
       document.getElementById('vPreview').src='img/sin-foto.webp';
       fotoElegida='img/sin-foto.webp';
-      stats(); renderStock(); fillGallery(); go('stock'); toast('Vehículo agregado');
+      stats(); renderStock(); fillGallery(); fillBatchCars(); renderDetails(); go('stock'); toast('Vehículo agregado');
     };
   }
 
@@ -517,6 +651,8 @@
     bindVideoButtons();
     bindContentSave();
     bindImages();
+    fillBatchCars();
+    bindDetails();
     bindSecurity();
 
     stats(); reservas(); renderStock(); renderCats(); renderVideos(); fillContent(); renderImages(); renderLog();

@@ -28,6 +28,9 @@
     'img/carros/carro-05.webp','img/carros/carro-06.webp','img/carros/carro-07.webp','img/carros/carro-08.webp'
   ];
   const imgSrc=p=> window.OasisLite ? window.OasisLite.img(p) : p;
+  const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const chev=dir=>`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${dir==='prev'?'M15 5l-7 7 7 7':'M9 5l7 7-7 7'}"/></svg>`;
+  const EXTRAS_DEFAULT=['Radio AM/FM','Bluetooth','USB','MP3','WIFI'];
 
   document.addEventListener('DOMContentLoaded',()=>{
     const E=window.OasisEditor;
@@ -56,21 +59,45 @@
     document.getElementById('detailTitle').textContent=car.nombre;
     document.getElementById('detailPrice').innerHTML=`US $${car.precio} <small>/ día</small>`;
 
-    const gallery=(car.fotos&&car.fotos.length)?car.fotos.slice(0,3):[car.foto,...photos.filter(p=>p!==car.foto).slice(0,3)];
-    document.getElementById('detailGallery').innerHTML=
-      `<div class="main"><img src="${imgSrc(car.foto)}" alt="${car.nombre}" id="mainPhoto" onerror="OasisImg.fail(this)"></div>`+
-      gallery.slice(1).map(p=>`<div class="side" data-photo="${p}"><img src="${imgSrc(p)}" alt="${car.nombre}" loading="lazy" decoding="async" onerror="OasisImg.fail(this)"></div>`).join('');
-    document.querySelectorAll('[data-photo]').forEach(el=>el.onclick=()=>{
-      document.getElementById('mainPhoto').src=imgSrc(el.dataset.photo);
+    const fotos=(car.fotos&&car.fotos.length)?car.fotos.slice(0,10):[car.foto,...photos.filter(p=>p!==car.foto).slice(0,3)];
+    let idx=0;
+    const gal=document.getElementById('detailGallery');
+    gal.innerHTML=
+      `<div class="detail-carousel">
+        <div class="main"><img src="${imgSrc(fotos[0])}" alt="${esc(car.nombre)}" id="mainPhoto" onerror="OasisImg.fail(this)"></div>
+        ${fotos.length>1?`<button class="gal-arrow prev" type="button" aria-label="Foto anterior">${chev('prev')}</button><button class="gal-arrow next" type="button" aria-label="Foto siguiente">${chev('next')}</button>`:''}
+        <span class="gal-count" id="galCount">1 / ${fotos.length}</span>
+      </div>`+
+      (fotos.length>1?`<div class="gal-thumbs">${fotos.map((p,i)=>`<button type="button" data-gal="${i}" aria-label="Ver foto ${i+1}"><img src="${imgSrc(p)}" alt="" loading="lazy" decoding="async" onerror="OasisImg.fail(this)"></button>`).join('')}</div>`:'');
+    const mainPhoto=document.getElementById('mainPhoto');
+    const galCount=document.getElementById('galCount');
+    const thumbs=[...gal.querySelectorAll('[data-gal]')];
+    function showPhoto(i){
+      idx=(i+fotos.length)%fotos.length;
+      mainPhoto.src=imgSrc(fotos[idx]);
+      if(galCount) galCount.textContent=(idx+1)+' / '+fotos.length;
+      thumbs.forEach((b,j)=>b.classList.toggle('on',j===idx));
+    }
+    if(thumbs.length) thumbs.forEach(b=>b.onclick=()=>showPhoto(Number(b.dataset.gal)));
+    gal.querySelector('.gal-arrow.prev')?.addEventListener('click',()=>showPhoto(idx-1));
+    gal.querySelector('.gal-arrow.next')?.addEventListener('click',()=>showPhoto(idx+1));
+    document.addEventListener('keydown',e=>{
+      if(e.key==='ArrowLeft') showPhoto(idx-1);
+      if(e.key==='ArrowRight') showPhoto(idx+1);
     });
 
     const year=(car.nombre.match(/(19|20)\d{2}/)||[])[0]||'—';
     const sp=(E && E.getSpec(car.id)) || {};
+    const marca=sp.marca||brandOf(car.nombre);
+    const modelo=sp.modelo||car.nombre.replace(/\b(MERCEDES|BMW|AUDI|JEEP|TOYOTA|HYUNDAI|KIA|CHANGAN|LEXUS|PORSCHE|CHEVROLET|HONDA|FORD|RANGE ROVER)\b/i,'').replace(/\b(19|20)\d{2}\b/,'').trim()||'—';
+    const extras=sp.extras||EXTRAS_DEFAULT;
+    const yesNo=v=>extras.includes(v)?'Sí':'No';
     document.getElementById('detailSpecs').innerHTML=[
-      ['AÑO',year],['ASIENTOS',sp.pasajeros||'5'],['MALETAS',sp.maletas||'3'],
-      ['TRANSMISIÓN',sp.transmision||'Automático'],['A/C',sp.ac||'Sí'],['CATEGORÍA',car.categoria],
+      ['MARCA',marca],['MODELO',modelo],['AÑO',sp.anio||year],['COMBUSTIBLE',sp.combustible||'Gasolina'],
+      ['TRANSMISIÓN',sp.transmision||'Automático'],['ASIENTOS',sp.pasajeros||'5'],['MALETAS',sp.maletas||'3'],['A/C',sp.ac||'Sí'],
+      ['RADIO AM/FM',yesNo('Radio AM/FM')],['BLUETOOTH',yesNo('Bluetooth')],['USB',yesNo('USB')],['MP3',yesNo('MP3')],['WIFI',yesNo('WIFI')],
       ['ITVS','Al día'],['REVISIÓN','Al día']
-    ].map(([k,v])=>`<div><span style="font-size:.7rem;color:var(--muted);letter-spacing:.1em">${k}</span><b>${v}</b></div>`).join('');
+    ].map(([k,v])=>`<div><span style="font-size:.7rem;color:var(--muted);letter-spacing:.1em">${k}</span><b>${esc(v)}</b></div>`).join('');
 
     document.getElementById('detailReserve').href=waReserve(car.nombre,car.precio,'2026-12-18','2026-12-21','Aeropuerto Las Américas');
     document.getElementById('detailPaypal').href=E?E.getPaypalLink():PAYPAL_LINK;
