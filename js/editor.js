@@ -50,7 +50,7 @@
       const raw = JSON.parse(localStorage.getItem(STORE_KEY));
       if(!raw) return structuredClone(DEFAULT_STATE);
       return {
-        ...structuredClone(DEFAULT_STATE), ...raw,
+        ...structuredClone(DEFAULT_STATE), ...raw, theme:'light',
         colors:{...DEFAULT_STATE.colors,...raw.colors},
         fonts:{...DEFAULT_STATE.fonts,...raw.fonts},
         texts:{...raw.texts}, photos:{...raw.photos}, prices:{...raw.prices}, specs:{...raw.specs}, galleries:{...raw.galleries},
