@@ -89,7 +89,7 @@
     const year=(car.nombre.match(/(19|20)\d{2}/)||[])[0]||'—';
     const sp=(E && E.getSpec(car.id)) || {};
     const marca=sp.marca||brandOf(car.nombre);
-    const modelo=sp.modelo||car.nombre.replace(/\b(MERCEDES|BMW|AUDI|JEEP|TOYOTA|HYUNDAI|KIA|CHANGAN|LEXUS|PORSCHE|CHEVROLET|HONDA|FORD|RANGE ROVER)\b/i,'').replace(/\b(19|20)\d{2}\b/,'').trim()||'—';
+    const modelo=sp.modelo||car.nombre.replace(/\b(MERCEDES-BENZ|MERCEDES|BMW|AUDI|JEEP|TOYOTA|HYUNDAI|KIA|CHANGAN|LEXUS|PORSCHE|CHEVROLET|HONDA|FORD|RANGE ROVER)\b/i,'').replace(/^-+/,'').replace(/\b(19|20)\d{2}\b/,'').trim()||'—';
     const extras=sp.extras||EXTRAS_DEFAULT;
     const yesNo=v=>extras.includes(v)?'Sí':'No';
     document.getElementById('detailSpecs').innerHTML=[
