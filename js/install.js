@@ -37,10 +37,17 @@
       ub.href='mis-vehiculos.html';
       const label=ub.querySelector('.user-label');
       if(label) label.textContent='HOLA, '+u.nombre.split(' ')[0].toUpperCase();
-      else ub.textContent='👤 '+u.nombre.split(' ')[0];
+      else ub.append(' '+u.nombre.split(' ')[0].toUpperCase());
     }
 
     if('serviceWorker' in navigator){
+      const hadController=!!navigator.serviceWorker.controller;
+      let refreshing=false;
+      navigator.serviceWorker.addEventListener('controllerchange',()=>{
+        if(!hadController||refreshing) return;
+        refreshing=true;
+        location.reload();
+      });
       navigator.serviceWorker.register('sw.js').catch(()=>{});
     }
   });

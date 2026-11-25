@@ -39,7 +39,7 @@
   <div class="nav-actions">
         <button class="menu-btn" id="installBtn" aria-label="Descargar / agregar al inicio" title="Descargar / agregar al inicio"><img src="img/download.svg" alt="Descargar"></button>
         <a class="btn btn-ghost btn-sm" id="userBtn" href="login.html" aria-label="Mi usuario"><img class="nav-ico" src="img/user.svg" alt=""><span class="user-label">CREA TU USUARIO</span></a>
-        <button class="menu-btn" id="menuBtn" aria-label="Menú">☰</button>
+        <button class="menu-btn" id="menuBtn" aria-label="Menú"><img src="img/menu.svg" alt=""></button>
       </div>
 </div></div></header>
 
@@ -47,14 +47,18 @@
   <p class="eyebrow">ÁREA PRIVADA DEL CLIENTE</p>
   <h1 class="section-title">Mis vehículos reservados</h1>
   <p class="lede" id="hello" style="margin-top:1rem"></p>
+  <div class="btn-row" style="margin-top:1.2rem">
+    <button class="btn btn-ghost btn-sm" id="logoutBtn" type="button">CERRAR SESIÓN</button>
+  </div>
   <div id="reservas" style="margin-top:2.5rem;display:grid;gap:1rem"></div>
 </main>
 <div class="toast" id="toast"></div>
 <script src="js/editor.min.js"></script>
 <script src="js/auth.min.js"></script>
+<script src="js/install.min.js"></script>
 <script src="js/mis-vehiculos.min.js"></script>
 <script src="js/lite.min.js"></script>
-<a class="wa-float" href="https://wa.me/18096930840" aria-label="WhatsApp Asistencia 24h"><img src="img/whatsapp.svg" alt="WhatsApp Oasis Rent A Car"></a>
+<a class="wa-float" href="https://wa.me/18096930840" aria-label="WhatsApp Asistencia 24h"><span class="wa-tip" aria-hidden="true">¡HÁBLAME!</span><img src="img/whatsapp.svg" alt="WhatsApp Oasis Rent A Car"></a>
 <script src="js/i18n.min.js"></script>
 </body>
 </html>

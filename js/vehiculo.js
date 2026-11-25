@@ -69,7 +69,7 @@
     document.getElementById('detailSpecs').innerHTML=[
       ['AÑO',year],['ASIENTOS',sp.pasajeros||'5'],['MALETAS',sp.maletas||'3'],
       ['TRANSMISIÓN',sp.transmision||'Automático'],['A/C',sp.ac||'Sí'],['CATEGORÍA',car.categoria],
-      ['ITVS','Al día ✅'],['REVISIÓN','Al día']
+      ['ITVS','Al día'],['REVISIÓN','Al día']
     ].map(([k,v])=>`<div><span style="font-size:.7rem;color:var(--muted);letter-spacing:.1em">${k}</span><b>${v}</b></div>`).join('');
 
     document.getElementById('detailReserve').href=waReserve(car.nombre,car.precio,'2026-12-18','2026-12-21','Aeropuerto Las Américas');

@@ -55,7 +55,7 @@
   function renderMarquee(){
     const items=['SUV','LUJO','ECONÓMICO','ENTREGA EN AEROPUERTO','PAGO CON PAYPAL','SERVICIO 24/7'];
     const el=document.getElementById('marqueeTrack');
-    if(el) el.innerHTML=[...items,...items].map(x=>`<span>${x} <b>✦</b></span>`).join('');
+    if(el) el.innerHTML=[...items,...items].map(x=>`<span>${x} <b aria-hidden="true"></b></span>`).join('');
   }
 
   function renderPaypalCards(){
@@ -70,7 +70,7 @@
     const el=document.getElementById('paypalCards');
     if(el && !el.dataset.ready){
       el.dataset.ready='1';
-      el.innerHTML=items.map(([t,d])=>`<div class="feature"><div class="ic">✓</div><h4>${t}</h4><p>${d}</p></div>`).join('');
+      el.innerHTML=items.map(([t,d])=>`<div class="feature"><div class="ic"><img src="img/check.svg" alt="" class="check-ico"></div><h4>${t}</h4><p>${d}</p></div>`).join('');
     }
   }
 
@@ -167,7 +167,7 @@
         const c=E.allCars().find(x=>x.id===Number(b.dataset.gallery));
         if(!c) return;
         const imgs=[c.foto,...PHOTOS.slice(0,3)];
-        openModal(`<button class="close" onclick="OasisCloseModal()">✕</button><h3>${c.nombre}</h3><div class="gallery">${imgs.map(p=>`<img src="${imgSrc(p)}" alt="${c.nombre}" loading="lazy" decoding="async">`).join('')}</div>`);
+        openModal(`<button class="close" onclick="OasisCloseModal()" aria-label="Cerrar"><img src="img/close.svg" alt=""></button><h3>${c.nombre}</h3><div class="gallery">${imgs.map(p=>`<img src="${imgSrc(p)}" alt="${c.nombre}" loading="lazy" decoding="async">`).join('')}</div>`);
       };
     });
     document.querySelectorAll('[data-paypal]').forEach(a=>a.href=E.getPaypalLink());
@@ -234,13 +234,13 @@
 
     document.getElementById('openReq')?.addEventListener('click',()=>{
       const short=E.state.texts.reqShort||'Pasaporte, tarjeta de crédito con disponibilidad y licencia de conducir vigente.';
-      openModal(`<button class="close" onclick="OasisCloseModal()">✕</button><h3>Requisitos para rentar</h3><div id="needList"></div><p class="lede" style="margin-top:1rem">${short}</p><a class="btn btn-orange" style="margin-top:1rem" href="https://wa.me/18096930840" target="_blank" rel="noopener">¿DUDAS? ESCRÍBENOS</a>`);
+      openModal(`<button class="close" onclick="OasisCloseModal()" aria-label="Cerrar"><img src="img/close.svg" alt=""></button><h3>Requisitos para rentar</h3><div id="needList"></div><p class="lede" style="margin-top:1rem">${short}</p><a class="btn btn-orange" style="margin-top:1rem" href="https://wa.me/18096930840" target="_blank" rel="noopener">¿DUDAS? ESCRÍBENOS</a>`);
       renderNeeds();
     });
 
     document.addEventListener('click',e=>{
       const v=e.target.closest('[data-video]');
-      if(v) openModal(`<button class="close" onclick="OasisCloseModal()">✕</button><h3>Video</h3><iframe width="100%" height="400" src="https://www.youtube.com/embed/${v.dataset.video}?autoplay=1" title="Video Oasis" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="border-radius:12px"></iframe>`);
+      if(v) openModal(`<button class="close" onclick="OasisCloseModal()" aria-label="Cerrar"><img src="img/close.svg" alt=""></button><h3>Video</h3><iframe width="100%" height="400" src="https://www.youtube.com/embed/${v.dataset.video}?autoplay=1" title="Video Oasis" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="border-radius:12px"></iframe>`);
     });
 
     document.getElementById('contactForm')?.addEventListener('submit',e=>{
