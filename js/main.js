@@ -27,7 +27,7 @@
 
   /** Imagen con WebP + respaldo JPG, carga diferida y skeleton. */
   function picture(src, alt){
-    const webp=imgSrc(src), jpg=src.replace('.webp','.jpg');
+    const webp=imgSrc(src), jpg=(/[th]\.webp$/.test(src))?webp:src.replace('.webp','.jpg');
     return `<picture><source srcset="${webp}" type="image/webp"><img src="${jpg}" alt="${alt}" loading="lazy" decoding="async"
       onload="OasisImg.ok(this)" onerror="OasisImg.fail(this)"></picture>`;
   }
@@ -166,7 +166,7 @@
       b.onclick=()=>{
         const c=E.allCars().find(x=>x.id===Number(b.dataset.gallery));
         if(!c) return;
-        const imgs=[c.foto,...PHOTOS.slice(0,3)];
+        const imgs=(c.fotosMini&&c.fotosMini.length?c.fotosMini:[c.foto]).slice(0,10);
         openModal(`<button class="close" onclick="OasisCloseModal()" aria-label="Cerrar"><img src="img/close.svg" alt=""></button><h3>${c.nombre}</h3><div class="gallery">${imgs.map(p=>`<img src="${imgSrc(p)}" alt="${c.nombre}" loading="lazy" decoding="async">`).join('')}</div>`);
       };
     });

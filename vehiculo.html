@@ -58,11 +58,47 @@
   </section>
 
   <section class="shell" style="padding-bottom:clamp(4rem,8vw,7rem)">
+    <form class="reserve-form" id="reserveForm" novalidate>
+      <div class="reserve-head">
+        <div><span class="reserve-kicker">RESERVA ESTE VEHÍCULO</span><h2>Completa tus datos y te escribimos por WhatsApp</h2></div>
+        <span class="reserve-badge" id="reserveCar">Oasis Rent A Car</span>
+      </div>
+      <div class="reserve-grid">
+        <div class="field"><label for="rfNombre">Nombre</label><input id="rfNombre" autocomplete="given-name" required placeholder="Tu nombre"></div>
+        <div class="field"><label for="rfApellidos">Apellidos</label><input id="rfApellidos" autocomplete="family-name" required placeholder="Tus apellidos"></div>
+        <div class="field"><label for="rfWhatsapp">WhatsApp</label><input id="rfWhatsapp" type="tel" required placeholder="(809) 000-0000"></div>
+        <div class="field"><label for="rfMovil">Móvil alternativo</label><input id="rfMovil" type="tel" placeholder="Otro número (opcional)"></div>
+        <div class="field"><label for="rfEmail">Email</label><input id="rfEmail" type="email" autocomplete="email" placeholder="correo@ejemplo.com"></div>
+        <div class="field"><label for="rfPais">País</label><input id="rfPais" autocomplete="country-name" required placeholder="República Dominicana" value="República Dominicana"></div>
+        <div class="field field-full"><label for="rfDireccion">Dirección</label><input id="rfDireccion" autocomplete="street-address" required placeholder="Tu dirección completa"></div>
+        <div class="field"><label for="rfF1">Fecha inicio</label><input id="rfF1" type="date" required></div>
+        <div class="field"><label for="rfF2">Fecha retorno</label><input id="rfF2" type="date" required></div>
+        <div class="field"><label for="rfAeropuerto">Aeropuerto</label>
+          <select id="rfAeropuerto">
+            <option>Aeropuerto Cibao (STI)</option>
+            <option selected>Aeropuerto Las Américas (SDQ)</option>
+            <option>Aeropuerto Puerto Plata (POP)</option>
+            <option>Aeropuerto La Romana (LRM)</option>
+            <option>Aeropuerto Punta Cana (PUJ)</option>
+            <option>Aeropuerto de Samaná-El Catey (AZS)</option>
+            <option>Aeropuerto La Isabela (JBQ)</option>
+          </select>
+        </div>
+        <div class="field"><label for="rfAerolinea">Aerolínea</label><input id="rfAerolinea" placeholder="Ej. American Airlines"></div>
+        <div class="field"><label for="rfHora">Hora llegada</label><input id="rfHora" type="time"></div>
+        <div class="field"><label for="rfVuelo">No. de vuelo</label><input id="rfVuelo" placeholder="Ej. AA1234"></div>
+      </div>
+      <label class="terms-check"><input type="checkbox" id="acceptTermsDetail"> Acepto los <a href="terminos.html" target="_blank" rel="noopener">Términos y Condiciones</a> y la reserva mínima de 72 horas (3 días).</label>
+      <div class="reserve-bottom">
+        <button class="btn btn-orange" type="submit">ENVIAR RESERVACIÓN POR WHATSAPP →</button>
+        <span class="reserve-note">Respuesta rápida, 24 horas los 7 días.</span>
+      </div>
+    </form>
+
     <div class="detail-gallery" id="detailGallery"></div>
 
     <div class="detail-specs" id="detailSpecs" style="margin-top:2rem"></div>
 
-    <label class="terms-check" style="max-width:640px"><input type="checkbox" id="acceptTermsDetail"> Acepto los <a href="terminos.html" target="_blank" rel="noopener">Términos y Condiciones</a></label>
     <div class="detail-actions">
       <a class="btn btn-orange" id="detailReserve" href="https://wa.me/18096930840" target="_blank" rel="noopener">RESERVAR POR WHATSAPP →</a>
       <button class="btn btn-ghost" id="detailSave" type="button">GUARDAR EN MIS VEHÍCULOS</button>
@@ -84,7 +120,8 @@
 <script src="js/paypal.min.js"></script>
 <script src="js/catalog.min.js"></script>
 <script src="js/whatsapp.min.js"></script>
-<script src="js/editor.min.js"></script>
+<script src="js/catalog-details.min.js"></script>
+    <script src="js/editor.min.js"></script>
 <script src="js/auth.min.js"></script>
 <script src="js/vehiculo.min.js"></script>
 <script src="js/lite.min.js"></script>

@@ -27,11 +27,13 @@
     { title:'Mister Oasis',      id:'YE7VzlLtp-4' }
   ];
 
+  const CATALOG_DETAILS_STATE = (typeof CATALOG_DETAILS!=='undefined') ? CATALOG_DETAILS : {};
+
   const DEFAULT_STATE = {
     logo:'',
     heroImage:'img/hero.webp',
     ownerImage:'img/owner.webp',
-    misterImage:'img/mister-oasis.jpg',
+    misterImage:'img/mister-oasis.webp',
     paypal:'',                 // vacío = usa PAYPAL_LINK de paypal.js
     colors:{ primary:'#ff8c00', secondary:'#1a4fa0', background:'#111111', text:'#FFFFFF' },
     fonts:{ display:"ui-serif,Georgia,serif", body:"system-ui,-apple-system,'Segoe UI',Roboto,sans-serif" },
@@ -119,7 +121,7 @@
     getPaypalLink:()=> S.paypal || (typeof PAYPAL_LINK!=='undefined' ? PAYPAL_LINK : ''),
     getPrice:(id)=> S.prices[id]!==undefined ? S.prices[id] : null,
     getPhoto:(id)=> S.photos[id] || null,
-    getSpec:(id)=> S.specs[id] || null,
+    getSpec:(id)=> S.specs[id] || CATALOG_DETAILS_STATE[id] || null,
     setSpec:(id,value)=>{ S.specs[id]={...(S.specs[id]||{}),...value}; persist(); },
     readImage,
     getGallery:(id)=> S.galleries[id] || [],
@@ -136,7 +138,8 @@
             ...c,
             precio: S.prices[c.id]!==undefined ? S.prices[c.id] : c.precio,
             foto: (portada&&portada.src) || S.photos[c.id] || c.foto,
-            fotos: gal.map(x=>x.src),
+            fotos: gal.length ? gal.map(x=>x.src) : (CATALOG_DETAILS_STATE[c.id]?.fotos || []),
+            fotosMini: gal.length ? gal.map(x=>x.src) : (CATALOG_DETAILS_STATE[c.id]?.minis || []),
             status: S.statuses[c.id] || c.status || 'Disponible',
             categoria: S.categoryOverrides[c.id] || c.categoria,
             stock: S.stocks[c.id]!==undefined ? S.stocks[c.id] : (c.stock!==undefined?c.stock:1)
@@ -199,7 +202,7 @@
       if(heroSection) heroSection.classList.toggle('hero-custom',/^data:/.test(S.heroImage||''));
       const owner=document.getElementById('ownerPhoto');
       if(owner) owner.src=S.ownerImage||'img/owner.webp';
-      document.querySelectorAll('img.mister-photo').forEach(el=>el.src=S.misterImage||'img/mister-oasis.jpg');
+      document.querySelectorAll('img.mister-photo').forEach(el=>el.src=S.misterImage||'img/mister-oasis.webp');
 
       const waDigits=(S.whatsapp||'').replace(/\D/g,'')||'18096930840';
       document.querySelectorAll('[data-wa],a.wa-float').forEach(a=>a.href='https://wa.me/'+waDigits);

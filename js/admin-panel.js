@@ -304,7 +304,7 @@
   }
 
   /* ---------------- IMÁGENES ---------------- */
-  const HERO_DEFAULT='img/hero.webp', MISTER_DEFAULT='img/mister-oasis.jpg';
+  const HERO_DEFAULT='img/hero.webp', MISTER_DEFAULT='img/mister-oasis.webp';
   const MARCAS=['JEEP','TOYOTA','HYUNDAI','KIA','CHANGAN','BMW','MERCEDES','AUDI','LEXUS','PORSCHE','CHEVROLET','HONDA','FORD','RANGE ROVER','OTRO'];
   const COMBUSTIBLES=['Gasolina','Diésel','Híbrido','Híbrido enchufable','Eléctrico','Gas natural'];
   const EXTRAS=['Radio AM/FM','Bluetooth','USB','MP3','WIFI'];
@@ -528,7 +528,7 @@
     const sel=document.getElementById('detCar'); if(!sel) return;
     const sp=E().getSpec(Number(sel.value))||{};
     const set=(id,v)=>{ const el=document.getElementById(id); if(el) el.value=v||''; };
-    set('detMarca',sp.marca||'JEEP');
+    set('detMarca',String(sp.marca||'JEEP').toUpperCase());
     set('detModelo',sp.modelo||'');
     set('detAnio',sp.anio||'');
     set('detCombustible',sp.combustible||'Gasolina');
@@ -545,7 +545,7 @@
     document.getElementById('detSave')?.addEventListener('click',async()=>{
       const sel=document.getElementById('detCar'); if(!sel) return;
       const id=Number(sel.value); if(!id) return;
-      const d=detailValues('det'), old=E().getSpec(id)||{};
+      const d=detailValues('det'), old={...(E().getSpec(id)||{})};
       const ok=await askDo('Cambiar los detalles del vehículo #'+id,'Detalles actualizados',`${d.marca} ${d.modelo} ${d.anio} · ${d.combustible}`,()=>E().setSpec(id,{...old,...d}));
       if(ok) toast('Detalles guardados');
     });

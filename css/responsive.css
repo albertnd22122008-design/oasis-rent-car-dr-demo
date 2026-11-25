@@ -53,6 +53,9 @@
   .admin-top h1{font-size:1.4rem}
   .detail-gallery{grid-template-columns:1fr}
   .detail-gallery .main{grid-row:auto}
+  .reserve-grid{grid-template-columns:1fr}
+  .reserve-head{align-items:flex-start}
+  .reserve-bottom .btn{width:100%}
 }
 
 /* ============================================================

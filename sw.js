@@ -1,19 +1,19 @@
 /* Service Worker: caché de la app para uso sin conexión */
-const CACHE='oasis-v5';
+const CACHE='oasis-v6';
 const FILES=[
   './','./index.html','./admin.html','./vehiculo.html','./login.html',
   './mis-vehiculos.html','./atencion.html','./reserva.html','./cookies.html',
   './privacidad.html','./terminos.html','./404.html',
   './css/style.min.css','./css/responsive.min.css','./css/animations.min.css',
-  './js/main.min.js','./js/catalog.min.js','./js/editor.min.js','./js/paypal.min.js',
+  './js/main.min.js','./js/catalog.min.js','./js/catalog-details.min.js','./js/editor.min.js','./js/paypal.min.js',
   './js/whatsapp.min.js','./js/auth.min.js','./js/admin.min.js','./js/admin-panel.min.js',
   './js/master.min.js','./js/vehiculo.min.js','./js/login.min.js','./js/mis-vehiculos.min.js',
   './js/atencion.min.js','./js/reserva.min.js','./js/cookies.min.js','./js/i18n.min.js',
   './js/install.min.js','./js/lite.min.js',
   './img/logo.svg','./img/hero.webp','./img/fondo-elegante.webp','./img/owner.webp',
-  './img/sin-foto.webp','./img/menu.svg','./img/close.svg','./img/lock.svg',
+  './img/sin-foto.webp','./img/mister-oasis.webp','./img/menu.svg','./img/close.svg','./img/lock.svg',
   './img/user.svg','./img/check.svg','./img/support.svg','./img/whatsapp.svg',
-  './img/whatsapp-outline.svg','./img/download.svg','./img/paypal.svg'
+  './img/whatsapp-outline.svg','./img/instagram.svg','./img/download.svg','./img/paypal.svg'
 ];
 self.addEventListener('install',e=>{ e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting())); });
 self.addEventListener('activate',e=>{ e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==CACHE).map(x=>caches.delete(x)))).then(()=>self.clients.claim())); });

@@ -31,7 +31,7 @@
   window.OasisLite = {
     isOn: ()=>on,
     img(path){
-      return on && path.includes('img/carros/') ? path.replace('img/carros/','img/carros-small/') : path;
+      return on && /img\/carros\/carro-\d+\.webp$/.test(path) ? path.replace('img/carros/','img/carros-small/') : path;
     }
   };
 

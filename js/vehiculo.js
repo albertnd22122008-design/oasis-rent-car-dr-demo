@@ -59,7 +59,8 @@
     document.getElementById('detailTitle').textContent=car.nombre;
     document.getElementById('detailPrice').innerHTML=`US $${car.precio} <small>/ día</small>`;
 
-    const fotos=(car.fotos&&car.fotos.length)?car.fotos.slice(0,10):[car.foto,...photos.filter(p=>p!==car.foto).slice(0,3)];
+    const fotos=(car.fotos&&car.fotos.length)?car.fotos:[car.foto,...photos.filter(p=>p!==car.foto).slice(0,3)];
+    const minis=(car.fotosMini&&car.fotosMini.length)?car.fotosMini.slice(0,fotos.length):fotos;
     let idx=0;
     const gal=document.getElementById('detailGallery');
     gal.innerHTML=
@@ -68,7 +69,7 @@
         ${fotos.length>1?`<button class="gal-arrow prev" type="button" aria-label="Foto anterior">${chev('prev')}</button><button class="gal-arrow next" type="button" aria-label="Foto siguiente">${chev('next')}</button>`:''}
         <span class="gal-count" id="galCount">1 / ${fotos.length}</span>
       </div>`+
-      (fotos.length>1?`<div class="gal-thumbs">${fotos.map((p,i)=>`<button type="button" data-gal="${i}" aria-label="Ver foto ${i+1}"><img src="${imgSrc(p)}" alt="" loading="lazy" decoding="async" onerror="OasisImg.fail(this)"></button>`).join('')}</div>`:'');
+      (fotos.length>1?`<div class="gal-thumbs">${fotos.map((p,i)=>`<button type="button" data-gal="${i}" aria-label="Ver foto ${i+1}"><img src="${imgSrc(minis[i]||p)}" alt="" loading="lazy" decoding="async" onerror="OasisImg.fail(this)"></button>`).join('')}</div>`:'');
     const mainPhoto=document.getElementById('mainPhoto');
     const galCount=document.getElementById('galCount');
     const thumbs=[...gal.querySelectorAll('[data-gal]')];
@@ -96,7 +97,7 @@
       ['MARCA',marca],['MODELO',modelo],['AÑO',sp.anio||year],['COMBUSTIBLE',sp.combustible||'Gasolina'],
       ['TRANSMISIÓN',sp.transmision||'Automático'],['ASIENTOS',sp.pasajeros||'5'],['MALETAS',sp.maletas||'3'],['A/C',sp.ac||'Sí'],
       ['RADIO AM/FM',yesNo('Radio AM/FM')],['BLUETOOTH',yesNo('Bluetooth')],['USB',yesNo('USB')],['MP3',yesNo('MP3')],['WIFI',yesNo('WIFI')],
-      ['ITVS','Al día'],['REVISIÓN','Al día']
+      ['EQUIPAMIENTO',extras.join(', ')||'—'],['ITVS','Al día'],['REVISIÓN','Al día']
     ].map(([k,v])=>`<div><span style="font-size:.7rem;color:var(--muted);letter-spacing:.1em">${k}</span><b>${esc(v)}</b></div>`).join('');
 
     document.getElementById('detailReserve').href=waReserve(car.nombre,car.precio,'2026-12-18','2026-12-21','Aeropuerto Las Américas');
@@ -106,6 +107,64 @@
     const f1=q.get('f1')||'2026-12-18', f2=q.get('f2')||'2026-12-21';
     const lugar=q.get('pickup')||'Aeropuerto Las Américas';
     document.getElementById('detailReserve').href=waReserve(car.nombre,car.precio,f1,f2,lugar);
+
+    /* --- Formulario completo de reserva al inicio del detalle --- */
+    const rval=id=>document.getElementById(id)?.value.trim()||'';
+    const rset=(id,v)=>{ const el=document.getElementById(id); if(el && v) el.value=v; };
+    rset('rfF1',f1); rset('rfF2',f2);
+    rset('rfAeropuerto',lugar);
+    const badge=document.getElementById('reserveCar'); if(badge) badge.textContent=car.nombre;
+    const toastMsg=msg=>{
+      const t=document.getElementById('toast');
+      if(t){ t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),3000); }
+      else alert(msg);
+    };
+    const reserveForm=document.getElementById('reserveForm');
+    if(reserveForm) reserveForm.onsubmit=e=>{
+      e.preventDefault();
+      const required=['rfNombre','rfApellidos','rfWhatsapp','rfDireccion','rfPais','rfF1','rfF2'];
+      let bad=null;
+      required.forEach(id=>{
+        const el=document.getElementById(id); if(!el) return;
+        el.classList.toggle('field-error',!el.value.trim());
+        if(!el.value.trim() && !bad) bad=el;
+      });
+      if(bad){ toastMsg('Completa los campos obligatorios.'); bad.focus(); return; }
+      if(!termsOK()) return;
+      const ini=new Date(rval('rfF1')+'T00:00:00'), fin=new Date(rval('rfF2')+'T00:00:00');
+      if(!isNaN(ini.getTime()) && !isNaN(fin.getTime()) && (fin-ini)<72*3600*1000){
+        toastMsg('La reserva mínima es de 72 horas (3 días).'); return;
+      }
+      const lines=[
+        'Hola Oasis, quiero reservar este vehículo:',
+        'Vehículo: '+car.nombre,
+        'Precio: US $'+car.precio+' / día',
+        'Nombre: '+rval('rfNombre'),
+        'Apellidos: '+rval('rfApellidos'),
+        'WhatsApp: '+rval('rfWhatsapp'),
+        'Móvil alternativo: '+(rval('rfMovil')||'—'),
+        'Email: '+(rval('rfEmail')||'—'),
+        'Dirección: '+rval('rfDireccion'),
+        'País: '+rval('rfPais'),
+        'Fecha inicio: '+rval('rfF1'),
+        'Fecha retorno: '+rval('rfF2'),
+        'Aeropuerto: '+rval('rfAeropuerto'),
+        'Aerolínea: '+(rval('rfAerolinea')||'—'),
+        'Hora llegada: '+(rval('rfHora')||'—'),
+        'No. de vuelo: '+(rval('rfVuelo')||'—')
+      ];
+      const wa=(E&&E.state&&E.state.whatsapp?E.state.whatsapp:WA_ASISTENCIA).replace(/\D/g,'')||WA_ASISTENCIA;
+      window.open('https://wa.me/'+wa+'?text='+encodeURIComponent(lines.join('\n')),'_blank','noopener');
+      const A=window.OasisAuth;
+      if(A && A.isLogged()) A.createReserva({
+        vehiculoId:car.id, vehiculo:car.nombre, precio:car.precio,
+        pickup:rval('rfAeropuerto'), entrega:rval('rfAeropuerto'),
+        fechaRecogida:rval('rfF1'), fechaRegreso:rval('rfF2'),
+        nombre:rval('rfNombre')+' '+rval('rfApellidos'), whatsapp:rval('rfWhatsapp'),
+        email:rval('rfEmail'), vuelo:rval('rfVuelo'), aerolinea:rval('rfAerolinea')
+      });
+      toastMsg('Reserva enviada por WhatsApp.');
+    };
 
     const termsOK=()=>{
       const c=document.getElementById('acceptTermsDetail');
