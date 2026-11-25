@@ -7,6 +7,26 @@
 
   const STORE_KEY = 'oasis-rent-a-car-v1';
 
+  const DEFAULT_CATEGORIES = [
+    { id:'all',    label:'TODOS',      type:'all',      value:'' },
+    { id:'suv',    label:'SUV',        type:'category', value:'SUV' },
+    { id:'lujo',   label:'LUJO',       type:'category', value:'Lujo' },
+    { id:'eco',    label:'ECONÓMICO',  type:'category', value:'Económico', maxPrice:100 },
+    { id:'jeep',   label:'JEEP',       type:'brand',    value:'JEEP' },
+    { id:'toyota', label:'TOYOTA',     type:'brand',    value:'TOYOTA' },
+    { id:'hyundai',label:'HYUNDAI',    type:'brand',    value:'HYUNDAI' },
+    { id:'kia',    label:'KIA',        type:'brand',    value:'KIA' },
+    { id:'changan',label:'CHANGAN',    type:'brand',    value:'CHANGAN' },
+    { id:'bmw',    label:'BMW',        type:'brand',    value:'BMW' },
+    { id:'mercedes',label:'MERCEDES',  type:'brand',    value:'MERCEDES' }
+  ];
+
+  const DEFAULT_VIDEOS = [
+    { title:'Detrás de cámaras', id:'ScMzIvxBSi4' },
+    { title:'Un día en Oasis',   id:'aqz-KE-bpKQ' },
+    { title:'Mister Oasis',      id:'YE7VzlLtp-4' }
+  ];
+
   const DEFAULT_STATE = {
     logo:'',
     heroImage:'img/hero.webp',
@@ -17,6 +37,10 @@
     fonts:{ display:"ui-serif,Georgia,serif", body:"system-ui,-apple-system,'Segoe UI',Roboto,sans-serif" },
     texts:{}, photos:{}, prices:{}, specs:{}, galleries:{}, added:[],
     statuses:{}, stocks:{}, deleted:[], whatsapp:'+1 (809) 693-0840', theme:'light',
+    categories: DEFAULT_CATEGORIES,
+    videos: DEFAULT_VIDEOS,
+    categoryOverrides:{},
+    wipe:false,
     contact:{
       address:'Ruta 66, #4, Salida del Aeropuerto Internacional de las Américas. Las Caletas, (Código postal 11606) Santo Domingo Este, República Dominicana.',
       tel1:'(809) 549-1531', tel2:'+1 (646) 647-8727', wa1:'(809) 549-1531',
@@ -56,6 +80,10 @@
         texts:{...raw.texts}, photos:{...raw.photos}, prices:{...raw.prices}, specs:{...raw.specs}, galleries:{...raw.galleries},
         statuses:{...raw.statuses}, stocks:{...raw.stocks}, deleted:[...(raw.deleted||[])],
         added:[...(raw.added||[])],
+        categories: Array.isArray(raw.categories) ? raw.categories.map(c=>({...c})) : structuredClone(DEFAULT_CATEGORIES),
+        videos: Array.isArray(raw.videos) ? raw.videos.map(v=>({...v})) : structuredClone(DEFAULT_VIDEOS),
+        categoryOverrides:{...(raw.categoryOverrides||{})},
+        wipe: raw.wipe===true,
         contact:{...DEFAULT_STATE.contact,...raw.contact},
         sections:{...DEFAULT_STATE.sections,...raw.sections}
       };
@@ -97,6 +125,7 @@
     getGallery:(id)=> S.galleries[id] || [],
     setGallery:(id,list)=>{ S.galleries[id]=list.slice(0,10); persist(); },
     allCars(){
+      if(S.wipe) return [];
       const base = typeof CATALOG!=='undefined' ? CATALOG.map(c=>({...c})) : [];
       return [...S.added.map(c=>({...c})), ...base]
         .filter(c=>!S.deleted.includes(c.id))
@@ -109,10 +138,25 @@
             foto: (portada&&portada.src) || S.photos[c.id] || c.foto,
             fotos: gal.map(x=>x.src),
             status: S.statuses[c.id] || c.status || 'Disponible',
+            categoria: S.categoryOverrides[c.id] || c.categoria,
             stock: S.stocks[c.id]!==undefined ? S.stocks[c.id] : (c.stock!==undefined?c.stock:1)
           };
         });
     },
+    setCategory(id,cat){ S.categoryOverrides[id]=cat; persist(); notifyChange(); },
+    setCategories(list){ S.categories=list.map(c=>({...c})); persist(); notifyChange(); },
+    setVideos(list){ S.videos=list.map(v=>({...v})); persist(); },
+    setTexts(obj){ S.texts={...S.texts,...obj}; persist(); },
+    setContact(obj){ S.contact={...S.contact,...obj}; persist(); },
+    wipeAll(){
+      S.wipe=true;
+      S.added=[]; S.photos={}; S.galleries={}; S.prices={}; S.specs={};
+      S.statuses={}; S.stocks={}; S.texts={}; S.videos=[]; S.categories=[];
+      S.categoryOverrides={}; S.deleted=typeof CATALOG!=='undefined'?CATALOG.map(c=>c.id):[];
+      S.paypal=''; S.whatsapp=''; S.heroImage=''; S.ownerImage=''; S.misterImage='';
+      persist(); Editor.apply();
+    },
+    restoreAll(){ localStorage.removeItem(STORE_KEY); location.reload(); },
     setStatus(id,status){ S.statuses[id]=status; persist(); },
     setStock(id,n){ S.stocks[id]=Math.max(0,Number(n)||0); persist(); },
     setPrice(id,p){ S.prices[id]=Number(p); persist(); },
@@ -135,6 +179,7 @@
       const r=document.documentElement.style;
       const light=S.theme!=='dark';
       document.documentElement.classList.toggle('light',light);
+      if(document.body) document.body.classList.toggle('wipe',S.wipe===true);
       r.setProperty('--primary',S.colors.primary);
       r.setProperty('--secondary',light?'#1A4FA0':S.colors.secondary);
       r.setProperty('--bg',light?'#FFFFFF':S.colors.background);
@@ -179,6 +224,10 @@
     init(){ bindUI(); Editor.apply(); }
   };
   window.OasisEditor = Editor;
+
+  /* Aplicar tema claro en TODAS las páginas, incluso las que no cargan main.js */
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>Editor.apply());
+  else Editor.apply();
 
   /* --- Panel --- */
   const panel=document.getElementById('panel');
@@ -341,9 +390,9 @@
     const cars=Editor.allCars();
     const opts=cars.map(c=>`<option value="${c.id}">#${c.id} — ${c.nombre}</option>`).join('');
     const cp=document.getElementById('carPick'), pk=document.getElementById('pricePick'), cph=document.getElementById('carPhotoPick');
-    if(cp){ cp.innerHTML=opts; const p=document.getElementById('carPreview'); if(p)p.src=cars[0].foto; }
-    if(pk){ pk.innerHTML=opts; const v=document.getElementById('priceVal'); if(v)v.value=cars[0].precio; }
-    if(cph){ cph.innerHTML=opts; const p=document.getElementById('carPhotoPreview'); if(p)p.src=cars[0].foto; }
+    if(cp){ cp.innerHTML=opts; const p=document.getElementById('carPreview'); if(p&&cars[0])p.src=cars[0].foto; }
+    if(pk){ pk.innerHTML=opts; const v=document.getElementById('priceVal'); if(v&&cars[0])v.value=cars[0].precio; }
+    if(cph){ cph.innerHTML=opts; const p=document.getElementById('carPhotoPreview'); if(p&&cars[0])p.src=cars[0].foto; }
     cph&&(cph.onchange=e=>{
       const c=Editor.allCars().find(x=>x.id===Number(e.target.value));
       const p=document.getElementById('carPhotoPreview'); if(p&&c)p.src=c.foto;

@@ -66,8 +66,6 @@
   body.lite .fade-up,
   body.lite [data-reveal],
   body.lite .hero h1 .w span{opacity:1!important;transform:none!important}
-  body.lite .hero-bg{background-image:url("../img/hero.webp")!important}
-  body.lite .hero-grad{background:linear-gradient(90deg,var(--fondo-oscuro) 0%,rgba(17,17,17,.86) 38%,rgba(17,17,17,.35) 100%),linear-gradient(0deg,var(--fondo-oscuro) 0%,transparent 45%)!important}
   body.lite .card .ph img{opacity:1!important}
 
   /* 2. Título grande solo en PC */

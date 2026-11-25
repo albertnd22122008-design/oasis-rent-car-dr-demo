@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" class="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#111111">
+<meta name="theme-color" content="#FFFFFF">
 <title>Oasis Rent A Car - Santo Domingo | ¡No importa el destino, nosotros te lo llevamos!</title>
 <meta name="description" content="Renta tu vehículo en República Dominicana. Entrega en todos los aeropuertos y hoteles. Flota premium, asistencia 24/7 y pago seguro con PayPal.">
 <meta property="og:type" content="website">
@@ -60,7 +60,7 @@
       </nav>
       <div class="nav-actions">
         <button class="menu-btn" id="installBtn" aria-label="Descargar / agregar al inicio" title="Descargar / agregar al inicio"><img src="img/download.svg" alt="Descargar"></button>
-        <a class="btn btn-ghost btn-sm" id="userBtn" href="login.html" aria-label="Mi usuario">👤 <span class="user-label">CREA TU USUARIO</span></a>
+        <a class="btn btn-ghost btn-sm" id="userBtn" href="login.html" aria-label="Mi usuario"><img class="nav-ico" src="img/user.svg" alt=""><span class="user-label">CREA TU USUARIO</span></a>
         <a href="#vehiculos" class="btn btn-orange btn-sm">RESERVAR AHORA</a>
         <button class="menu-btn" id="menuBtn" aria-label="Menú">☰</button>
       </div>
@@ -68,7 +68,7 @@
     <nav class="mobile-menu" id="mobileMenu">
       <a href="#inicio">INICIO</a><a href="#requisitos">REQUISITOS</a><a href="#vehiculos">VEHÍCULOS</a>
       <a href="#pago">PAGO EN LÍNEA</a><a href="#contacto">SERVICIO AL CLIENTE 24/7</a>
-      <a href="login.html">👤 CREA TU USUARIO / INGRESAR</a>
+      <a href="login.html"><img class="nav-ico" src="img/user.svg" alt=""> CREA TU USUARIO / INGRESAR</a>
       <a href="mis-vehiculos.html">MIS VEHÍCULOS RESERVADOS</a>
       <a href="index.html" id="installBtnMobile"><img src="img/download.svg" alt=""> DESCARGAR / AGREGAR AL INICIO</a>
       <a href="#vehiculos" class="btn btn-orange" style="margin-top:.6rem">RESERVAR AHORA →</a>
@@ -112,7 +112,7 @@
       </div>
       <label class="terms-check"><input type="checkbox" id="acceptTerms"> Acepto los <a href="terminos.html" target="_blank" rel="noopener">Términos y Condiciones</a></label>
       <button class="btn btn-orange" type="submit">ENCUENTRA UN VEHÍCULO →</button>
-      <p class="search-note">Fechas mínimas de renta: 72 horas (3 días)</p>
+      <p class="search-note">Reserva mínima de renta: 72 horas (3 días).</p>
     </form>
   </div>
 </section>
@@ -148,10 +148,10 @@
       <p class="eyebrow" data-edit="waEyebrow">ASISTENCIA INMEDIATA</p>
       <h2 class="section-title" data-edit="waTitle">Comunícate con nosotros<br><span class="orange">vía WhatsApp</span></h2>
       <p class="lede" data-edit="waText">Asistencia vía WhatsApp +1 (809) 693-0840. Estamos disponibles las 24 horas, los 365 días del año.</p>
-      <a class="btn btn-orange wa-link" data-wa="general" href="https://wa.me/18096930840" target="_blank" rel="noopener">ABRIR WHATSAPP →</a>
+      <a class="btn btn-orange wa-link" data-wa="general" href="https://wa.me/18096930840" target="_blank" rel="noopener"><img class="ico" src="img/whatsapp-outline.svg" alt="">ABRIR WHATSAPP →</a>
     </div>
     <div class="panel">
-      <h3 class="blue">Atención personalizada</h3>
+      <h3 class="blue"><img class="ico" src="img/support.svg" alt="">Atención personalizada</h3>
       <p class="lede">Reservas, cambios de fecha, entregas especiales o asistencia en ruta. Un mismo número para todo.</p>
       <p class="big-number" data-bind="waNumber">+1 (809) 693-0840</p>
     </div>
@@ -331,7 +331,7 @@
           <div class="field form-field"><label>Correo</label><input id="cEmail" type="email" required></div>
           <div class="field form-field"><label>Asunto</label><select id="cSubject"><option>Reservar vehículo</option><option>Pago en línea</option><option>Requisitos</option><option>Entrega en aeropuerto</option><option>Otro</option></select></div>
           <div class="field form-field"><label>Mensaje</label><textarea id="cMsg" rows="4" class="input" required></textarea></div>
-          <div class="field form-field"><label>Antispam: ¿cuánto es 3 + 4?</label><input id="cCaptcha" inputmode="numeric" required placeholder="Escribe el resultado"></div>
+          <div class="field form-field"><label>Antispam: ¿cuánto es 2 + 1?</label><input id="cCaptcha" inputmode="numeric" required placeholder="Escribe el resultado"></div>
           <button class="btn btn-orange form-submit" type="submit">ENVIAR MENSAJE →</button>
           <p id="formOk" class="form-ok">¡Mensaje enviado! Te respondemos en menos de 15 minutos.</p>
         </form>

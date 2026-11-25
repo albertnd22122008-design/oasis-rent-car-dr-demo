@@ -1,30 +1,53 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" class="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#111111">
+<meta name="theme-color" content="#FFFFFF">
 <title>Panel de administración | Oasis Rent A Car</title>
 <meta name="description" content="Panel de administración de Oasis Rent A Car. Gestiona el stock de vehículos, precios y ajustes.">
+<meta name="robots" content="noindex,nofollow">
 <link rel="preload" as="image" href="img/logo.svg">
 <link rel="icon" href="img/logo-oficial.png" type="image/png">
 <link rel="stylesheet" href="css/style.min.css">
 <link rel="stylesheet" href="css/responsive.min.css">
 <link rel="stylesheet" href="css/animations.min.css">
+<script>try{if(sessionStorage.getItem('oasis-admin-unlocked')==='1')document.documentElement.classList.add('admin-unlocked');}catch(e){}</script>
 </head>
 <body class="admin-page">
+
+<!-- ==================== CANDADO DE ENTRADA ==================== -->
+<div class="lock" id="lockScreen">
+  <form class="lock-card" id="lockForm" autocomplete="off">
+    <span class="logo"><img src="img/logo.svg" alt="OASIS Rent a Car"></span>
+    <p class="eyebrow">ACCESO RESTRINGIDO</p>
+    <h1>Panel Oasis</h1>
+    <p class="lede">Introduce la contraseña master para administrar la web.</p>
+    <div class="field"><label>Contraseña master</label><input class="input" type="password" id="lockPass" required autocomplete="current-password"></div>
+    <div class="field"><label>Tu nombre para el registro <small>(opcional)</small></label><input class="input" id="lockName" maxlength="40" placeholder="Ej. Alberto"></div>
+    <button class="btn btn-orange" style="width:100%" type="submit">ENTRAR AL PANEL →</button>
+    <p class="lock-error" id="lockError"></p>
+  </form>
+</div>
 
 <div class="adm">
   <header class="adm-top">
     <a href="index.html"><span class="logo"><img src="img/logo.svg" alt="OASIS Rent a Car"></span></a>
     <div><p class="eyebrow">ADMINISTRACIÓN</p><h1>Panel Oasis</h1></div>
-    <a class="btn btn-ghost btn-sm" href="index.html">VER LA WEB →</a>
+    <div class="adm-top-actions">
+      <a class="btn btn-ghost btn-sm" href="index.html">VER LA WEB →</a>
+      <button class="btn btn-ghost btn-sm" type="button" id="admLogout">SALIR</button>
+    </div>
   </header>
 
   <nav class="adm-tabs" id="admTabs" aria-label="Secciones del panel">
     <button class="on" data-go="inicio">INICIO</button>
     <button data-go="stock">VEHÍCULOS / STOCK</button>
     <button data-go="add">+ AGREGAR VEHÍCULO</button>
+    <button data-go="cats">CATEGORÍAS</button>
+    <button data-go="videos">VIDEOS</button>
+    <button data-go="contenido">CONTENIDO</button>
+    <button data-go="seguridad">SEGURIDAD</button>
   </nav>
 
   <!-- 1. INICIO -->
@@ -36,7 +59,7 @@
       <button class="btn btn-orange" data-go="stock" style="margin-top:1.2rem">VER STOCK →</button>
     </div>
     <div class="adm-card">
-      <div class="adm-card-head"><h2>Ajustes</h2></div>
+      <div class="adm-card-head"><h2>Ajustes rápidos</h2></div>
       <div class="fgrp"><label>WhatsApp</label><input class="input" id="admWa" placeholder="+1 (809) 693-0840"></div>
       <div class="fgrp"><label>Link de PayPal</label><input class="input" id="admPaypal" placeholder="https://www.paypal.com/..."></div>
       <button class="btn btn-orange" id="admSave" style="margin-top:1rem">GUARDAR AJUSTES</button>
@@ -65,7 +88,7 @@
       <form id="admAddForm">
         <div class="fgrp"><label>1. Nombre del vehículo</label><input class="input" id="vNombre" required placeholder="Ej. Toyota Corolla 2024"></div>
         <div class="fgrp"><label>2. Precio US$/día</label><input class="input" id="vPrecio" type="number" min="1" value="100" required></div>
-        <div class="fgrp"><label>3. Categoría</label><select class="input" id="vCat"><option>SUV</option><option>Lujo</option><option>Económico</option><option>Jeep</option><option>Familiar</option></select></div>
+        <div class="fgrp"><label>3. Categoría</label><select class="input" id="vCat"></select></div>
         <div class="fgrp"><label>4. Foto</label>
           <div class="adm-photo-opts">
             <input class="input" type="file" id="vFile" accept="image/*">
@@ -80,6 +103,86 @@
       </form>
     </div>
   </section>
+
+  <!-- 4. CATEGORÍAS -->
+  <section class="adm-pane" id="pane-cats">
+    <div class="adm-card">
+      <div class="adm-card-head"><h2>Categorías y filtros</h2><span class="adm-pill" id="admCatsCount">0</span></div>
+      <p class="lede">Crea, cambia, ordena o borra los filtros del catálogo. “TODOS” siempre queda primero.</p>
+      <div class="adm-cats" id="admCats"></div>
+    </div>
+    <div class="adm-card">
+      <div class="adm-card-head"><h2>+ Nueva categoría</h2></div>
+      <div class="fgrp"><label>Nombre visible (filtro)</label><input class="input" id="catLabel" placeholder="Ej. PICKUP"></div>
+      <div class="fgrp"><label>Tipo</label><select class="input" id="catType"><option value="category">Categoría del vehículo</option><option value="brand">Marca del vehículo</option></select></div>
+      <div class="fgrp"><label>Valor que debe coincidir</label><input class="input" id="catValue" placeholder="Ej. Pickup o TOYOTA"></div>
+      <button class="btn btn-orange" id="catAdd" type="button">CREAR CATEGORÍA</button>
+    </div>
+  </section>
+
+  <!-- 5. VIDEOS -->
+  <section class="adm-pane" id="pane-videos">
+    <div class="adm-card">
+      <div class="adm-card-head"><h2>Videos “Las ocurrencias dentro de Oasis”</h2><span class="adm-pill" id="admVideosCount">3</span></div>
+      <p class="lede">Pega el link de YouTube o el ID del video. Los videos no cargan hasta que el cliente pulsa PLAY.</p>
+      <div class="adm-videos" id="admVideos"></div>
+      <div class="btn-row" style="margin-top:1rem">
+        <button class="btn btn-ghost" type="button" id="videoAdd">+ AÑADIR VIDEO</button>
+        <button class="btn btn-orange" type="button" id="videoSave">GUARDAR VIDEOS</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. CONTENIDO -->
+  <section class="adm-pane" id="pane-contenido">
+    <div class="adm-card">
+      <div class="adm-card-head"><h2>Textos del hero</h2></div>
+      <div class="fgrp"><label>Título principal</label><input class="input" id="cHeroTitle"></div>
+      <div class="fgrp"><label>Texto descriptivo</label><textarea class="input" id="cHeroDesc" rows="3"></textarea></div>
+      <div class="fgrp"><label>Título del catálogo</label><input class="input" id="cCatalogTitle"></div>
+      <div class="fgrp"><label>Título de videos</label><input class="input" id="cVideosTitle"></div>
+      <div class="fgrp"><label>Título de contacto</label><input class="input" id="cContactTitle"></div>
+    </div>
+    <div class="adm-card">
+      <div class="adm-card-head"><h2>Contacto y horario</h2></div>
+      <div class="fgrp"><label>Dirección</label><textarea class="input" id="cAddress" rows="2"></textarea></div>
+      <div class="fgrp"><label>Servicio al Cliente</label><input class="input" id="cTel1"></div>
+      <div class="fgrp"><label>Servicio al Cliente USA</label><input class="input" id="cTel2"></div>
+      <div class="fgrp"><label>WhatsApp 1</label><input class="input" id="cWa1"></div>
+      <div class="fgrp"><label>Asistencia 24h / WhatsApp 2</label><input class="input" id="cWa2"></div>
+      <div class="fgrp"><label>Correo</label><input class="input" id="cEmail" type="email"></div>
+      <div class="fgrp"><label>Horario</label><input class="input" id="cHours"></div>
+      <div class="fgrp"><label>Nota de horario</label><textarea class="input" id="cHoursNote" rows="2"></textarea></div>
+      <div class="fgrp"><label>Texto del footer</label><textarea class="input" id="cFooter" rows="2"></textarea></div>
+      <button class="btn btn-orange" id="contentSave" type="button">GUARDAR CONTENIDO</button>
+    </div>
+  </section>
+
+  <!-- 7. SEGURIDAD -->
+  <section class="adm-pane" id="pane-seguridad">
+    <div class="adm-card">
+      <div class="adm-card-head"><h2>Cambiar contraseña master</h2></div>
+      <p class="lede">Necesitas la contraseña actual. La nueva debe tener al menos 8 caracteres.</p>
+      <div class="fgrp"><label>Contraseña actual</label><input class="input" type="password" id="pwOld" autocomplete="current-password"></div>
+      <div class="fgrp"><label>Nueva contraseña</label><input class="input" type="password" id="pwNew" autocomplete="new-password"></div>
+      <div class="fgrp"><label>Repetir nueva contraseña</label><input class="input" type="password" id="pwNew2" autocomplete="new-password"></div>
+      <button class="btn btn-orange" id="pwSave" type="button">CAMBIAR CONTRASEÑA</button>
+    </div>
+
+    <div class="adm-card">
+      <div class="adm-card-head"><h2>Registro de cambios</h2><button class="btn btn-ghost btn-sm" id="logClear" type="button">LIMPIAR REGISTRO</button></div>
+      <div class="log-list" id="admLog"></div>
+    </div>
+
+    <div class="adm-card danger-zone">
+      <div class="adm-card-head"><h2>Zona peligrosa</h2></div>
+      <p class="lede">Borrar todo deja la web en blanco, solo con el logo. Se piden dos confirmaciones y la contraseña master.</p>
+      <div class="btn-row">
+        <button class="btn btn-danger" id="wipeAll" type="button">BORRAR TODO</button>
+        <button class="btn btn-ghost" id="restoreAll" type="button">RESTAURAR WEB</button>
+      </div>
+    </div>
+  </section>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -87,7 +190,7 @@
 <script src="js/catalog.min.js"></script>
 <script src="js/paypal.min.js"></script>
 <script src="js/editor.min.js"></script>
+<script src="js/master.min.js"></script>
 <script src="js/admin-panel.min.js"></script>
-<script src="js/i18n.min.js"></script>
 </body>
 </html>

@@ -6,13 +6,21 @@
   'use strict';
 
   const E = window.OasisEditor;
-  const FILTERS = ['TODOS','SUV','LUJO','ECONÓMICO','JEEP','TOYOTA','HYUNDAI','KIA','CHANGAN','BMW','MERCEDES'];
   const PHOTOS = [
     'img/carros/carro-01.webp','img/carros/carro-02.webp','img/carros/carro-03.webp','img/carros/carro-04.webp',
     'img/carros/carro-05.webp','img/carros/carro-06.webp','img/carros/carro-07.webp','img/carros/carro-08.webp'
   ];
 
   let filter='TODOS', query='', sort='', shown=6;
+
+  function esc(v){
+    return String(v==null?'':v).replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+  }
+
+  function getFilters(){
+    const list=(E.state.categories||[]).filter(c=>['all','category','brand'].includes(c.type));
+    return list.length?list:[{id:'all',label:'TODOS',type:'all',value:''}];
+  }
 
   /** Ruta de imagen según el modo ligero. */
   function imgSrc(path){ return window.OasisLite ? window.OasisLite.img(path) : path; }
@@ -75,7 +83,7 @@
       'Presentar documentos de identidad.'
     ];
     const el=document.getElementById('needList');
-    if(el) el.innerHTML=items.map(x=>`<div class="check"><i>✓</i><span>${x}</span></div>`).join('');
+    if(el) el.innerHTML=items.map(x=>`<div class="check"><img src="img/check.svg" class="check-ico" alt=""><span>${x}</span></div>`).join('');
   }
 
   function renderNotes(){
@@ -89,20 +97,31 @@
   }
 
   function renderVideos(){
-    const vids=[['Detrás de cámaras','ScMzIvxBSi4'],['Un día en Oasis','aqz-KE-bpKQ'],['Mister Oasis','YE7VzlLtp-4']];
+    const vids=(E.state.videos||[]).filter(v=>v && v.id);
     const el=document.getElementById('videoGrid');
-    if(el) el.innerHTML=vids.map(([t,id],i)=>`
-      <div class="video-card" data-video="${id}" role="button" tabindex="0" aria-label="Ver video ${t}">
-        <img src="${imgSrc(PHOTOS[i+4])}" alt="${t}" loading="lazy" decoding="async"><div class="play">▶</div>
-      </div>`).join('');
+    if(el) el.innerHTML=vids.map((v,i)=>`
+      <div class="video-card" data-video="${esc(v.id)}" role="button" tabindex="0" aria-label="Ver video ${esc(v.title)}">
+        <img src="${imgSrc(PHOTOS[i%PHOTOS.length])}" alt="${esc(v.title)}" loading="lazy" decoding="async"><div class="play">▶</div>
+      </div>`).join('')||'<p class="lede">Pronto publicaremos nuevos videos.</p>';
   }
 
   /* ---------- Catálogo ---------- */
   function matches(c){
-    if(filter==='ECONÓMICO' && c.precio>=100) return false;
-    if(filter==='LUJO' && c.categoria!=='Lujo') return false;
-    if(filter==='SUV' && c.categoria!=='SUV') return false;
-    if(!['TODOS','SUV','LUJO','ECONÓMICO'].includes(filter) && brandOf(c.nombre)!==filter) return false;
+    if(filter!=='TODOS'){
+      const cat=getFilters().find(x=>x.label===filter);
+      if(cat){
+        if(cat.type==='brand' && brandOf(c.nombre)!==cat.value) return false;
+        if(cat.type==='category'){
+          if(cat.maxPrice && c.precio>=cat.maxPrice) return false;
+          if(!cat.maxPrice && c.categoria!==cat.value) return false;
+        }
+      }else{
+        if(filter==='ECONÓMICO' && c.precio>=100) return false;
+        if(filter==='LUJO' && c.categoria!=='Lujo') return false;
+        if(filter==='SUV' && c.categoria!=='SUV') return false;
+        if(!['ECONÓMICO','LUJO','SUV'].includes(filter) && brandOf(c.nombre)!==filter) return false;
+      }
+    }
     if(query && !c.nombre.toLowerCase().includes(query)) return false;
     return true;
   }
@@ -125,8 +144,7 @@
         <div class="acts">
           <a class="btn btn-ghost btn-sm" href="vehiculo.html?id=${c.id}&f1=${f1}&f2=${f2}&pickup=${encodeURIComponent(lugar)}">VER DETALLES</a>
           <a class="btn btn-orange btn-sm" href="${wa}" target="_blank" rel="noopener">RESERVAR</a>
-          <button class="btn btn-ghost btn-sm" data-gallery="${c.id}">FOTO</button>
-          <a class="btn btn-blue btn-sm" data-paypal href="${paypal}" target="_blank" rel="noopener">PAGAR MI RESERVA</a>
+          <a class="btn btn-blue btn-sm" data-paypal href="${paypal}" target="_blank" rel="noopener">PAGAR</a>
         </div>
       </div>
     </article>`;
@@ -159,7 +177,9 @@
   function renderFilters(){
     const box=document.getElementById('filters');
     if(!box) return;
-    box.innerHTML=FILTERS.map(f=>`<button class="chip ${f===filter?'on':''}" data-f="${f}">${f}</button>`).join('');
+    const list=getFilters();
+    if(!list.some(c=>c.label===filter)) filter='TODOS';
+    box.innerHTML=list.map(c=>`<button class="chip ${c.label===filter?'on':''}" data-f="${esc(c.label)}">${esc(c.label)}</button>`).join('');
     box.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{
       filter=b.dataset.f; shown=6; renderFilters(); renderCars();
     });
@@ -225,7 +245,7 @@
 
     document.getElementById('contactForm')?.addEventListener('submit',e=>{
       e.preventDefault();
-      if(document.getElementById('cCaptcha').value.trim()!=='7'){ alert('Respuesta incorrecta. Escribe 7 para confirmar que eres una persona.'); return; }
+      if(document.getElementById('cCaptcha').value.trim()!=='3'){ alert('Respuesta incorrecta. Escribe 3 para confirmar que eres una persona.'); return; }
       const n=document.getElementById('cName').value;
       const em=document.getElementById('cEmail').value;
       const su=document.getElementById('cSubject').value;
