@@ -1,1 +1,1 @@
-const PAYPAL_LINK = "https://www.paypal.com/webapps/shoppingcart?flowlogging_id=f808073cad3d6&mfid=1795468484706_f808073cad3d6&YWRzZGRjb29raWU%3D=K1y8KYwhvMIQtZy1_JUIBNxlgwAl7iBNUNNkNtz3VQhNwSEobZOu8RSYvBqQShocYKBcd1~BsdVfM9xlNkZJ4s3C_Bt24Orayz8SbfA7pMib3b2eyc1L~qKENt4iIAsP#/checkout/openButton";
+const PAYPAL_LINK = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=WFAGY3MGN4L7S";

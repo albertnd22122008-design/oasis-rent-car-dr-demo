@@ -101,7 +101,7 @@
     const el=document.getElementById('videoGrid');
     if(el) el.innerHTML=vids.map((v,i)=>`
       <div class="video-card" data-video="${esc(v.id)}" role="button" tabindex="0" aria-label="Ver video ${esc(v.title)}">
-        <img src="${imgSrc(PHOTOS[i%PHOTOS.length])}" alt="${esc(v.title)}" loading="lazy" decoding="async"><div class="play">▶</div>
+        <img src="${imgSrc(v.thumb||PHOTOS[i%PHOTOS.length])}" alt="${esc(v.title)}" loading="lazy" decoding="async"><div class="play"><img src="img/play.svg" alt="" aria-hidden="true"></div>
       </div>`).join('')||'<p class="lede">Pronto publicaremos nuevos videos.</p>';
   }
 

@@ -238,6 +238,7 @@
     box.innerHTML=list.map((v,i)=>`<div class="adm-video">
       <div class="fgrp"><label>Video ${i+1} · Título</label><input class="input" data-vtitle="${i}" value="${esc(v.title||'')}" placeholder="Título del video"></div>
       <div class="fgrp"><label>Link o ID de YouTube</label><input class="input" data-vlink="${i}" value="${esc(v.id||'')}" placeholder="https://youtu.be/..."></div>
+      <div class="fgrp"><label>Miniatura <small>(ruta o URL)</small></label><input class="input" data-vthumb="${i}" value="${esc(v.thumb||'')}" placeholder="img/videos/video-1.webp"></div>
       <button type="button" class="danger adm-video-del" data-vdel="${i}">Quitar</button>
     </div>`).join('')||'<p class="lede">No hay videos. Añade el primero.</p>';
     box.querySelectorAll('[data-vdel]').forEach(b=>b.onclick=()=>{
@@ -246,12 +247,13 @@
   }
   function bindVideoButtons(){
     const add=document.getElementById('videoAdd'), save=document.getElementById('videoSave');
-    if(add) add.onclick=()=>{ const list=[...(E().state.videos||[])]; list.push({title:'',id:''}); E().state.videos=list; renderVideos(); };
+    if(add) add.onclick=()=>{ const list=[...(E().state.videos||[])]; list.push({title:'',id:'',thumb:''}); E().state.videos=list; renderVideos(); };
     if(save) save.onclick=async()=>{
       const list=[...(E().state.videos||[])].map((v,i)=>{
         const t=document.querySelector(`[data-vtitle="${i}"]`)?.value.trim()||'';
         const raw=document.querySelector(`[data-vlink="${i}"]`)?.value.trim()||'';
-        return {title:t||('Video '+(i+1)),id:ytId(raw)};
+        const thumb=document.querySelector(`[data-vthumb="${i}"]`)?.value.trim()||'';
+        return {title:t||('Video '+(i+1)),id:ytId(raw),thumb};
       }).filter(v=>v.id);
       if(!list.length){ toast('Añade al menos un video válido'); return; }
       for(const v of list){ if(!/^[A-Za-z0-9_-]{6,}$/.test(v.id)){ toast('Link de YouTube inválido: '+v.id); return; } }

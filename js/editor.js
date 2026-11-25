@@ -21,11 +21,13 @@
     { id:'mercedes',label:'MERCEDES',  type:'brand',    value:'MERCEDES' }
   ];
 
+  /* Videos reales del canal oficial de Oasis Rent A Car (YouTube). */
   const DEFAULT_VIDEOS = [
-    { title:'Detrás de cámaras', id:'ScMzIvxBSi4' },
-    { title:'Un día en Oasis',   id:'aqz-KE-bpKQ' },
-    { title:'Mister Oasis',      id:'YE7VzlLtp-4' }
+    { title:'Saludito, saludito', id:'dNL740pRwb4', thumb:'img/videos/video-1.webp' },
+    { title:'Caso 1 Oasis Rent Car', id:'YRxK-z9ay1I', thumb:'img/videos/video-2.webp' },
+    { title:'Mira qué rápido es llegar a Oasis', id:'4KfWzY0Hgiw', thumb:'img/videos/video-3.webp' }
   ];
+  const SAMPLE_VIDEO_IDS = ['ScMzIvxBSi4','aqz-KE-bpKQ','YE7VzlLtp-4'];
 
   const CATALOG_DETAILS_STATE = (typeof CATALOG_DETAILS!=='undefined') ? CATALOG_DETAILS : {};
 
@@ -83,7 +85,12 @@
         statuses:{...raw.statuses}, stocks:{...raw.stocks}, deleted:[...(raw.deleted||[])],
         added:[...(raw.added||[])],
         categories: Array.isArray(raw.categories) ? raw.categories.map(c=>({...c})) : structuredClone(DEFAULT_CATEGORIES),
-        videos: Array.isArray(raw.videos) ? raw.videos.map(v=>({...v})) : structuredClone(DEFAULT_VIDEOS),
+        videos: Array.isArray(raw.videos)
+          ? raw.videos.map(v=>{
+              const sample=SAMPLE_VIDEO_IDS.indexOf(v?.id);
+              return sample>=0 ? {...DEFAULT_VIDEOS[sample]} : {...v};
+            })
+          : structuredClone(DEFAULT_VIDEOS),
         categoryOverrides:{...(raw.categoryOverrides||{})},
         wipe: raw.wipe===true,
         contact:{...DEFAULT_STATE.contact,...raw.contact},
