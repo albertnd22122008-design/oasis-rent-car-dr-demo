@@ -39,7 +39,7 @@
   .logo img{width:110px;min-width:110px}
   .nav-actions .btn-orange{display:none}
   .search{margin-bottom:90px}
-  .lite-toggle{top:calc(100px + env(safe-area-inset-top,0px));bottom:auto;right:.8rem;font-size:.62rem;padding:.45rem .7rem}
+  .lite-toggle{top:calc(100px + env(safe-area-inset-top,0px));bottom:auto;right:.8rem;font-size:.7rem;padding:.45rem .7rem}
   .field input,.field select,.input,textarea{font-size:16px}
   .wa-float{bottom:calc(1.2rem + env(safe-area-inset-bottom,0px))}
   #editBtn{bottom:calc(1.2rem + env(safe-area-inset-bottom,0px))}
@@ -93,7 +93,7 @@
   .detail-back{min-height:44px;display:inline-flex;align-items:center}
   .panel-tabs{flex-wrap:wrap;overflow:visible}
   .panel-tabs button{min-height:38px}
-  .adm-tabs button{font-size:.62rem;min-height:52px;padding:.3rem}
+  .adm-tabs button{font-size:.72rem;min-height:56px;padding:.35rem}
   .adm-item{grid-template-columns:70px 1fr}
   .adm-item img{width:70px;height:62px}
   .lang-wrap{top:auto;bottom:calc(1.2rem + env(safe-area-inset-bottom,0px));left:1rem}
