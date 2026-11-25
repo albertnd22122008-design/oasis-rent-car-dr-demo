@@ -1,5 +1,5 @@
 /* Service Worker: caché de la app para uso sin conexión */
-const CACHE='oasis-v3';
+const CACHE='oasis-v4';
 const FILES=[
   './','./index.html','./admin.html','./vehiculo.html','./login.html',
   './mis-vehiculos.html','./atencion.html','./reserva.html','./cookies.html',

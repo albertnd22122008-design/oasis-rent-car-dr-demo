@@ -303,6 +303,73 @@
     };
   }
 
+  /* ---------------- IMÁGENES ---------------- */
+  const HERO_DEFAULT='img/hero.webp', MISTER_DEFAULT='img/mister-oasis.jpg';
+  let heroPending=null, misterPending=null;
+
+  function renderImages(){
+    const s=E().state;
+    const hp=document.getElementById('admHeroPreview');
+    if(hp) hp.style.backgroundImage=`url("${s.heroImage||HERO_DEFAULT}")`;
+    const mp=document.getElementById('admMisterPreview');
+    if(mp) mp.src=s.misterImage||MISTER_DEFAULT;
+    const hf=document.getElementById('admHeroFile'), mf=document.getElementById('admMisterFile');
+    if(hf) hf.value='';
+    if(mf) mf.value='';
+    heroPending=null; misterPending=null;
+  }
+  function bindImages(){
+    const hf=document.getElementById('admHeroFile');
+    if(hf) hf.onchange=()=>{
+      const f=hf.files&&hf.files[0]; if(!f) return;
+      E().readImage(f,d=>{
+        heroPending=d;
+        const p=document.getElementById('admHeroPreview');
+        if(p) p.style.backgroundImage=`url("${d}")`;
+        toast('Foto del hero lista para guardar');
+      });
+    };
+    const mf=document.getElementById('admMisterFile');
+    if(mf) mf.onchange=()=>{
+      const f=mf.files&&mf.files[0]; if(!f) return;
+      E().readImage(f,d=>{
+        misterPending=d;
+        const p=document.getElementById('admMisterPreview');
+        if(p) p.src=d;
+        toast('Foto de Míster Oasis lista para guardar');
+      });
+    };
+    document.getElementById('admHeroSave')?.addEventListener('click',async()=>{
+      if(!heroPending){ toast('Elige una foto del hero primero'); return; }
+      const d=heroPending;
+      const ok=await askDo('Cambiar la foto de fondo del hero','Foto del hero cambiada','Se subió una nueva imagen de fondo',()=>{
+        E().state.heroImage=d; E().save(); E().apply();
+      });
+      if(ok){ toast('Foto del hero guardada'); renderImages(); }
+    });
+    document.getElementById('admHeroReset')?.addEventListener('click',async()=>{
+      const ok=await askDo('Restaurar la foto original del hero','Foto del hero restaurada','Se volvió a la imagen original',()=>{
+        E().state.heroImage=HERO_DEFAULT; E().save(); E().apply();
+      });
+      if(ok) renderImages();
+    });
+    document.getElementById('admMisterSave')?.addEventListener('click',async()=>{
+      if(!misterPending){ toast('Elige una foto de Míster Oasis primero'); return; }
+      const d=misterPending;
+      const ok=await askDo('Cambiar la foto de Míster Oasis','Foto de Míster Oasis cambiada','Se subió una nueva imagen',()=>{
+        E().state.misterImage=d; E().save(); E().apply();
+      });
+      if(ok){ toast('Foto de Míster Oasis guardada'); renderImages(); }
+    });
+    document.getElementById('admMisterReset')?.addEventListener('click',async()=>{
+      const ok=await askDo('Quitar la foto de Míster Oasis','Foto de Míster Oasis restaurada','Se volvió a la imagen original',()=>{
+        E().state.misterImage=MISTER_DEFAULT; E().save(); E().apply();
+      });
+      if(ok) renderImages();
+    });
+    renderImages();
+  }
+
   /* ---------------- SEGURIDAD ---------------- */
   function renderLog(){
     const box=document.getElementById('admLog');
@@ -342,7 +409,7 @@
       if(!(await M().ask('Escribe tu contraseña master para borrar todo definitivamente.'))) return;
       E().wipeAll();
       M().log('Borrado total','Se eliminó todo el contenido de la web.');
-      stats(); renderStock(); renderCats(); renderVideos(); fillContent(); renderLog();
+      stats(); renderStock(); renderCats(); renderVideos(); fillContent(); renderImages(); renderLog();
       toast('Web borrada. Solo queda el logo.');
     };
 
@@ -449,9 +516,10 @@
     bindCategoryAdd();
     bindVideoButtons();
     bindContentSave();
+    bindImages();
     bindSecurity();
 
-    stats(); reservas(); renderStock(); renderCats(); renderVideos(); fillContent(); renderLog();
+    stats(); reservas(); renderStock(); renderCats(); renderVideos(); fillContent(); renderImages(); renderLog();
   }
 
   document.addEventListener('DOMContentLoaded',async()=>{

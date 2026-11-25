@@ -58,6 +58,8 @@ h1,h2,h3,h4{font-family:var(--font-display);margin:0;letter-spacing:-.02em}
 .btn-blue{background:var(--azul-oasis);color:#fff}
 .btn-ghost{border:1px solid var(--line);background:rgba(255,140,0,.05);color:var(--text)}
 .btn-sm{min-height:38px;padding:.45rem .9rem;font-size:.7rem}
+.btn-ico{width:18px;height:18px;flex:0 0 auto;display:block;object-fit:contain;filter:brightness(0) invert(1)}
+.btn svg{width:18px;height:18px;flex:0 0 auto}
 
 /* --- Navegación --- */
 header.nav{position:fixed;inset:0 0 auto;z-index:70;padding:.75rem 0}
@@ -406,6 +408,9 @@ html.light .search h3,html.light .search .lede{color:#111111;background:#ffffff}
 html.light .hero-bg{opacity:.14;filter:grayscale(.25)}
 html.light .hero-blur{background:rgba(255,255,255,.55)}
 html.light .hero-grad{background:linear-gradient(90deg,#ffffff 0%,rgba(255,255,255,.94) 42%,rgba(255,255,255,.55) 100%),linear-gradient(0deg,#ffffff 0%,transparent 45%)}
+html.light .hero.hero-custom .hero-bg{opacity:.72;filter:none}
+html.light .hero.hero-custom .hero-blur{background:rgba(255,255,255,.18)}
+html.light .hero.hero-custom .hero-grad{background:linear-gradient(90deg,rgba(255,255,255,.94) 0%,rgba(255,255,255,.72) 42%,rgba(255,255,255,.2) 100%),linear-gradient(0deg,rgba(255,255,255,.7) 0%,transparent 45%)}
 html.light .hero h1{color:#111111!important}
 html.light .hero p.lede{color:#4b5563!important}
 html.light .hero .eyebrow{color:#a85000!important}
@@ -522,6 +527,10 @@ html:not(.admin-unlocked) .adm{display:none}
 .adm-video .fgrp{margin-bottom:.5rem}
 .adm-file{display:inline-flex;align-items:center;min-height:38px;padding:.3rem .6rem;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:#111;font-size:.72rem;font-weight:700;cursor:pointer}
 .adm-file input{display:none}
+.adm-photo-row{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:1rem;align-items:start;margin-bottom:1rem}
+.adm-photo-box,.adm-photo-img{width:100%;height:140px;border:1px solid #d1d5db;border-radius:12px;background-color:#e5e7eb;background-size:cover;background-position:center;object-fit:cover;display:block}
+.adm-photo-row .input{font-size:.75rem}
+@media(max-width:600px){.adm-photo-row{grid-template-columns:1fr}}
 .adm-acts button:disabled{opacity:.35;cursor:not-allowed}
 .log-list{display:grid;gap:.4rem;max-height:360px;overflow:auto}
 .log-item{border-bottom:1px solid #e4e7ec;padding:.5rem 0;font-size:.8rem;color:#374151}

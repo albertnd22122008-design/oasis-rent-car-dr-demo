@@ -47,6 +47,7 @@
     <button data-go="cats">CATEGORÍAS</button>
     <button data-go="videos">VIDEOS</button>
     <button data-go="contenido">CONTENIDO</button>
+    <button data-go="imagenes">IMÁGENES</button>
     <button data-go="seguridad">SEGURIDAD</button>
   </nav>
 
@@ -158,7 +159,35 @@
     </div>
   </section>
 
-  <!-- 7. SEGURIDAD -->
+  <!-- 7. IMÁGENES -->
+  <section class="adm-pane" id="pane-imagenes">
+    <div class="adm-card">
+      <div class="adm-card-head"><h2>Foto de fondo del hero</h2></div>
+      <p class="lede">Se muestra detrás del título principal. Usa una foto horizontal; se reduce a 1400 px y se guarda en este navegador.</p>
+      <div class="adm-photo-row">
+        <div class="adm-photo-box" id="admHeroPreview" role="img" aria-label="Vista previa de la foto del hero"></div>
+        <div class="fgrp"><label>Subir foto del hero</label><input class="input" type="file" id="admHeroFile" accept="image/*"></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-orange" id="admHeroSave" type="button">GUARDAR FOTO DEL HERO</button>
+        <button class="btn btn-ghost" id="admHeroReset" type="button">USAR FOTO ORIGINAL</button>
+      </div>
+    </div>
+    <div class="adm-card">
+      <div class="adm-card-head"><h2>Foto de Míster Oasis</h2></div>
+      <p class="lede">Imagen de la sección “Míster Oasis”. Puedes subirla, cambiarla o quitarla cuando quieras.</p>
+      <div class="adm-photo-row">
+        <img class="adm-photo-img" id="admMisterPreview" src="img/mister-oasis.jpg" alt="Vista previa de Míster Oasis" onerror="this.onerror=null;this.style.opacity=.25;this.alt='Sin foto'">
+        <div class="fgrp"><label>Subir foto de Míster Oasis</label><input class="input" type="file" id="admMisterFile" accept="image/*"></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-orange" id="admMisterSave" type="button">GUARDAR FOTO</button>
+        <button class="btn btn-ghost" id="admMisterReset" type="button">USAR FOTO ORIGINAL</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. SEGURIDAD -->
   <section class="adm-pane" id="pane-seguridad">
     <div class="adm-card">
       <div class="adm-card-head"><h2>Cambiar contraseña master</h2></div>

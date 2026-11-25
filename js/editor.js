@@ -195,6 +195,8 @@
       }
       const hero=document.getElementById('heroBg');
       if(hero) hero.style.backgroundImage=`url("${S.heroImage}")`;
+      const heroSection=document.querySelector('.hero');
+      if(heroSection) heroSection.classList.toggle('hero-custom',/^data:/.test(S.heroImage||''));
       const owner=document.getElementById('ownerPhoto');
       if(owner) owner.src=S.ownerImage||'img/owner.webp';
       document.querySelectorAll('img.mister-photo').forEach(el=>el.src=S.misterImage||'img/mister-oasis.jpg');
