@@ -39,7 +39,6 @@
   .logo img{width:110px;min-width:110px}
   .nav-actions .btn-orange{display:none}
   .search{margin-bottom:90px}
-  .lite-toggle{top:calc(100px + env(safe-area-inset-top,0px));bottom:auto;right:.8rem;font-size:.7rem;padding:.45rem .7rem}
   .field input,.field select,.input,textarea{font-size:16px}
   .wa-float{bottom:calc(1.2rem + env(safe-area-inset-bottom,0px))}
   #editBtn{bottom:calc(1.2rem + env(safe-area-inset-bottom,0px))}
@@ -62,16 +61,7 @@
    SOLO MÓVIL — arreglos de pantalla pequeña (PC intacto)
    ============================================================ */
 @media (max-width:768px){
-  /* El botón de modo ligero NO se muestra en móvil */
-  .lite-toggle{display:none!important}
-
-  /* 1. Modo ligero: NO ocultar contenido, solo quitar blur/animaciones */
-  body.lite .fade-up,
-  body.lite [data-reveal],
-  body.lite .hero h1 .w span{opacity:1!important;transform:none!important}
-  body.lite .card .ph img{opacity:1!important}
-
-  /* 2. Título grande solo en PC */
+  /* 1. Título grande solo en PC */
   .hero h1{font-size:30px!important;line-height:1.1!important}
 
   /* 3. WhatsApp no tapa el buscador */

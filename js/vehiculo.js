@@ -27,7 +27,16 @@
     'img/carros/carro-01.webp','img/carros/carro-02.webp','img/carros/carro-03.webp','img/carros/carro-04.webp',
     'img/carros/carro-05.webp','img/carros/carro-06.webp','img/carros/carro-07.webp','img/carros/carro-08.webp'
   ];
-  const imgSrc=p=> window.OasisLite ? window.OasisLite.img(p) : p;
+  window.OasisImg = window.OasisImg || {
+    ok(img){ img.classList.add('loaded'); },
+    fail(img){
+      img.onerror=null;
+      if(!/sin-foto\.webp$/.test(img.src)) img.src='img/sin-foto.webp';
+      img.classList.add('loaded','fallback');
+    },
+    watch(img){ setTimeout(()=>window.OasisImg.ok(img),2000); }
+  };
+  const imgSrc=p=>p;
   const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const chev=dir=>`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${dir==='prev'?'M15 5l-7 7 7 7':'M9 5l7 7-7 7'}"/></svg>`;
   const EXTRAS_DEFAULT=['Radio AM/FM','Bluetooth','USB','MP3','WIFI'];
@@ -186,8 +195,9 @@
 
     document.getElementById('relatedGrid').innerHTML=cars.filter(c=>c.id!==car.id).slice(0,4).map(c=>`
       <a class="card" href="vehiculo.html?id=${c.id}" style="display:block">
-        <div class="ph"><img src="${imgSrc(c.foto)}" alt="${c.nombre}" loading="lazy" decoding="async" onerror="OasisImg.fail(this)"><span class="id">#${c.id}</span></div>
+        <div class="ph"><img src="${imgSrc(c.foto)}" alt="${c.nombre}" loading="lazy" decoding="async" onload="OasisImg.ok(this)" onerror="OasisImg.fail(this)"><span class="id">#${c.id}</span></div>
         <div class="body"><h4>${c.nombre}</h4><div class="price">US $${c.precio} <small>/ día</small></div></div>
       </a>`).join('');
+    document.querySelectorAll('#relatedGrid img').forEach(i=>window.OasisImg.watch(i));
   });
 })();

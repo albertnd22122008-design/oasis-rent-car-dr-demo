@@ -11,7 +11,19 @@
     'img/carros/carro-05.webp','img/carros/carro-06.webp','img/carros/carro-07.webp','img/carros/carro-08.webp'
   ];
 
-  let filter='TODOS', query='', sort='', shown=6;
+  const PAGE_SIZE=6;
+  let filter='TODOS', query='', sort='', page=1;
+
+  /* Respaldos de imagen: si una foto falla, se muestra la imagen local. */
+  window.OasisImg = window.OasisImg || {
+    ok(img){ img.classList.add('loaded'); },
+    fail(img){
+      img.onerror=null;
+      if(!/sin-foto\.webp$/.test(img.src)) img.src='img/sin-foto.webp';
+      img.classList.add('loaded','fallback');
+    },
+    watch(img){ setTimeout(()=>window.OasisImg.ok(img),2000); }
+  };
 
   function esc(v){
     return String(v==null?'':v).replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
@@ -22,8 +34,8 @@
     return list.length?list:[{id:'all',label:'TODOS',type:'all',value:''}];
   }
 
-  /** Ruta de imagen según el modo ligero. */
-  function imgSrc(path){ return window.OasisLite ? window.OasisLite.img(path) : path; }
+  /** Ruta de imagen. */
+  function imgSrc(path){ return path; }
 
   /** Imagen con WebP + respaldo JPG, carga diferida y skeleton. */
   function picture(src, alt){
@@ -150,17 +162,58 @@
     </article>`;
   }
 
+  function arrowIcon(dir){
+    const d=dir==='prev'?'M15 5l-7 7 7 7':'M9 5l7 7-7 7';
+    return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${d}" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  }
+
+  function pageNumbers(total){
+    if(total<=7) return Array.from({length:total},(_,i)=>i+1);
+    const nums=new Set([1,total,page-1,page,page+1]);
+    if(page<=3) [2,3,4,5,6].forEach(n=>nums.add(n));
+    if(page>=total-2) [total-5,total-4,total-3,total-2,total-1].forEach(n=>nums.add(n));
+    const sorted=[...nums].filter(n=>n>=1&&n<=total).sort((a,b)=>a-b);
+    const out=[];
+    sorted.forEach((n,i)=>{
+      if(i && n-sorted[i-1]>1) out.push(0);
+      out.push(n);
+    });
+    return out;
+  }
+
+  function renderPager(total){
+    const box=document.getElementById('pages');
+    if(!box) return;
+    if(total<=1){ box.innerHTML=''; box.style.display='none'; return; }
+    box.style.display='';
+    const num=n=>`<button type="button" class="page-num ${n===page?'on':''}" data-page="${n}" ${n===page?'aria-current="page"':''} aria-label="Página ${n}">${n}</button>`;
+    const parts=[
+      `<button type="button" class="page-arrow prev" data-page="${page-1}" ${page===1?'disabled':''} aria-label="Página anterior">${arrowIcon('prev')}</button>`
+    ];
+    pageNumbers(total).forEach(n=>parts.push(n===0?'<span class="page-dots" aria-hidden="true">…</span>':num(n)));
+    parts.push(`<button type="button" class="page-arrow next" data-page="${page+1}" ${page===total?'disabled':''} aria-label="Página siguiente">${arrowIcon('next')}</button>`);
+    box.innerHTML=parts.join('');
+    box.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>{
+      const n=Number(b.dataset.page);
+      if(n<1||n>total||n===page) return;
+      page=n; renderCars();
+      document.getElementById('vehiculos')?.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  }
+
   function renderCars(){
     let list=E.allCars().filter(matches);
     if(sort==='asc') list.sort((a,b)=>a.precio-b.precio);
     if(sort==='desc') list.sort((a,b)=>b.precio-a.precio);
+    const total=Math.max(1,Math.ceil(list.length/PAGE_SIZE));
+    if(page>total) page=total;
+    const start=(page-1)*PAGE_SIZE;
     const grid=document.getElementById('carGrid');
-    if(grid) grid.innerHTML=list.slice(0,shown).map(cardHTML).join('')||'<p class="lede">No se encontraron vehículos.</p>';
+    if(grid) grid.innerHTML=list.slice(start,start+PAGE_SIZE).map(cardHTML).join('')||'<p class="lede">No se encontraron vehículos.</p>';
     grid?.querySelectorAll('img').forEach(i=>window.OasisImg?.watch(i));
     const info=document.getElementById('pageInfo');
-    if(info) info.textContent=`Página 1 de ${Math.max(1,Math.ceil(list.length/12))} · ${list.length} vehículos`;
-    const more=document.getElementById('loadMore');
-    if(more) more.style.display=shown<list.length?'':'none';
+    if(info) info.textContent=`Página ${page} de ${total} · ${list.length} vehículos`;
+    renderPager(total);
 
     document.querySelectorAll('[data-gallery]').forEach(b=>{
       b.onclick=()=>{
@@ -181,7 +234,7 @@
     if(!list.some(c=>c.label===filter)) filter='TODOS';
     box.innerHTML=list.map(c=>`<button class="chip ${c.label===filter?'on':''}" data-f="${esc(c.label)}">${esc(c.label)}</button>`).join('');
     box.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{
-      filter=b.dataset.f; shown=6; renderFilters(); renderCars();
+      filter=b.dataset.f; page=1; renderFilters(); renderCars();
     });
   }
 
@@ -211,23 +264,13 @@
       if(!document.getElementById('acceptTerms')?.checked){ alert('Debes aceptar los Términos y Condiciones para continuar.'); return; }
       if(!f1.value||!f2.value){ alert('Elige ambas fechas'); return; }
       if(f2.value<=f1.value){ alert('La fecha de regreso debe ser después de la recogida'); return; }
-      filter='TODOS'; shown=6; renderFilters(); renderCars();
+      filter='TODOS'; page=1; renderFilters(); renderCars();
       document.getElementById('vehiculos')?.scrollIntoView({behavior:'smooth'});
     });
     document.getElementById('searchInput')?.addEventListener('input',e=>{
-      query=e.target.value.trim().toLowerCase(); shown=6; renderCars();
+      query=e.target.value.trim().toLowerCase(); page=1; renderCars();
     });
-    document.getElementById('sortSelect')?.addEventListener('change',e=>{ sort=e.target.value; renderCars(); });
-    document.getElementById('loadMore')?.addEventListener('click',()=>{ shown+=6; renderCars(); });
-
-    /* Carga progresiva: el resto de carros entra al hacer scroll */
-    const moreBtn=document.getElementById('loadMore');
-    if(moreBtn && 'IntersectionObserver' in window){
-      const ioMore=new IntersectionObserver(es=>{
-        if(es[0].isIntersecting && moreBtn.style.display!=='none'){ shown+=6; renderCars(); }
-      },{rootMargin:'400px'});
-      ioMore.observe(moreBtn);
-    }
+    document.getElementById('sortSelect')?.addEventListener('change',e=>{ sort=e.target.value; page=1; renderCars(); });
     document.getElementById('menuBtn')?.addEventListener('click',()=>document.getElementById('mobileMenu')?.classList.toggle('open'));
     document.querySelectorAll('#mobileMenu a').forEach(a=>a.onclick=()=>document.getElementById('mobileMenu')?.classList.remove('open'));
     document.getElementById('toTop')?.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
